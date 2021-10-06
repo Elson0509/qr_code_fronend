@@ -1,12 +1,12 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
-import * as auth from '../services/auth'
 import api from '../services/api'
 
-const AuthContext = createContext({signed : false, user: {}, signIn: ()=>{}, signOut: ()=>{}, loading: true })
+const AuthContext = createContext({signed : false, user: {}, signIn: ()=>{}, signOut: ()=>{}, loading: true, errorLoginMessage: '', setErrorLoginMessage: ()=>{} }, )
 
 export const AuthProvider = ({children})=> {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [errorLoginMessage, setErrorLoginMessage] = useState('')
 
     useEffect(()=>{
         const storagedUser = localStorage.getItem('user')
@@ -19,13 +19,24 @@ export const AuthProvider = ({children})=> {
 
     }, [])
 
-    const signIn = async _ => {
-        auth.signIn().then(res=> {
-            setUser(res.user)
-            api.defaults.headers.Authorization = `Bearer ${res.token}`
-            localStorage.setItem('user', JSON.stringify(res.user))
-            localStorage.setItem('token', JSON.stringify(res.token))
-        })
+    const signIn = async (email, password) => {
+        api.post('/user/login', {email, password})
+            .then(res=> {
+                const user = {
+                    name: res.data.name,
+                    id: res.data.userId,
+                    user_kind: res.data.user_kind,
+                    email: res.data.username,
+                    condo_id: res.data.condo_id,
+                }
+                api.defaults.headers.Authorization = `Bearer ${res.data.token}`
+                localStorage.setItem('user', JSON.stringify(user))
+                localStorage.setItem('token', JSON.stringify(res.data.token))
+                setUser(user)
+            })
+            .catch(err=> {
+                setErrorLoginMessage(err.response?.data?.message || 'Erro no login. Tente de novo.')
+            })
         
     }
 
@@ -40,7 +51,9 @@ export const AuthProvider = ({children})=> {
             user: user,
             loading,
             signIn,
-            signOut
+            signOut,
+            errorLoginMessage,
+            setErrorLoginMessage,
         }}>
             {children}
         </AuthContext.Provider>
