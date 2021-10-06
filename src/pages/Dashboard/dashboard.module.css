@@ -1,0 +1,23 @@
+.Card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;  
+    border-radius: 10px;
+}
+
+.Card:hover{
+    filter: brightness(123%);
+    cursor: pointer;
+}
+
+.Icon{
+    margin-bottom: 20px;
+}
+
+.TextCard{
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    color: black;
+}
