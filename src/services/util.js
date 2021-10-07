@@ -22,6 +22,28 @@ export const saudacaoHorario = (name) => {
    return `Bom Dia, ${first}`
 }
 
+export const iconHour = () => {
+    const stamp = new Date();
+    const hours = stamp.getHours();
+    if (hours>=0 && hours<6) {
+       return `moon`;
+   }
+   
+   if (hours>=6 && hours<12) {
+       return `coffee`;
+   }
+
+   if (hours>=12 && hours<18) {
+       return `sun`;
+   }
+
+    if (hours>=18 && hours<24) {
+        return `moon`;
+    }     
+    
+   return `coffee`
+}
+
 const firstName = name => {
     const first = name.substring(0, name.indexOf(' '))
     return first || name

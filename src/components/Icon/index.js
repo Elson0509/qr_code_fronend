@@ -13,6 +13,13 @@ import {
     faExclamation, //exclamation
     faSmile, //smile
     faInfoCircle, //info-circle
+    faCoffee, //coffee
+    faSun, //sun
+    faMoon, //moon
+    faPlusSquare, //plus-square
+    faListAlt, //list-alt
+    faSearch, //search
+
 
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -28,14 +35,25 @@ library.add(
     faCar,
     faExclamation,
     faSmile,
-    faInfoCircle
+    faInfoCircle,
+    faCoffee, 
+    faSun,
+    faMoon, 
+    faPlusSquare,
+    faListAlt,
+    faSearch,
 );
 
 const Icon = (props) => {
     return (
         props.icon != null ?
             <Fragment>
-                <FontAwesomeIcon icon={props.icon} size={props.size || '1x'} color={props.color || 'black'}/>
+                <FontAwesomeIcon 
+                    icon={props.icon} 
+                    size={props.size || '1x'} 
+                    color={props.color || 'black'}
+                    
+                />
             </Fragment>
         :
         null

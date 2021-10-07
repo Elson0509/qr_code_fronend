@@ -1,0 +1,9 @@
+.Greeting{
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.GreetingIcon{
+    margin-right: 10px;
+    font-size: 1.8rem;
+}

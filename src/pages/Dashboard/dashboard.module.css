@@ -1,19 +1,42 @@
+.Dashboard{
+    background: rgba(183,222,237,1);
+    background: -moz-linear-gradient(-45deg, rgba(183,222,237,1) 0%, rgba(183,222,237,1) 28%, rgba(113,206,239,1) 78%, rgba(113,206,239,1) 100%);
+    background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(183,222,237,1)), color-stop(28%, rgba(183,222,237,1)), color-stop(78%, rgba(113,206,239,1)), color-stop(100%, rgba(113,206,239,1)));
+    background: -webkit-linear-gradient(-45deg, rgba(183,222,237,1) 0%, rgba(183,222,237,1) 28%, rgba(113,206,239,1) 78%, rgba(113,206,239,1) 100%);
+    background: -o-linear-gradient(-45deg, rgba(183,222,237,1) 0%, rgba(183,222,237,1) 28%, rgba(113,206,239,1) 78%, rgba(113,206,239,1) 100%);
+    background: -ms-linear-gradient(-45deg, rgba(183,222,237,1) 0%, rgba(183,222,237,1) 28%, rgba(113,206,239,1) 78%, rgba(113,206,239,1) 100%);
+    background: linear-gradient(135deg, rgba(183,222,237,1) 0%, rgba(183,222,237,1) 28%, rgba(113,206,239,1) 78%, rgba(113,206,239,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b7deed', endColorstr='#71ceef', GradientType=1 );
+    margin-top: -8px;
+}
+
 .Card{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;  
+    padding-top: 20px;  
     border-radius: 10px;
+    -webkit-transition : -webkit-filter 300ms linear;
 }
 
 .Card:hover{
-    filter: brightness(123%);
+    filter: brightness(115%);
     cursor: pointer;
+    -webkit-transition : -webkit-filter 300ms linear;
+}
+
+.Card_Footer{
+    width: 100%;
+    border-radius: 0 0 10px 10px;
 }
 
 .Icon{
     margin-bottom: 20px;
+    padding-top: 20px;
+    border-radius: 40%;
+    height: 100px;
+    width: 100px;
 }
 
 .TextCard{
