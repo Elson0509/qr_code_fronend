@@ -65,8 +65,6 @@ const Dashboard = () => {
         return Object.values(menu).filter(el=> el.submenuOptions)
     }
 
-    console.log(getArrayOptionsWithSubmenu())
-
     const getDivCard = el => {
         return (
             <div className="col">
