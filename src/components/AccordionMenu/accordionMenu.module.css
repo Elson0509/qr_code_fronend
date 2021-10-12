@@ -1,0 +1,36 @@
+.MenuItem{
+    background: #583CD6 !important;
+    color: white !important;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all .3s;
+    display: grid !important;
+    grid-template-columns: 25px auto !important;
+}
+.MenuItem:hover{
+    background: #7A5EF8;
+    padding-left: 25px;
+    color: white;
+    transition: all .3s;
+}
+
+.SubMenuItem{
+    background: #8B7FF9 !important;
+    color: white !important;
+    font-weight: bold;
+    cursor: pointer;
+    padding-left: 25px;
+    transition: all .3s;
+    display: grid !important;
+    grid-template-columns: 25px auto !important;
+}
+
+.SubMenuItem:hover{
+    background: #AD9FFB;
+    padding-left: 35px;
+    transition: all .3s;
+}
+
+.MenuName{
+    margin-left: 10px;
+}

@@ -31,7 +31,7 @@ export const AuthProvider = ({children})=> {
                 }
                 api.defaults.headers.Authorization = `Bearer ${res.data.token}`
                 localStorage.setItem('user', JSON.stringify(user))
-                localStorage.setItem('token', JSON.stringify(res.data.token))
+                localStorage.setItem('token', res.data.token)
                 setUser(user)
             })
             .catch(err=> {

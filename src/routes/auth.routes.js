@@ -5,6 +5,9 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 const AuthRoutes = () => (
     <Switch>
         <Route exact path='/login' component={Signin}/>
+        <Route exact path="/*">
+            <Redirect to="/login" />
+        </Route>
     </Switch>
 )
 
