@@ -1,13 +1,11 @@
 
 export const API_URL_PREFIX = 'http://'
-export const API_URL = 'localhost'
-export const API_PORT = 3333
+export const API_URL = 'localhost:3333'
 // export const API_URL_PREFIX = 'https://'
 // export const API_URL = 'sweet-newt-63.loca.lt'
-// export const API_PORT = ''
 export const API_SERVER_URL = '/api/'
 
-const TOAST_CONFIG = {
+export const TOAST_CONFIG = {
     position: "bottom-center",
     autoClose: 3000,
     hideProgressBar: false,

@@ -19,7 +19,8 @@ import {
     faPlusSquare, //plus-square
     faListAlt, //list-alt
     faSearch, //search
-
+    faWindowClose, //window-close
+    faEdit, //edit
 
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -42,6 +43,8 @@ library.add(
     faPlusSquare,
     faListAlt,
     faSearch,
+    faWindowClose,
+    faEdit,
 );
 
 const Icon = (props) => {

@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import Header from '../Header'
 import AccordionMenu from '../../components/AccordionMenu';
 import BreadcrumbBody from '../../components/BreadcrumbBody';
+import { ToastContainer } from 'react-toastify';
 
 const Body = (props) => {
     return (
@@ -18,6 +19,8 @@ const Body = (props) => {
                     </main>
                 </div>
             </div>
+            <ToastContainer
+            />
         </Fragment>
     );
 };

@@ -1,0 +1,20 @@
+.ButtonsDiv{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.ButtonBloco{
+    border-radius: 20px;
+    background: rgb(50, 111, 223);
+    font-size: 1.4rem;
+    color: white;
+    font-weight: bold;
+    border: none;
+    transition: all .3s;
+}
+
+.ButtonBloco:hover{
+    background: rgb(91, 138, 224);
+    transition: all .3s;
+}
