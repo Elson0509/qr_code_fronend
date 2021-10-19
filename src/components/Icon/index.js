@@ -21,6 +21,8 @@ import {
     faSearch, //search
     faWindowClose, //window-close
     faEdit, //edit
+    faUser, //user
+    faCarAlt, //car
 
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -45,6 +47,8 @@ library.add(
     faSearch,
     faWindowClose,
     faEdit,
+    faUser,
+    faCarAlt,
 );
 
 const Icon = (props) => {

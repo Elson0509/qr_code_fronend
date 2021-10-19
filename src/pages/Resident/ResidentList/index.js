@@ -4,7 +4,7 @@ import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import api from '../../../services/api'
 import Icon from '../../../components/Icon';
-import ConfirmModal from '../../../components/ConfirmModal/ConfirmModal';
+
 import Plate from '../../../components/Plate'
 import Image from '../../../components/Image'
 import { Spinner } from 'reactstrap';
@@ -129,7 +129,6 @@ const ResidentList = (props) => {
     return (
         <Body breadcrumb={breadcrumb}>
             <div className='row'>
-                {/* <div className='col-12 pb-4'> */}
                     {
                         units.length>0 && (
                             generateInfoUnits().map(el=>(
@@ -181,7 +180,6 @@ const ResidentList = (props) => {
                             ))
                         )
                     }
-                {/* </div> */}
             </div>
         </Body>
     );

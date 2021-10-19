@@ -19,6 +19,8 @@ export const MIN_PASSWORD_SIZE = 6
 
 export const borderTextInputWidth = 3
 
+export const closeButtonCollor = '#EA3333'
+
 //scan qr code
 export const QR_CODE_PREFIX = 'epw:'
 export const TYPE_DATA_QRCODE = 256

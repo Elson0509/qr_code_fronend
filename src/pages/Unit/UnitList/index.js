@@ -4,7 +4,7 @@ import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import api from '../../../services/api'
 import Icon from '../../../components/Icon';
-import ConfirmModal from '../../../components/ConfirmModal/ConfirmModal';
+import ConfirmModal from '../../../components/Modals/ConfirmModal';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
