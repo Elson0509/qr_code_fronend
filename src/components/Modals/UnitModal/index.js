@@ -3,8 +3,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 const UnitModal = (props) => {
     return (
-        <Modal isOpen={props.modal} toggle={props.toggle} className={props.className}>
-            <ModalHeader toggle={props.toggle}>Selecione a unidade</ModalHeader>
+        <Modal isOpen={props.modal} className={props.className}>
+            <ModalHeader>Selecione a unidade</ModalHeader>
             <ModalBody>
                 {props.bloco.Units && props.bloco.Units.map(el=>
                     <div key={el.id} className='text-center my-2'>

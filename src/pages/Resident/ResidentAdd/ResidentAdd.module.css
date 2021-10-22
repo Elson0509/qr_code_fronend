@@ -20,3 +20,8 @@
 .Bold{
     font-weight: bold;
 }
+
+.ImgUserTookPic{
+    text-align: center;
+    padding: 20px;
+}

@@ -1,0 +1,24 @@
+.MainDiv{
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 20px;
+}
+
+.DivButtons{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: center;
+}
+
+.Button{
+    border: 3px solid rgb(99, 95, 95);
+    padding: 20px;
+    background: cornflowerblue;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.Button:hover{
+    background: rgb(62, 116, 216);
+}

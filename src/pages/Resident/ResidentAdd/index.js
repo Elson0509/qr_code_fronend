@@ -6,6 +6,7 @@ import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import Plate from '../../../components/Plate'
 import Image from '../../../components/Image'
+import ImageBlob from '../../../components/ImageBlob'
 import BlocoModal from '../../../components/Modals/BlocoModal';
 import UnitModal from '../../../components/Modals/UnitModal';
 import Icon from '../../../components/Icon';
@@ -15,28 +16,38 @@ import FormInput from '../../../components/Form/FormInput';
 import SelectButton from '../../../components/Buttons/SelectButton';
 import classes from './ResidentAdd.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons';
+import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons';
+import PicModal from '../../../components/Modals/PicModal';
 
 const ResidentAdd = (props) => {
     const {user} = useAuth()
     const [units, setUnits] = useState([])
     const [loading, setLoading] = useState(true)
-    const [searchInput, setSearchinput] = useState('')
     const [residents, setResidents] = useState([])
     const [vehicles, setVehicles] = useState([])
     const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
     const [errorAddVehicleMessage, setErrorAddVehicleMessage] = useState('')
     const [vehicleBeingAdded, setVehicleBeingAdded] = useState({id: "0", maker:'', model:'', color:'', plate:''})
     const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', email: '', pic: ''})
-    const [modal, setModal] = useState(false)
+    const [modalPic, setModalPic] = useState(false)
     const [modalSelectBloco, setModalSelectBloco] = useState(false)
     const [modalSelectUnit, setModalSelectUnit] = useState(false)
     const [selectedBloco, setSelectedBloco] = useState(null)
     const [selectedUnit, setSelectedUnit] = useState(null)
-    const [errorMessage, setErrorMessage] = useState('')
     const [isAddingResident, setIsAddingResident] = useState(false)
     const [isAddingVehicle, setIsAddingVehicle] = useState(false)
+    const [takePic, setTakePic] = useState(false)
 
     
+
+    const treatImage = _ => {
+      const img = document.createElement("img");
+      img.src = userBeingAdded.pic
+      return img.height
+    }
+
+    console.log(treatImage())
+
     const breadcrumb=[
         {
             name: 'Dashboard',
@@ -233,6 +244,21 @@ const ResidentAdd = (props) => {
           })
     }
 
+    const takePicHandler = _ => {
+      setTakePic(true)
+      setModalPic(true)
+    }
+
+    const confirmTakePick = _ => {
+      setTakePic(false)
+      setModalPic(false)
+    }
+
+    const toggleModalPic = _ => {
+      setModalPic(false)
+      setTakePic(false)
+    }
+
     if(loading){
         return (
             <Body breadcrumb={breadcrumb}>
@@ -283,6 +309,16 @@ const ResidentAdd = (props) => {
                       type='email'
                       changeValue={(val) => setUserBeingAdded({...userBeingAdded, email: val})}
                     />
+                    {!!userBeingAdded.pic &&
+                      <div className={classes.ImgUserTookPic}>
+                        <img src={userBeingAdded.pic} height={120}/>
+                      </div>
+                    }
+                    {!userBeingAdded.pic && 
+                      <ImportPhotoButtons 
+                        setImgPath={(img)=>setUserBeingAdded({...userBeingAdded, pic: img})} 
+                        cameraClick={() => takePicHandler()}/>
+                    }
                     {!!errorAddResidentMessage && 
                       <div className="alert alert-danger text-center mt-2" role="alert">
                         {errorAddResidentMessage}
@@ -302,7 +338,13 @@ const ResidentAdd = (props) => {
                     <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start" key={el.id + el.name + el.email}>
                       <div className={classes.ResidentBox}>
                         <div className={classes.ResidentImage}>
-                          <Image id={el.id} height={100}/>
+                          {
+                            el.id==='0' ?
+                            <ImageBlob path={el.pic} height={100}/>
+                            :
+                            <Image id={el.id} height={100}/>
+                          }
+                          
                         </div>
                         <div>
                           <p className={classes.Text}><span className={classes.Bold}>Nome:</span> {el.name}</p>
@@ -391,6 +433,15 @@ const ResidentAdd = (props) => {
                 modal={modalSelectUnit}
                 toggle={setModalSelectUnit}
                 action={(el)=>{selectUnitHandler(el)}}
+              />
+            }
+            {
+              takePic && <PicModal 
+                modal={modalPic}
+                toggle={()=> toggleModalPic()}
+                setImgPath={(img)=>setUserBeingAdded({...userBeingAdded, pic: img})}
+                confirmTakePick={confirmTakePick}
+                takePic={takePic}
               />
             }
         </Body>
