@@ -7,17 +7,18 @@ import api from '../../../services/api'
 import Plate from '../../../components/Plate'
 import Image from '../../../components/Image'
 import ImageBlob from '../../../components/ImageBlob'
-import BlocoModal from '../../../components/Modals/BlocoModal';
-import UnitModal from '../../../components/Modals/UnitModal';
-import Icon from '../../../components/Icon';
-import { Spinner } from 'reactstrap';
-import { toast } from 'react-toastify';
-import FormInput from '../../../components/Form/FormInput';
-import SelectButton from '../../../components/Buttons/SelectButton';
+import BlocoModal from '../../../components/Modals/BlocoModal'
+import UnitModal from '../../../components/Modals/UnitModal'
+import Icon from '../../../components/Icon'
+import { Spinner } from 'reactstrap'
+import { toast } from 'react-toastify'
+import FormInput from '../../../components/Form/FormInput'
+import SelectButton from '../../../components/Buttons/SelectButton'
 import classes from './ResidentAdd.module.css'
-import ActionButtons from '../../../components/Buttons/ActionButtons';
-import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons';
-import PicModal from '../../../components/Modals/PicModal';
+import ActionButtons from '../../../components/Buttons/ActionButtons'
+import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
+import PicModal from '../../../components/Modals/PicModal'
+import CropImageModal from '../../../components/Modals/CropImageModal';
 
 const ResidentAdd = (props) => {
     const {user} = useAuth()
@@ -30,6 +31,7 @@ const ResidentAdd = (props) => {
     const [vehicleBeingAdded, setVehicleBeingAdded] = useState({id: "0", maker:'', model:'', color:'', plate:''})
     const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', email: '', pic: ''})
     const [modalPic, setModalPic] = useState(false)
+    const [modalCrop, setModalCrop] = useState(false)
     const [modalSelectBloco, setModalSelectBloco] = useState(false)
     const [modalSelectUnit, setModalSelectUnit] = useState(false)
     const [selectedBloco, setSelectedBloco] = useState(null)
@@ -37,16 +39,13 @@ const ResidentAdd = (props) => {
     const [isAddingResident, setIsAddingResident] = useState(false)
     const [isAddingVehicle, setIsAddingVehicle] = useState(false)
     const [takePic, setTakePic] = useState(false)
+    const [pathImgToCrop, setPathImgToCrop] = useState('')   
 
-    
-
-    const treatImage = _ => {
-      const img = document.createElement("img");
-      img.src = userBeingAdded.pic
-      return img.height
+    const paperClipImageHandler = imgPath => {
+      //TODO check if the file is JPG
+      setPathImgToCrop(imgPath)
+      setModalCrop(true)
     }
-
-    console.log(treatImage())
 
     const breadcrumb=[
         {
@@ -72,6 +71,11 @@ const ResidentAdd = (props) => {
             setLoading(false)
           })
     },[])
+
+    const closeModalCropHandler = _ => {
+      setPathImgToCrop('')
+      setModalCrop('')
+    }
 
     const removeResident = index => {
         let residentsCopy = [...residents]
@@ -146,11 +150,9 @@ const ResidentAdd = (props) => {
         api.get(`user/unit/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
           .then(res=>{
             setResidents(res.data)
-            console.log('residents', res.data)
             api.get(`vehicle/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
               .then(res2=>{
                 setVehicles(res2.data)
-                console.log('vehicles', res2.data)
               })
               .catch(err2=>{
                 toast.error(err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA2)', Constants.TOAST_CONFIG)
@@ -172,14 +174,9 @@ const ResidentAdd = (props) => {
         setSelectedBloco(null)
         setSelectedUnit(null)
     }
-  
-    const cancelHandler = _ =>{
-        clearUnit()
-        setResidents([])
-        setVehicles([])
-    }
 
     const uploadImgs = newResidents =>{
+      console.log({newResidents})
         const residentsPics = []
         newResidents.forEach(nr => {
           residents.forEach(re => {
@@ -190,6 +187,7 @@ const ResidentAdd = (props) => {
                 residentsPics.push({id:nr.id, pic: re.pic})
           })
         })
+        console.log({residentsPics})
         residentsPics.forEach(el=>{
           const formData = new FormData()
           formData.append('img', {
@@ -217,18 +215,18 @@ const ResidentAdd = (props) => {
         api.post('vehicle/unit', {
           unit_id: selectedUnit.id,
           vehicles,
-          user_id_last_modify: props.route.params.user.id
+          user_id_last_modify: user.id
         })
         .then((res)=>{
           api.post('user/resident/unit', {
             unit_id: selectedUnit.id,
             residents, 
-            condo_id: props.route.params.user.condo_id, 
-            user_id_last_modify: props.route.params.user.id
+            condo_id: user.condo_id, 
+            user_id_last_modify: user.id
           })
             .then(res2=>{
               uploadImgs(res2.data.addedResidents)
-              toast.info(res2.data.message, Constants.TOAST_CONFIG)
+              toast.info(res2.data.message || 'Registro realizado com sucesso.', Constants.TOAST_CONFIG)
               setSelectedUnit(null)
               setModalSelectBloco(null)
             })
@@ -317,6 +315,7 @@ const ResidentAdd = (props) => {
                     {!userBeingAdded.pic && 
                       <ImportPhotoButtons 
                         setImgPath={(img)=>setUserBeingAdded({...userBeingAdded, pic: img})} 
+                        paperClipImageHandler={(path)=>paperClipImageHandler(path)}
                         cameraClick={() => takePicHandler()}/>
                     }
                     {!!errorAddResidentMessage && 
@@ -417,6 +416,15 @@ const ResidentAdd = (props) => {
               </SelectButton>
               )
             }
+            {!!selectedBloco && !!selectedUnit && (
+              <ActionButtons
+                textButton1='Cadastrar'
+                textButton2='Cancelar'
+                action1={()=>confirmHandler()}
+                action2={()=>props.history.push('/dashboard')}
+              />
+              )
+            }
             {
               !!units.length && 
               <BlocoModal
@@ -442,6 +450,16 @@ const ResidentAdd = (props) => {
                 setImgPath={(img)=>setUserBeingAdded({...userBeingAdded, pic: img})}
                 confirmTakePick={confirmTakePick}
                 takePic={takePic}
+              />
+            }
+            {
+              modalCrop && 
+              <CropImageModal
+                modal={modalCrop}
+                closeModalCropHandler={closeModalCropHandler}
+                pathImgToCrop={pathImgToCrop}
+                setImgPath={(img)=>setUserBeingAdded({...userBeingAdded, pic: img})}
+                setModalCrop={setModalCrop}
               />
             }
         </Body>

@@ -9,7 +9,8 @@ const ImportPhotoButtons = (props) => {
                 <p className='text-center fs-5 fw-bold'>Adicionar foto</p>
             </div>
             <div className={classes.DivButtons}>
-                <input id="file" style={{display: 'none'}} type="file" accept="image/jpeg" onChange={(ev)=>{props.setImgPath(URL.createObjectURL(ev.target.files[0]))}}/>
+                {/* <input id="file" style={{display: 'none'}} type="file" accept="image/jpeg" onChange={(ev)=>{props.setImgPath(URL.createObjectURL(ev.target.files[0]))}}/> */}
+                <input id="file" style={{display: 'none'}} type="file" accept="image/jpeg" onChange={(ev)=>{props.paperClipImageHandler(URL.createObjectURL(ev.target.files[0]))}}/>
                 <label className={classes.Button} htmlFor='file'>
                     <Icon icon='paperclip' size='2x' color='white'/>
                 </label>
