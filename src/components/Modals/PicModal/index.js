@@ -54,9 +54,7 @@ const PicModal = (props) => {
         canvas.height = video.videoHeight;
         canvas.width = video.videoHeight/4*3;
         canvas.getContext('2d').drawImage(video, (video.videoWidth - (video.videoHeight/4*3))/2, 0, video.videoHeight/4*3, video.videoHeight, 0, 0, video.videoHeight/4*3, video.videoHeight);  
-        canvas.toBlob((blob) => {
-            setImgPath(URL.createObjectURL(blob))
-        }, 'image/jpeg', 0.95);
+        setImgPath(canvas.toDataURL("image/jpeg"))
     }
 
     const toggle = _ => {

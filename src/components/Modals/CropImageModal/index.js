@@ -38,12 +38,9 @@ const CropImageModal = (props) => {
             croppedAreaPixels.width * scaleX,
             croppedAreaPixels.height * scaleY
         );
-
-        canvas.toBlob((blob) => {
-            props.setImgPath(window.URL.createObjectURL(blob))
-            props.setModalCrop(false)
-        }, 'image/jpeg', 0.95);
         
+        props.setImgPath(canvas.toDataURL("image/jpeg"))
+        props.setModalCrop(false)
     }
 
     return (

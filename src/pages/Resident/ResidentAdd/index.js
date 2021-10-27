@@ -42,6 +42,7 @@ const ResidentAdd = (props) => {
     const [pathImgToCrop, setPathImgToCrop] = useState('')   
 
     const paperClipImageHandler = imgPath => {
+      console.log(imgPath)
       //TODO check if the file is JPG
       setPathImgToCrop(imgPath)
       setModalCrop(true)
@@ -189,17 +190,9 @@ const ResidentAdd = (props) => {
         })
         console.log({residentsPics})
         residentsPics.forEach(el=>{
-          const formData = new FormData()
-          formData.append('img', {
-            uri: el.pic,
-            type: 'image/jpg',
-            name:el.id+'.jpg'
-          })
-          api.post(`user/image/${el.id}`, formData, {
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'multipart/form-data',
-            }
+          api.post(`upload`,{
+            base64Image: el.pic,
+            fileName: el.id
           })
           .then(res=>{
             console.log('success', res.data)
@@ -316,6 +309,7 @@ const ResidentAdd = (props) => {
                       <ImportPhotoButtons 
                         setImgPath={(img)=>setUserBeingAdded({...userBeingAdded, pic: img})} 
                         paperClipImageHandler={(path)=>paperClipImageHandler(path)}
+                        setErrorMessage={setErrorAddResidentMessage}
                         cameraClick={() => takePicHandler()}/>
                     }
                     {!!errorAddResidentMessage && 
