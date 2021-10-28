@@ -1,0 +1,9 @@
+.DivButton{
+    
+    border: 1px solid #eee;
+    padding: 5px;
+}
+
+.Icon{
+    cursor: pointer;
+}
