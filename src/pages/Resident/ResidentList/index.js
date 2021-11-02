@@ -4,7 +4,8 @@ import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import api from '../../../services/api'
 import Icon from '../../../components/Icon';
-
+import IconButtons from '../../../components/Buttons/IconButtons';
+import ConfirmModal from '../../../components/Modals/ConfirmModal';
 import Plate from '../../../components/Plate'
 import Image from '../../../components/Image'
 import { Spinner } from 'reactstrap';
@@ -41,7 +42,6 @@ const ResidentList = (props) => {
     const fetchUsers = _ => {
         api.get(`user/condo/${user.condo_id}/${Constants.USER_KIND["RESIDENT"]}`)
         .then(resp=>{
-            console.log(resp.data)
           setUnits(resp.data)
         })
         .catch(err=>{
@@ -78,24 +78,22 @@ const ResidentList = (props) => {
           })
     }
 
-    // const editHandler = unit => {
-    //     props.navigation.navigate('ResidentEdit', 
-    //       {
-    //         user: props.route.params.user,
-    //         selectedBloco: {
-    //           id: unit.bloco_id,
-    //           name: unit.bloco_name
-    //         },
-    //         selectedUnit:{
-    //           id: unit.id,
-    //           number: unit.number
-    //         },
-    //         residents: unit.residents,
-    //         vehicles: unit.vehicles,
-    //         screen: 'ResidentEdit'
-    //       }
-    //     )
-    // }
+    const editHandler = unit => {
+        props.history.push('/residents/edit', 
+          {
+            selectedBloco: {
+              id: unit.bloco_id,
+              name: unit.bloco_name
+            },
+            selectedUnit:{
+              id: unit.id,
+              number: unit.number
+            },
+            residents: unit.residents,
+            vehicles: unit.vehicles,
+          }
+        )
+    }
 
     const generateInfoUnits = _ =>{
         const unitsInfo = []
@@ -113,10 +111,6 @@ const ResidentList = (props) => {
         })
         return unitsInfo
     }
-
-    units.length>0 && (
-        console.log(generateInfoUnits())
-    )
 
     if(loading){
         return (
@@ -137,6 +131,10 @@ const ResidentList = (props) => {
                                         <CardHeader>
                                             <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                                             <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
+                                            <IconButtons
+                                                action1={()=>editHandler(el)}
+                                                action2={()=>delUnitModal(el)}
+                                            />
                                         </CardHeader>
                                         <CardBody>
                                             <CardText tag='h6'>Moradores:</CardText>
@@ -167,7 +165,7 @@ const ResidentList = (props) => {
                                             {
                                                 !!el.vehicles.length && el.vehicles.map((vehicle, ind)=> (
                                                   <div style={{borderBottom: ind === el.vehicles.length - 1 ? 'none' : '1px solid #ddd', paddingBottom: '10px'}}>
-                                                    <p className='text-center'>{vehicle.maker} {vehicle.modle} {vehicle.color}</p>
+                                                    <p className='text-center'>{vehicle.maker} {vehicle.model} {vehicle.color}</p>
                                                     <div style={{display: 'flex', justifyContent:'center'}}>
                                                       <Plate plate={vehicle.plate}/>
                                                     </div>
@@ -181,6 +179,13 @@ const ResidentList = (props) => {
                         )
                     }
             </div>
+            <ConfirmModal
+                message={message}
+                modal={modal}
+                toggle={()=>setModal(false)}
+                title='Apagar moradores'
+                action1={()=>deleteUnitConfirmed()}
+            />
         </Body>
     );
 };

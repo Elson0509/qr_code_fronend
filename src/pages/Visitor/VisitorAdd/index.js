@@ -13,23 +13,30 @@ import Icon from '../../../components/Icon'
 import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
+import InputDate from '../../../components/Form/InputDate';
 import SelectButton from '../../../components/Buttons/SelectButton'
-import classes from './ResidentAdd.module.css'
+import classes from './VisitorAdd.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
 import CropImageModal from '../../../components/Modals/CropImageModal';
+import QRCodeModal from '../../../components/Modals/QRCodeModal';
 
-const ResidentAdd = (props) => {
+const VisitorAdd = (props) => {
+
+    const currentDate = new Date()
+
     const {user} = useAuth()
     const [units, setUnits] = useState([])
     const [loading, setLoading] = useState(true)
     const [residents, setResidents] = useState([])
     const [vehicles, setVehicles] = useState([])
     const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+    const [errorSetDateMessage, setErrorSetDateMessage] = useState('')
     const [errorAddVehicleMessage, setErrorAddVehicleMessage] = useState('')
     const [vehicleBeingAdded, setVehicleBeingAdded] = useState({id: "0", maker:'', model:'', color:'', plate:''})
-    const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', email: '', pic: ''})
+    const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', pic: ''})
     const [modalPic, setModalPic] = useState(false)
     const [modalCrop, setModalCrop] = useState(false)
     const [modalSelectBloco, setModalSelectBloco] = useState(false)
@@ -39,11 +46,18 @@ const ResidentAdd = (props) => {
     const [isAddingResident, setIsAddingResident] = useState(false)
     const [isAddingVehicle, setIsAddingVehicle] = useState(false)
     const [takePic, setTakePic] = useState(false)
-    const [pathImgToCrop, setPathImgToCrop] = useState('')   
+    const [pathImgToCrop, setPathImgToCrop] = useState('')
+    const [dateInit, setDateInit] = useState({day: currentDate.getDate(), month: currentDate.getMonth()+1, year: currentDate.getFullYear()})
+    const [dateEnd, setDateEnd] = useState({day: currentDate.getDate(), month: currentDate.getMonth()+1, year: currentDate.getFullYear()})
+    const [isSelectingDate, setIsSelectingDate] = useState(false)
+    const [selectedDateInit, setSelectedDateInit] = useState('')
+    const [selectedDateEnd, setSelectedDateEnd] = useState('')
+    const [showModalQRCode, setShowModalQRCode] = useState(false)
+    const [unitIdModalQRCode, setUnitIdModalQRCode] = useState('')
+    const [infoModalQRCode, setInfoModalQRCode] = useState('')
+
 
     const paperClipImageHandler = imgPath => {
-      console.log(imgPath)
-      //TODO check if the file is JPG
       setPathImgToCrop(imgPath)
       setModalCrop(true)
     }
@@ -54,8 +68,8 @@ const ResidentAdd = (props) => {
             link: '/'
         },
         {
-            name: 'Adicionar Moradores',
-            link: '/residents/add'
+            name: 'Adicionar Visitantes',
+            link: '/visitors/add'
         }
     ]
 
@@ -94,21 +108,38 @@ const ResidentAdd = (props) => {
         if(!userBeingAdded.name){
           return setErrorAddResidentMessage('Nome não pode estar vazio.')
         }
-        if(!userBeingAdded.email){
-          return setErrorAddResidentMessage('Email não pode estar vazio.')
-        }
-        if(!Utils.validateEmail(userBeingAdded.email)){
-          return setErrorAddResidentMessage('Email não é válido.')
-        }
         setResidents(prev=> [...prev, userBeingAdded])
         setErrorAddResidentMessage('')
-        setUserBeingAdded({id: "0", name: '', identification: '', email: '', pic: ''})
+        setUserBeingAdded({id: "0", name: '', identification: '', pic: ''})
         setIsAddingResident(false)
+    }
+
+    const selectDatesHandler = _ =>{
+      if(!Utils.isValidDate(dateInit.day, dateInit.month, dateInit.year) ){
+        return setErrorSetDateMessage('Data inicial não é válida.')
+      }
+      if(!Utils.isValidDate(dateEnd.day, dateEnd.month, dateEnd.year) ){
+        return setErrorSetDateMessage('Data final não é válida.')
+      }
+      const dateInicial = new Date(dateInit.year, dateInit.month-1, dateInit.day)
+      const dateFinal = new Date(dateEnd.year, dateEnd.month-1, dateEnd.day)
+      if(dateFinal<dateInicial){
+        return setErrorSetDateMessage('Data final precisa ser posterior à data inicial')
+      }
+      setErrorSetDateMessage('')
+      setSelectedDateInit(dateInicial)
+      setSelectedDateEnd(dateFinal)
+      setIsSelectingDate(false)
+    }
+
+    const cancelDatesHandler = _ =>{
+      setSelectedDateInit('')
+      setSelectedDateEnd('')
     }
 
     const cancelAddResidentHandler = _ => {
       setIsAddingResident(false)
-      setUserBeingAdded({id: '0', name: '', identification: '', email: '', pic: ''})
+      setUserBeingAdded({id: '0', name: '', identification: '', pic: ''})
     }
 
     const addVehicleHandler = _ =>{
@@ -147,28 +178,6 @@ const ResidentAdd = (props) => {
     const selectUnitHandler = unit => {
         setSelectedUnit(unit)
         setModalSelectUnit(false)
-        setLoading(true)
-        api.get(`user/unit/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
-          .then(res=>{
-            setResidents(res.data)
-            api.get(`vehicle/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
-              .then(res2=>{
-                setVehicles(res2.data)
-              })
-              .catch(err2=>{
-                toast.error(err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA2)', Constants.TOAST_CONFIG)
-                setSelectedUnit(null)
-                setSelectedBloco(null)
-              })
-          })
-          .catch(err=>{
-            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA3)', Constants.TOAST_CONFIG)
-            setSelectedUnit(null)
-            setSelectedBloco(null)
-          })
-          .finally(()=>{
-            setLoading(false)
-          })
     }
 
     const clearUnit = _ =>{
@@ -177,7 +186,6 @@ const ResidentAdd = (props) => {
     }
 
     const uploadImgs = newResidents =>{
-      console.log({newResidents})
         const residentsPics = []
         newResidents.forEach(nr => {
           residents.forEach(re => {
@@ -188,51 +196,65 @@ const ResidentAdd = (props) => {
                 residentsPics.push({id:nr.id, pic: re.pic})
           })
         })
-        console.log({residentsPics})
         residentsPics.forEach(el=>{
-          api.post(`upload`,{
-            base64Image: el.pic,
-            fileName: el.id
+          //resizing and uploading
+          Utils.resizeFile(el.pic).then(data=>{
+            api.post(`upload`,{
+              base64Image: data,
+              fileName: el.id
+            })
+            .then(res=>{
+              console.log('success', res.data)
+            })
+            .catch(err=>{
+              console.log('error', err.response)
+            })
           })
-          .then(res=>{
-            console.log('success', res.data)
-          })
-          .catch(err=>{
-            console.log('error', err.response)
-          })
+          
         })
     }
 
     const confirmHandler = _ =>{
+        //checking if there is date selected and at least one visitor
+        if(!selectedDateInit || !selectedDateEnd){
+          return setErrorMessage('É preciso selecionar um prazo.')
+        }
+        if(!residents.length)
+          return setErrorMessage('É preciso adicionar visitantes.')
+        setErrorMessage('')
         setLoading(true)
-        api.post('vehicle/unit', {
-          unit_id: selectedUnit.id,
+        //storing unit for kind Visitor
+        api.post(`user/person/unit`,{
+          residents,
+          number: selectedUnit.number,
           vehicles,
-          user_id_last_modify: user.id
+          bloco_id: selectedBloco.id,
+          selectedDateInit,
+          selectedDateEnd,
+          unit_kind_id: Constants.USER_KIND.VISITOR,
+          user_id_last_modify: user.id,
         })
-        .then((res)=>{
-          api.post('user/resident/unit', {
-            unit_id: selectedUnit.id,
-            residents, 
-            condo_id: user.condo_id, 
-            user_id_last_modify: user.id
-          })
-            .then(res2=>{
-              uploadImgs(res2.data.addedResidents)
-              toast.info(res2.data.message || 'Registro realizado com sucesso.', Constants.TOAST_CONFIG)
-              setSelectedUnit(null)
-              setModalSelectBloco(null)
-            })
-            .catch(err2=>{
-              toast.error(err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA4)', Constants.TOAST_CONFIG)
-            })
-          })
-          .catch((err)=>{
-            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA5)', Constants.TOAST_CONFIG)
-          })
-          .finally(()=>{
-            setLoading(false)
-          })
+        .then(res=>{
+          uploadImgs(res.data.personsAdded)
+          toast.info(res.data.message, Constants.TOAST_CONFIG)
+          setDateEnd({day: currentDate.getDate(), month: currentDate.getMonth()+1, year: currentDate.getFullYear()})
+          //data to QR Code
+          setUnitIdModalQRCode(res.data.newUnit.id)
+          setInfoModalQRCode(`QR_Code Visitante ${selectedBloco.name} ${selectedUnit.number}`)
+          setSelectedUnit(null)
+          setSelectedBloco(null)
+          setResidents([])
+          setVehicles([])
+          setLoading(false)
+          //showing QRCode
+          setShowModalQRCode(true)
+        })
+        .catch(err=>{
+          toast.error(err.response.data.message, Constants.TOAST_CONFIG)
+        })
+        .finally(()=>{
+          setLoading(false)
+        })
     }
 
     const takePicHandler = _ => {
@@ -279,7 +301,7 @@ const ResidentAdd = (props) => {
             {!!selectedBloco && !!selectedUnit && (
               <SelectButton 
                 icon='user'
-                text='Adicionar Morador'
+                text='Adicionar Visitantes'
                 action={()=>setIsAddingResident(true)}
               >
                 {isAddingResident && (
@@ -294,15 +316,9 @@ const ResidentAdd = (props) => {
                       value={userBeingAdded.identification}
                       changeValue={(val) => setUserBeingAdded({...userBeingAdded, identification: val})}
                     />
-                    <FormInput
-                      label='Email*:'
-                      value={userBeingAdded.email}
-                      type='email'
-                      changeValue={(val) => setUserBeingAdded({...userBeingAdded, email: val})}
-                    />
                     {!!userBeingAdded.pic &&
                       <div className={classes.ImgUserTookPic}>
-                        <img src={userBeingAdded.pic} height={120}/>
+                        <img src={URL.createObjectURL(userBeingAdded.pic)} height={120}/>
                       </div>
                     }
                     {!userBeingAdded.pic && 
@@ -340,8 +356,9 @@ const ResidentAdd = (props) => {
                           
                         </div>
                         <div>
-                          <p className={classes.Text}><span className={classes.Bold}>Nome:</span> {el.name}</p>
-                          <p className={classes.Text}><span className={classes.Bold}>Email:</span> {el.email}</p>
+                          {!!el.name && <p className={classes.Text}><span className={classes.Bold}>Nome:</span> {el.name}</p>}
+                          {!!el.email && <p className={classes.Text}><span className={classes.Bold}>Email:</span> {el.email}</p>}
+                          {!!el.identification && <p className={classes.Text}><span className={classes.Bold}>Id:</span> {el.identification}</p>}
                         </div>
                       </div>
                       <span className={classes.CloseIcon} onClick={()=>removeResident(ind)}><Icon icon='window-close' color={Constants.closeButtonCollor}/></span>
@@ -349,6 +366,52 @@ const ResidentAdd = (props) => {
                   ))
                 }
                 </ul>
+              </SelectButton>
+              )
+            }
+            {/*dates*/}
+            {!!selectedBloco && !!selectedUnit && (
+              <SelectButton 
+                icon='calendar'
+                text='Selecionar período'
+                action={()=>setIsSelectingDate(true)}
+              >
+                {isSelectingDate && (
+                  <form>
+                    <InputDate
+                      title='Data Inicial'
+                      date={dateInit}
+                      setDate={setDateInit}
+                    />
+                    <InputDate
+                      title='Data Final'
+                      date={dateEnd}
+                      setDate={setDateEnd}
+                    />
+                    {errorSetDateMessage && 
+                      <div className="alert alert-danger text-center" role="alert">
+                        {errorSetDateMessage}
+                      </div>
+                    }
+                    <ActionButtons
+                      textButton1='Confirmar'
+                      textButton2='Cancelar'
+                      action1={()=>selectDatesHandler()}
+                      action2={()=>setIsSelectingDate(false)}
+                    />
+                  </form>
+                )}
+                {!!selectedDateInit && !!selectedDateEnd && (
+                <ul className="list-group">
+                  <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start">
+                    <div>
+                      <p className='m-0 p-0'><span className='enfase'>Data inicial: </span>{Utils.printDate(selectedDateInit)}</p>
+                      <p className='m-0 p-0'><span className='enfase'>Data final: </span>{Utils.printDate(selectedDateEnd)}</p>
+                    </div>
+                    <span className={classes.CloseIcon} onClick={()=>cancelDatesHandler()}><Icon icon='window-close' color={Constants.closeButtonCollor}/></span>
+                  </li>
+                </ul>
+              )}
               </SelectButton>
               )
             }
@@ -412,6 +475,7 @@ const ResidentAdd = (props) => {
             }
             {!!selectedBloco && !!selectedUnit && (
               <ActionButtons
+                errorMessage={errorMessage}
                 textButton1='Cadastrar'
                 textButton2='Cancelar'
                 action1={()=>confirmHandler()}
@@ -456,8 +520,16 @@ const ResidentAdd = (props) => {
                 setModalCrop={setModalCrop}
               />
             }
+            {showModalQRCode &&
+              <QRCodeModal
+                modal={showModalQRCode}
+                toggle={()=>setShowModalQRCode(false)}
+                id={unitIdModalQRCode}
+                info={infoModalQRCode}
+              />
+            }
         </Body>
     );
 };
 
-export default ResidentAdd;
+export default VisitorAdd;

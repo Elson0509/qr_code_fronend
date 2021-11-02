@@ -17,7 +17,7 @@ const SelectButton = (props) => {
             </div>
             {
                 props.children && 
-                <div className='col-12 mt-4'>
+                <div className='col-12 my-1'>
                     {props.children}
                 </div>
             }

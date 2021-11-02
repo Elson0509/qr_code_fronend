@@ -26,6 +26,7 @@ import {
     faPaperclip, //paperclip
     faRedo, //redo
     faCheck, //check
+    faCalendar, //calendar
 
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -55,6 +56,7 @@ library.add(
     faPaperclip,
     faRedo, 
     faCheck,
+    faCalendar,
 );
 
 const Icon = (props) => {

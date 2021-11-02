@@ -92,7 +92,20 @@ const VisitorList = (props) => {
     }
 
     const editUnit = unit => {
-        console.log(unit)
+        props.history.push('/visitors/edit',
+        {
+            selectedBloco: {
+              id: unit.bloco_id,
+              name: unit.bloco_name
+            },
+            selectedUnit:{
+              id: unit.id,
+              number: unit.number
+            },
+            residents: unit.residents,
+            vehicles: unit.vehicles,
+          }
+        )
     }
 
     const generateInfoUnits = _ =>{
@@ -134,13 +147,13 @@ const VisitorList = (props) => {
                                     return null
 
                                 return (
-                                <div className='col-lg-6 col-md-12 mb-4 p-2'>
+                                <div className='col-lg-6 col-md-12 mb-4 p-2' key={el.id}>
                                     <Card outline color="info">
                                         <CardHeader>
                                             <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                                             <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
                                             <IconButtons
-                                                action1={()=>{editUnit(el)}}
+                                                action1={()=>editUnit(el)}
                                                 action2={()=> delUnitModal(el)}
                                                 action3={()=>modalHandler(el)}
                                             />
@@ -154,7 +167,7 @@ const VisitorList = (props) => {
                                             }
                                             {
                                                 !!el.residents.length && el.residents.map((resident, ind)=>(
-                                                    <div style={{border: '1px solid #ddd', padding: '10px', display: 'flex', flexDirection: 'row', gap: '10px'}}>
+                                                    <div key={resident.id} style={{border: '1px solid #ddd', padding: '10px', display: 'flex', flexDirection: 'row', gap: '10px'}}>
                                                         <div style={{display: 'flex', justifyContent:'center'}}>
                                                             <Image id={resident.id} height={150}/>
                                                         </div>
@@ -183,8 +196,8 @@ const VisitorList = (props) => {
                                             }
                                             {
                                                 !!el.vehicles.length && el.vehicles.map((vehicle, ind)=> (
-                                                  <div style={{borderBottom: ind === el.vehicles.length - 1 ? 'none' : '1px solid #ddd', paddingBottom: '10px'}}>
-                                                    <p className='text-center'>{vehicle.maker} {vehicle.modle} {vehicle.color}</p>
+                                                  <div key={vehicle.id} style={{borderBottom: ind === el.vehicles.length - 1 ? 'none' : '1px solid #ddd', paddingBottom: '10px'}}>
+                                                    <p className='text-center'>{vehicle.maker} {vehicle.model} {vehicle.color}</p>
                                                     <div style={{display: 'flex', justifyContent:'center'}}>
                                                       <Plate plate={vehicle.plate}/>
                                                     </div>
@@ -211,6 +224,7 @@ const VisitorList = (props) => {
                     modal={qrCodemodal}
                     toggle={()=>setQrCodeModal(false)}
                     id={unitSelected.id}
+                    info={`QR_Code Visitantes ${unitSelected.bloco_name} ${unitSelected.number}`}
                 />
             }
         </Body>

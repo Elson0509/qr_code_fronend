@@ -14,18 +14,23 @@ import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
 import SelectButton from '../../../components/Buttons/SelectButton'
-import classes from './ResidentAdd.module.css'
+import classes from './ResidentEdit.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
 import CropImageModal from '../../../components/Modals/CropImageModal';
 
-const ResidentAdd = (props) => {
+const ResidentEdit = (props) => {
+    //if there is not state in router, go to dashboard
+    if(!props.location?.state?.residents){
+      props.history.push('/dashboard')
+    }
+
     const {user} = useAuth()
     const [units, setUnits] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [residents, setResidents] = useState([])
-    const [vehicles, setVehicles] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [residents, setResidents] = useState(props.location.state.residents)
+    const [vehicles, setVehicles] = useState(props.location.state.vehicles)
     const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
     const [errorAddVehicleMessage, setErrorAddVehicleMessage] = useState('')
     const [vehicleBeingAdded, setVehicleBeingAdded] = useState({id: "0", maker:'', model:'', color:'', plate:''})
@@ -34,12 +39,14 @@ const ResidentAdd = (props) => {
     const [modalCrop, setModalCrop] = useState(false)
     const [modalSelectBloco, setModalSelectBloco] = useState(false)
     const [modalSelectUnit, setModalSelectUnit] = useState(false)
-    const [selectedBloco, setSelectedBloco] = useState(null)
-    const [selectedUnit, setSelectedUnit] = useState(null)
+    const [selectedBloco, setSelectedBloco] = useState(props.location.state.selectedBloco)
+    const [selectedUnit, setSelectedUnit] = useState(props.location.state.selectedUnit)
     const [isAddingResident, setIsAddingResident] = useState(false)
     const [isAddingVehicle, setIsAddingVehicle] = useState(false)
     const [takePic, setTakePic] = useState(false)
     const [pathImgToCrop, setPathImgToCrop] = useState('')   
+
+    console.log('edit', props)
 
     const paperClipImageHandler = imgPath => {
       setPathImgToCrop(imgPath)
@@ -52,8 +59,8 @@ const ResidentAdd = (props) => {
             link: '/'
         },
         {
-            name: 'Adicionar Moradores',
-            link: '/residents/add'
+            name: 'Editar Morador',
+            link: '/residents/edit'
         }
     ]
 
@@ -61,7 +68,7 @@ const ResidentAdd = (props) => {
         api.get(`condo/${user.condo_id}`)
           .then(res=>{
             setUnits(res.data)
-            setModalSelectBloco(true)
+            setModalSelectBloco(false)
           })
           .catch(err=>{
             toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
@@ -173,6 +180,8 @@ const ResidentAdd = (props) => {
         setSelectedBloco(null)
         setSelectedUnit(null)
     }
+
+    console.log({residents})
 
     const uploadImgs = newResidents =>{
         const residentsPics = []
@@ -412,7 +421,7 @@ const ResidentAdd = (props) => {
             }
             {!!selectedBloco && !!selectedUnit && (
               <ActionButtons
-                textButton1='Cadastrar'
+                textButton1='Atualizar'
                 textButton2='Cancelar'
                 action1={()=>confirmHandler()}
                 action2={()=>props.history.push('/dashboard')}
@@ -460,4 +469,4 @@ const ResidentAdd = (props) => {
     );
 };
 
-export default ResidentAdd;
+export default ResidentEdit;
