@@ -6,7 +6,7 @@ const ImageBlob = (props) => {
     const [source, setSource] = useState(props.path)
 
     return (
-        <img src={source} loading='lazy' height={props.height || '250'} onError={(err)=>{console.log(err); setSource(genericProfile)}}/>
+        <img src={URL.createObjectURL(source)} loading='lazy' height={props.height || '250'} onError={(err)=>{console.log(err); setSource(genericProfile)}}/>
     );
 };
 

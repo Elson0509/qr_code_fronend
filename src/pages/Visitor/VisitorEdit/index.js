@@ -14,13 +14,13 @@ import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
 import SelectButton from '../../../components/Buttons/SelectButton'
-import classes from './ResidentAdd.module.css'
+import classes from './VisitorEdit.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
 import CropImageModal from '../../../components/Modals/CropImageModal';
 
-const ResidentAdd = (props) => {
+const VisitorEdit = (props) => {
     const {user} = useAuth()
     const [units, setUnits] = useState([])
     const [loading, setLoading] = useState(true)
@@ -42,6 +42,8 @@ const ResidentAdd = (props) => {
     const [pathImgToCrop, setPathImgToCrop] = useState('')   
 
     const paperClipImageHandler = imgPath => {
+      console.log(imgPath)
+      //TODO check if the file is JPG
       setPathImgToCrop(imgPath)
       setModalCrop(true)
     }
@@ -52,7 +54,7 @@ const ResidentAdd = (props) => {
             link: '/'
         },
         {
-            name: 'Adicionar Moradores',
+            name: 'Editar Visitantes',
             link: '/residents/add'
         }
     ]
@@ -174,9 +176,8 @@ const ResidentAdd = (props) => {
         setSelectedUnit(null)
     }
 
-    console.log({residents})
-
     const uploadImgs = newResidents =>{
+      console.log({newResidents})
         const residentsPics = []
         newResidents.forEach(nr => {
           residents.forEach(re => {
@@ -187,21 +188,18 @@ const ResidentAdd = (props) => {
                 residentsPics.push({id:nr.id, pic: re.pic})
           })
         })
+        console.log({residentsPics})
         residentsPics.forEach(el=>{
-          //resizing and uploading
-          Utils.resizeFile(el.pic).then(data=>{
-            api.post(`upload`,{
-              base64Image: data,
-              fileName: el.id
-            })
-            .then(res=>{
-              console.log('success', res.data)
-            })
-            .catch(err=>{
-              console.log('error', err.response)
-            })
+          api.post(`upload`,{
+            base64Image: el.pic,
+            fileName: el.id
           })
-          
+          .then(res=>{
+            console.log('success', res.data)
+          })
+          .catch(err=>{
+            console.log('error', err.response)
+          })
         })
     }
 
@@ -304,7 +302,7 @@ const ResidentAdd = (props) => {
                     />
                     {!!userBeingAdded.pic &&
                       <div className={classes.ImgUserTookPic}>
-                        <img src={URL.createObjectURL(userBeingAdded.pic)} height={120}/>
+                        <img src={userBeingAdded.pic} height={120}/>
                       </div>
                     }
                     {!userBeingAdded.pic && 
@@ -462,4 +460,4 @@ const ResidentAdd = (props) => {
     );
 };
 
-export default ResidentAdd;
+export default VisitorEdit;

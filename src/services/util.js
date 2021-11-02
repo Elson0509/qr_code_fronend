@@ -1,3 +1,41 @@
+import Resizer from 'react-image-file-resizer'
+
+export const resizeFile = (file) =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      900,
+      1200,
+      "JPEG",
+      60,
+      0,
+      (uri) => {
+        resolve(uri);
+      },
+      "base64"
+    );
+  });
+
+export const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+    const byteCharacters = Buffer.from(b64Data, 'base64')
+    const byteArrays = [];
+  
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+  
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+  
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+  
+    const blob = new Blob(byteArrays, {type: contentType});
+    return URL.createObjectURL(blob);
+  }
+
 export const saudacaoHorario = (name) => {
     if (!name) return '' 
     const stamp = new Date();

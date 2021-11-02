@@ -54,7 +54,10 @@ const PicModal = (props) => {
         canvas.height = video.videoHeight;
         canvas.width = video.videoHeight/4*3;
         canvas.getContext('2d').drawImage(video, (video.videoWidth - (video.videoHeight/4*3))/2, 0, video.videoHeight/4*3, video.videoHeight, 0, 0, video.videoHeight/4*3, video.videoHeight);  
-        setImgPath(canvas.toDataURL("image/jpeg"))
+        //setImgPath(canvas.toDataURL("image/jpeg"))
+        canvas.toBlob(blob=>{
+            setImgPath(blob)
+        })
     }
 
     const toggle = _ => {
@@ -94,7 +97,7 @@ const PicModal = (props) => {
             }
             {
                 !playing && !!imgPath && (
-                    <img src={imgPath} height={HEIGHT}/>
+                    <img src={URL.createObjectURL(imgPath)} height={HEIGHT}/>
                 )
             }
             </ModalBody>

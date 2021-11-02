@@ -91,6 +91,10 @@ const VisitorList = (props) => {
         setQrCodeModal(true)
     }
 
+    const editUnit = unit => {
+        console.log(unit)
+    }
+
     const generateInfoUnits = _ =>{
         const unitsInfo = []
         units.forEach(bloco=>{
@@ -136,7 +140,7 @@ const VisitorList = (props) => {
                                             <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                                             <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
                                             <IconButtons
-                                                action1={()=>{}}
+                                                action1={()=>{editUnit(el)}}
                                                 action2={()=> delUnitModal(el)}
                                                 action3={()=>modalHandler(el)}
                                             />
