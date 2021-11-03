@@ -44,9 +44,8 @@ const ResidentEdit = (props) => {
     const [isAddingResident, setIsAddingResident] = useState(false)
     const [isAddingVehicle, setIsAddingVehicle] = useState(false)
     const [takePic, setTakePic] = useState(false)
-    const [pathImgToCrop, setPathImgToCrop] = useState('')   
-
-    console.log('edit', props)
+    const [pathImgToCrop, setPathImgToCrop] = useState('')
+    const [finished, setFinished] = useState(false)
 
     const paperClipImageHandler = imgPath => {
       setPathImgToCrop(imgPath)
@@ -181,8 +180,6 @@ const ResidentEdit = (props) => {
         setSelectedUnit(null)
     }
 
-    console.log({residents})
-
     const uploadImgs = newResidents =>{
         const residentsPics = []
         newResidents.forEach(nr => {
@@ -231,6 +228,7 @@ const ResidentEdit = (props) => {
               toast.info(res2.data.message || 'Registro realizado com sucesso.', Constants.TOAST_CONFIG)
               setSelectedUnit(null)
               setModalSelectBloco(null)
+              setFinished(true)
             })
             .catch(err2=>{
               toast.error(err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA4)', Constants.TOAST_CONFIG)
@@ -269,11 +267,12 @@ const ResidentEdit = (props) => {
 
     return (
         <Body breadcrumb={breadcrumb}>
+          {!finished && <Fragment>
             {/*units*/}
             <SelectButton 
               icon='building'
               text='Selecionar Unidade'
-              action={()=>setModalSelectBloco(true)}
+              //action={()=>setModalSelectBloco(true)}
             >
               {!!selectedBloco && !!selectedUnit && (
                 <ul className="list-group">
@@ -465,6 +464,7 @@ const ResidentEdit = (props) => {
                 setModalCrop={setModalCrop}
               />
             }
+          </Fragment>}
         </Body>
     );
 };

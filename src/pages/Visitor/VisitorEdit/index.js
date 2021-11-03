@@ -59,7 +59,7 @@ const VisitorEdit = (props) => {
     const [showModalQRCode, setShowModalQRCode] = useState(false)
     const [unitIdModalQRCode, setUnitIdModalQRCode] = useState('')
     const [infoModalQRCode, setInfoModalQRCode] = useState('')
-
+    const [finished, setFinished] = useState(false)
 
     const paperClipImageHandler = imgPath => {
       setPathImgToCrop(imgPath)
@@ -251,6 +251,7 @@ const VisitorEdit = (props) => {
             setResidents([])
             setVehicles([])
             setLoading(false)
+            setFinished(true)
           })
           .catch(err2=>{
             toast.error(err2.response.data.message || 'Um erro ocorreu. Tente mais tarde. (VE2)', Constants.TOAST_CONFIG)
@@ -289,11 +290,12 @@ const VisitorEdit = (props) => {
 
     return (
         <Body breadcrumb={breadcrumb}>
+          {!finished && <Fragment>
             {/*units*/}
             <SelectButton 
               icon='building'
               text='Selecionar Unidade'
-              action={()=>setModalSelectBloco(true)}
+              //action={()=>setModalSelectBloco(true)}
             >
               {!!selectedBloco && !!selectedUnit && (
                 <ul className="list-group">
@@ -535,6 +537,7 @@ const VisitorEdit = (props) => {
                 info={infoModalQRCode}
               />
             }
+          </Fragment>}
         </Body>
     );
 };

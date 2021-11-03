@@ -10,6 +10,7 @@ import MyQrCode from '../pages/MyQrCode';
 import UnitRoutes from './UnitRoutes';
 import ResidentRoutes from './ResidentRoutes';
 import VisitorRoutes from './VisitorRoutes'
+import ThirdRoutes from './ThirdRoutes';
 
 const AppRoutes = () => (
     <Switch>
@@ -24,6 +25,9 @@ const AppRoutes = () => (
         }
         {
             VisitorRoutes.map(el=> <Route exact {...el}/>)
+        }
+        {
+            ThirdRoutes.map(el=> <Route exact {...el}/>)
         }
         <Route exact path="/login">
             <Redirect to="/dashboard" />

@@ -410,7 +410,7 @@ const ResidentAdd = (props) => {
               </SelectButton>
               )
             }
-            {!!selectedBloco && !!selectedUnit && (
+            {!!selectedBloco && !!selectedUnit && !isAddingVehicle && !isAddingResident && (
               <ActionButtons
                 textButton1='Cadastrar'
                 textButton2='Cancelar'

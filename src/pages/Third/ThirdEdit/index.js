@@ -15,34 +15,38 @@ import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
 import InputDate from '../../../components/Form/InputDate';
 import SelectButton from '../../../components/Buttons/SelectButton'
-import classes from './VisitorAdd.module.css'
+import classes from './ThirdEdit.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
 import CropImageModal from '../../../components/Modals/CropImageModal';
 import QRCodeModal from '../../../components/Modals/QRCodeModal';
 
-const VisitorAdd = (props) => {
+const ThirdEdit = (props) => {
+    //if there is not state in router, go to dashboard
+    if(!props.location?.state?.residents){
+      props.history.push('/dashboard')
+    }    
 
     const currentDate = new Date()
 
     const {user} = useAuth()
     const [units, setUnits] = useState([])
     const [loading, setLoading] = useState(true)
-    const [residents, setResidents] = useState([])
-    const [vehicles, setVehicles] = useState([])
+    const [residents, setResidents] = useState(props.location.state?.residents)
+    const [vehicles, setVehicles] = useState(props.location.state?.vehicles)
     const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [errorSetDateMessage, setErrorSetDateMessage] = useState('')
     const [errorAddVehicleMessage, setErrorAddVehicleMessage] = useState('')
     const [vehicleBeingAdded, setVehicleBeingAdded] = useState({id: "0", maker:'', model:'', color:'', plate:''})
-    const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', pic: ''})
+    const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', company:'', pic: ''})
     const [modalPic, setModalPic] = useState(false)
     const [modalCrop, setModalCrop] = useState(false)
     const [modalSelectBloco, setModalSelectBloco] = useState(false)
     const [modalSelectUnit, setModalSelectUnit] = useState(false)
-    const [selectedBloco, setSelectedBloco] = useState(null)
-    const [selectedUnit, setSelectedUnit] = useState(null)
+    const [selectedBloco, setSelectedBloco] = useState(props.location.state?.selectedBloco)
+    const [selectedUnit, setSelectedUnit] = useState(props.location.state?.selectedUnit)
     const [isAddingResident, setIsAddingResident] = useState(false)
     const [isAddingVehicle, setIsAddingVehicle] = useState(false)
     const [takePic, setTakePic] = useState(false)
@@ -50,12 +54,12 @@ const VisitorAdd = (props) => {
     const [dateInit, setDateInit] = useState({day: currentDate.getDate(), month: currentDate.getMonth()+1, year: currentDate.getFullYear()})
     const [dateEnd, setDateEnd] = useState({day: currentDate.getDate(), month: currentDate.getMonth()+1, year: currentDate.getFullYear()})
     const [isSelectingDate, setIsSelectingDate] = useState(false)
-    const [selectedDateInit, setSelectedDateInit] = useState('')
-    const [selectedDateEnd, setSelectedDateEnd] = useState('')
+    const [selectedDateInit, setSelectedDateInit] = useState(new Date(props.location.state?.residents[0].initial_date))
+    const [selectedDateEnd, setSelectedDateEnd] = useState(new Date(props.location.state?.residents[0].final_date))
     const [showModalQRCode, setShowModalQRCode] = useState(false)
     const [unitIdModalQRCode, setUnitIdModalQRCode] = useState('')
     const [infoModalQRCode, setInfoModalQRCode] = useState('')
-
+    const [finished, setFinished] = useState(false)
 
     const paperClipImageHandler = imgPath => {
       setPathImgToCrop(imgPath)
@@ -68,8 +72,8 @@ const VisitorAdd = (props) => {
             link: '/'
         },
         {
-            name: 'Adicionar Visitantes',
-            link: '/visitors/add'
+            name: 'Editar Terceirizados',
+            link: '/thirds/add'
         }
     ]
 
@@ -77,10 +81,9 @@ const VisitorAdd = (props) => {
         api.get(`condo/${user.condo_id}`)
           .then(res=>{
             setUnits(res.data)
-            setModalSelectBloco(true)
           })
           .catch(err=>{
-            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
+            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TE1)', Constants.TOAST_CONFIG)
           })
           .finally(()=>{
             setLoading(false)
@@ -110,7 +113,7 @@ const VisitorAdd = (props) => {
         }
         setResidents(prev=> [...prev, userBeingAdded])
         setErrorAddResidentMessage('')
-        setUserBeingAdded({id: "0", name: '', identification: '', pic: ''})
+        setUserBeingAdded({id: "0", name: '', identification: '', company:'', pic: ''})
         setIsAddingResident(false)
     }
 
@@ -139,7 +142,7 @@ const VisitorAdd = (props) => {
 
     const cancelAddResidentHandler = _ => {
       setIsAddingResident(false)
-      setUserBeingAdded({id: '0', name: '', identification: '', pic: ''})
+      setUserBeingAdded({id: "0", name: '', identification: '', company:'', pic: ''})
     }
 
     const addVehicleHandler = _ =>{
@@ -215,46 +218,51 @@ const VisitorAdd = (props) => {
     }
 
     const confirmHandler = _ =>{
-        //checking if there is date selected and at least one visitor
-        if(!selectedDateInit || !selectedDateEnd){
-          return setErrorMessage('É preciso selecionar um prazo.')
-        }
-        if(!residents.length)
-          return setErrorMessage('É preciso adicionar visitantes.')
-        setErrorMessage('')
-        setLoading(true)
-        //storing unit for kind Visitor
-        api.post(`user/person/unit`,{
-          residents,
-          number: selectedUnit.number,
+      //checking if there is date selected and at least one third
+      if(!selectedDateInit || !selectedDateEnd){
+        return setErrorMessage('É preciso selecionar um prazo.')
+      }
+      if(!residents.length)
+        return setErrorMessage('É preciso adicionar visitantes.')
+      setErrorMessage('')
+      setLoading(true)
+      //storing unit for kind third
+      api.put(`user/person`,{
+        residents,
+        unit_id: selectedUnit.id,
+        selectedDateInit,
+        selectedDateEnd,
+        unit_kind_id: Constants.USER_KIND.THIRD,
+        user_id_last_modify: user.id,
+        condo_id: user.condo_id,
+      })
+      .then(res=>{
+        console.log(res.data)
+        uploadImgs(res.data.addedResidents)
+        api.post('vehicle/unit', {
+          unit_id: selectedUnit.id,
           vehicles,
-          bloco_id: selectedBloco.id,
-          selectedDateInit,
-          selectedDateEnd,
-          unit_kind_id: Constants.USER_KIND.VISITOR,
           user_id_last_modify: user.id,
         })
-        .then(res=>{
-          uploadImgs(res.data.personsAdded)
-          toast.info(res.data.message, Constants.TOAST_CONFIG)
-          setDateEnd({day: currentDate.getDate(), month: currentDate.getMonth()+1, year: currentDate.getFullYear()})
-          //data to QR Code
-          setUnitIdModalQRCode(res.data.newUnit.id)
-          setInfoModalQRCode(`QR_Code Visitante ${selectedBloco.name} ${selectedUnit.number}`)
+        .then(res2=>{
+          toast.info(res2.data.message, Constants.TOAST_CONFIG)
           setSelectedUnit(null)
           setSelectedBloco(null)
           setResidents([])
           setVehicles([])
           setLoading(false)
-          //showing QRCode
-          setShowModalQRCode(true)
+          setFinished(true)
         })
-        .catch(err=>{
-          toast.error(err.response.data.message, Constants.TOAST_CONFIG)
+        .catch(err2=>{
+          toast.error(err2.response.data.message || 'Um erro ocorreu. Tente mais tarde. (TE2)', Constants.TOAST_CONFIG)
         })
-        .finally(()=>{
-          setLoading(false)
-        })
+      })
+      .catch(err=>{
+        toast.error(err.response.data.message || 'Um erro ocorreu. Tente mais tarde. (TE3)', Constants.TOAST_CONFIG)
+      })
+      .finally(()=>{
+        setLoading(false)
+      })
     }
 
     const takePicHandler = _ => {
@@ -282,11 +290,12 @@ const VisitorAdd = (props) => {
 
     return (
         <Body breadcrumb={breadcrumb}>
+          {!finished && <Fragment>
             {/*units*/}
             <SelectButton 
               icon='building'
               text='Selecionar Unidade'
-              action={()=>setModalSelectBloco(true)}
+              //action={()=>setModalSelectBloco(true)}
             >
               {!!selectedBloco && !!selectedUnit && (
                 <ul className="list-group">
@@ -301,7 +310,7 @@ const VisitorAdd = (props) => {
             {!!selectedBloco && !!selectedUnit && (
               <SelectButton 
                 icon='user'
-                text='Adicionar Visitantes'
+                text='Adicionar Terceirizados'
                 action={()=>setIsAddingResident(true)}
               >
                 {isAddingResident && (
@@ -315,6 +324,11 @@ const VisitorAdd = (props) => {
                       label='Identidade:'
                       value={userBeingAdded.identification}
                       changeValue={(val) => setUserBeingAdded({...userBeingAdded, identification: val})}
+                    />
+                    <FormInput
+                      label='Empresa:'
+                      value={userBeingAdded.company}
+                      changeValue={(val) => setUserBeingAdded({...userBeingAdded, company: val})}
                     />
                     {!!userBeingAdded.pic &&
                       <div className={classes.ImgUserTookPic}>
@@ -359,6 +373,7 @@ const VisitorAdd = (props) => {
                           {!!el.name && <p className={classes.Text}><span className={classes.Bold}>Nome:</span> {el.name}</p>}
                           {!!el.email && <p className={classes.Text}><span className={classes.Bold}>Email:</span> {el.email}</p>}
                           {!!el.identification && <p className={classes.Text}><span className={classes.Bold}>Id:</span> {el.identification}</p>}
+                          {!!el.company && <p className={classes.Text}><span className={classes.Bold}>Empresa:</span> {el.company}</p>}
                         </div>
                       </div>
                       <span className={classes.CloseIcon} onClick={()=>removeResident(ind)}><Icon icon='window-close' color={Constants.closeButtonCollor}/></span>
@@ -528,8 +543,9 @@ const VisitorAdd = (props) => {
                 info={infoModalQRCode}
               />
             }
+          </Fragment>}
         </Body>
     );
 };
 
-export default VisitorAdd;
+export default ThirdEdit;

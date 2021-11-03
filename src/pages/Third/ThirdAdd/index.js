@@ -15,14 +15,14 @@ import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
 import InputDate from '../../../components/Form/InputDate';
 import SelectButton from '../../../components/Buttons/SelectButton'
-import classes from './VisitorAdd.module.css'
+import classes from './ThirdAdd.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
 import CropImageModal from '../../../components/Modals/CropImageModal';
 import QRCodeModal from '../../../components/Modals/QRCodeModal';
 
-const VisitorAdd = (props) => {
+const ThirdAdd = (props) => {
 
     const currentDate = new Date()
 
@@ -36,7 +36,7 @@ const VisitorAdd = (props) => {
     const [errorSetDateMessage, setErrorSetDateMessage] = useState('')
     const [errorAddVehicleMessage, setErrorAddVehicleMessage] = useState('')
     const [vehicleBeingAdded, setVehicleBeingAdded] = useState({id: "0", maker:'', model:'', color:'', plate:''})
-    const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', pic: ''})
+    const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', company:'', pic: ''})
     const [modalPic, setModalPic] = useState(false)
     const [modalCrop, setModalCrop] = useState(false)
     const [modalSelectBloco, setModalSelectBloco] = useState(false)
@@ -68,8 +68,8 @@ const VisitorAdd = (props) => {
             link: '/'
         },
         {
-            name: 'Adicionar Visitantes',
-            link: '/visitors/add'
+            name: 'Adicionar Terceirizados',
+            link: '/thirds/add'
         }
     ]
 
@@ -80,7 +80,7 @@ const VisitorAdd = (props) => {
             setModalSelectBloco(true)
           })
           .catch(err=>{
-            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
+            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TA1)', Constants.TOAST_CONFIG)
           })
           .finally(()=>{
             setLoading(false)
@@ -110,7 +110,7 @@ const VisitorAdd = (props) => {
         }
         setResidents(prev=> [...prev, userBeingAdded])
         setErrorAddResidentMessage('')
-        setUserBeingAdded({id: "0", name: '', identification: '', pic: ''})
+        setUserBeingAdded({id: "0", name: '', identification: '', company:'', pic: ''})
         setIsAddingResident(false)
     }
 
@@ -139,7 +139,7 @@ const VisitorAdd = (props) => {
 
     const cancelAddResidentHandler = _ => {
       setIsAddingResident(false)
-      setUserBeingAdded({id: '0', name: '', identification: '', pic: ''})
+      setUserBeingAdded({id: "0", name: '', identification: '', company:'', pic: ''})
     }
 
     const addVehicleHandler = _ =>{
@@ -215,15 +215,15 @@ const VisitorAdd = (props) => {
     }
 
     const confirmHandler = _ =>{
-        //checking if there is date selected and at least one visitor
+        //checking if there is date selected and at least one third
         if(!selectedDateInit || !selectedDateEnd){
           return setErrorMessage('É preciso selecionar um prazo.')
         }
         if(!residents.length)
-          return setErrorMessage('É preciso adicionar visitantes.')
+          return setErrorMessage('É preciso adicionar terceirizados.')
         setErrorMessage('')
         setLoading(true)
-        //storing unit for kind Visitor
+        //storing unit for kind Third
         api.post(`user/person/unit`,{
           residents,
           number: selectedUnit.number,
@@ -231,7 +231,7 @@ const VisitorAdd = (props) => {
           bloco_id: selectedBloco.id,
           selectedDateInit,
           selectedDateEnd,
-          unit_kind_id: Constants.USER_KIND.VISITOR,
+          unit_kind_id: Constants.USER_KIND.THIRD,
           user_id_last_modify: user.id,
         })
         .then(res=>{
@@ -240,7 +240,7 @@ const VisitorAdd = (props) => {
           setDateEnd({day: currentDate.getDate(), month: currentDate.getMonth()+1, year: currentDate.getFullYear()})
           //data to QR Code
           setUnitIdModalQRCode(res.data.newUnit.id)
-          setInfoModalQRCode(`QR_Code Visitante ${selectedBloco.name} ${selectedUnit.number}`)
+          setInfoModalQRCode(`QR_Code Terceirizado ${selectedBloco.name} ${selectedUnit.number}`)
           setSelectedUnit(null)
           setSelectedBloco(null)
           setResidents([])
@@ -301,7 +301,7 @@ const VisitorAdd = (props) => {
             {!!selectedBloco && !!selectedUnit && (
               <SelectButton 
                 icon='user'
-                text='Adicionar Visitantes'
+                text='Adicionar Terceirizados'
                 action={()=>setIsAddingResident(true)}
               >
                 {isAddingResident && (
@@ -315,6 +315,11 @@ const VisitorAdd = (props) => {
                       label='Identidade:'
                       value={userBeingAdded.identification}
                       changeValue={(val) => setUserBeingAdded({...userBeingAdded, identification: val})}
+                    />
+                    <FormInput
+                      label='Empresa:'
+                      value={userBeingAdded.company}
+                      changeValue={(val) => setUserBeingAdded({...userBeingAdded, company: val})}
                     />
                     {!!userBeingAdded.pic &&
                       <div className={classes.ImgUserTookPic}>
@@ -532,4 +537,4 @@ const VisitorAdd = (props) => {
     );
 };
 
-export default VisitorAdd;
+export default ThirdAdd;
