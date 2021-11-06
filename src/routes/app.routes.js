@@ -7,6 +7,7 @@ import Scan from '../pages/Scan'
 import MyQrCode from '../pages/MyQrCode';
 
 //routes
+import CarRoutes from './CarRoutes';
 import EventRoutes from './EventRoutes';
 import UnitRoutes from './UnitRoutes';
 import ResidentRoutes from './ResidentRoutes';
@@ -19,6 +20,9 @@ const AppRoutes = () => (
         <Route exact path='/dashboard' component={Dashboard}/>
         <Route exact path='/scan' component={Scan}/>
         <Route exact path='/myqrcode' component={MyQrCode}/>
+        {
+            CarRoutes.map(el=> <Route exact {...el}/>)
+        }
         {
             UnitRoutes.map(el=> <Route exact {...el}/>)
         }
