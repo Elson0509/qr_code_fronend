@@ -7,3 +7,9 @@
     margin-right: 10px;
     font-size: 1.8rem;
 }
+
+.Row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

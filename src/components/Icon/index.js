@@ -28,6 +28,7 @@ import {
     faCheck, //check
     faCalendar, //calendar
     faReply, //reply
+    faEnvelope, //envelope
 
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -59,6 +60,8 @@ library.add(
     faCheck,
     faCalendar,
     faReply,
+    faEnvelope,
+
 );
 
 const Icon = (props) => {
