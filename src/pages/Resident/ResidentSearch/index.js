@@ -36,7 +36,6 @@ const ResidentSearch = (props) => {
     const fetchUsers = _ => {
         api.get(`user/condo/${user.condo_id}/${Constants.USER_KIND["RESIDENT"]}`)
         .then(resp=>{
-            console.log(resp.data)
           setUnits(resp.data)
         })
         .catch(err=>{
@@ -72,10 +71,6 @@ const ResidentSearch = (props) => {
 
         return unitsInfo
     }
-
-    units.length>0 && (
-        console.log(generateInfoUnits())
-    )
 
     if(loading){
         return (

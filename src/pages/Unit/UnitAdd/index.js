@@ -36,7 +36,6 @@ const UnitAdd = (props) => {
         .then(res=> {
           const newBloco = [{id:"0", name: 'Novo Bloco'}]
           setBlocosApi(newBloco.concat(res.data))
-          console.log(newBloco.concat(res.data))
           setModalSelectBloco(true)
         })
         .catch((err)=>{

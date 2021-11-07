@@ -18,8 +18,6 @@ const MyQrCode = (props) => {
         }
     ]
 
-    console.log(user)
-
     return (
         <Body breadcrumb={breadcrumb}>
             <div className='row'>

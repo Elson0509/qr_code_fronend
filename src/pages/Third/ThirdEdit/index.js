@@ -237,7 +237,6 @@ const ThirdEdit = (props) => {
         condo_id: user.condo_id,
       })
       .then(res=>{
-        console.log(res.data)
         uploadImgs(res.data.addedResidents)
         api.post('vehicle/unit', {
           unit_id: selectedUnit.id,

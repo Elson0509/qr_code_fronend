@@ -10,8 +10,6 @@ const SignIn = (props) => {
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
 
-    console.log({props})
-
     const submitHandler = ev => {
         ev.preventDefault();
         if(!Utils.validateEmail(email))

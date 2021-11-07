@@ -86,7 +86,6 @@ const CarList = (props) => {
     }
 
     const replyHandler = item => {
-      console.log(item)
       setSelectedOvernight(item)
       setModalReply(true)
       setSubject('')

@@ -131,10 +131,13 @@ const ResidentList = (props) => {
                                         <CardHeader>
                                             <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                                             <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
-                                            <IconButtons
-                                                action1={()=>editHandler(el)}
-                                                action2={()=>delUnitModal(el)}
-                                            />
+                                            {
+                                              user.user_kind==Constants.USER_KIND['SUPERINTENDENT'] &&
+                                              <IconButtons
+                                                  action1={()=>editHandler(el)}
+                                                  action2={()=>delUnitModal(el)}
+                                              />
+                                            }
                                         </CardHeader>
                                         <CardBody>
                                             <CardText tag='h6'>Moradores:</CardText>

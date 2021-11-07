@@ -49,7 +49,6 @@ const ThirdList = (props) => {
     const fetchUsers = _ => {
         api.get(`user/condo/${user.condo_id}/${Constants.USER_KIND["THIRD"]}`)
         .then(resp=>{
-            console.log(resp.data)
           setUnits(resp.data)
         })
         .catch(err=>{
@@ -124,11 +123,6 @@ const ThirdList = (props) => {
         })
         return unitsInfo
     }
-
-    units.length>0 && (
-        console.log(generateInfoUnits())
-    )
-
     if(loading){
         return (
             <Body breadcrumb={breadcrumb}>
@@ -152,11 +146,14 @@ const ThirdList = (props) => {
                                         <CardHeader>
                                             <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                                             <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
-                                            <IconButtons
-                                                action1={()=>editUnit(el)}
-                                                action2={()=> delUnitModal(el)}
-                                                action3={()=>modalHandler(el)}
-                                            />
+                                            {
+                                              user.user_kind==Constants.USER_KIND['SUPERINTENDENT'] &&
+                                                <IconButtons
+                                                    action1={()=>editUnit(el)}
+                                                    action2={()=> delUnitModal(el)}
+                                                    action3={()=>modalHandler(el)}
+                                                />
+                                            }
                                         </CardHeader>
                                         <CardBody>
                                             <CardText tag='h6'>Terceirizados:</CardText>
