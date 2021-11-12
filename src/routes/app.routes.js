@@ -15,6 +15,7 @@ import ResidentRoutes from './ResidentRoutes';
 import ThirdRoutes from './ThirdRoutes';
 import UnitRoutes from './UnitRoutes';
 import VisitorRoutes from './VisitorRoutes'
+import CondoRoutes from './CondoRoutes';
 
 const AppRoutes = () => {
     const { user } = useAuth()
@@ -31,6 +32,7 @@ const AppRoutes = () => {
             { ThirdRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
             { UnitRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
             { VisitorRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
+            { CondoRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
             <Route exact path="/login">
                 <Redirect to="/dashboard" />
             </Route>

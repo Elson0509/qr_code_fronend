@@ -174,7 +174,7 @@ const GuardAdd = (props) => {
             textButton1='Confirmar'
             textButton2='Cancelar'
             action1={()=>confirmHandler()}
-            action2={()=>{}}
+            action2={()=>{props.history.push('/dashboard')}}
           />
         </form>
           {

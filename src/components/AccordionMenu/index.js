@@ -16,6 +16,8 @@ const AccordionMenu = () => {
     const [modalGuard, setModalGuard] = useState(false)
     const [modalCar, setModalCar] = useState(false)
     const [modalEvent, setModalEvent] = useState(false)
+    const [modalCondo, setModalCondo] = useState(false)
+    const [modalSindico, setModalSindico] = useState(false)
 
     const submenuOptions = [
         { menuName: "Adicionar", icon: 'plus-square', key: 'plus', url: 'add' },
@@ -50,12 +52,15 @@ const AccordionMenu = () => {
         menuOptionsEventSuperintendent : { menuName: "Ronda", icon: 'exclamation', key: 'event', url: 'Events', code: 'Events', submenuOptions, toggle: setModalEvent, modal: modalEvent },
         menuOptionsSurvey : { menuName: "Avaliação", icon: 'smile', key: 'pesquisa', url: 'Survey', code: 'Survey' },
         menuOptionsInfo : { menuName: "Informações", icon: 'info-circle', key: 'info', url: 'Info', code: 'Info' },
+        menuOptionsCondo : { menuName: "Condomínios", icon: 'city', key: 'condo', url: 'Condo', code: 'Residents', submenuOptions, toggle: setModalCondo, modal: modalCondo},
+        menuOptionsSindico : { menuName: "Síndicos", icon: 'users-cog', key: 'sindico', url: 'Sindico', code: 'Visitors', submenuOptions, toggle: setModalSindico, modal: modalSindico }
     }
 
     const profiles = []
     profiles[Constants.USER_KIND['RESIDENT']]=[menu.menuOptionsQRCode, menu.menuOptionsEventResident, menu.menuOptionsSurvey]
     profiles[Constants.USER_KIND['GUARD']]=[menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsResidents, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsCarGuard, menu.menuOptionsEventGuard]
     profiles[Constants.USER_KIND['SUPERINTENDENT']]=[menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsUnits, menu.menuOptionsResidents, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsGuard, menu.menuOptionsCarSuperIntendent, menu.menuOptionsEventSuperintendent]
+    profiles[Constants.USER_KIND['ADM']]=[menu.menuOptionsCondo, menu.menuOptionsSindico]
 
     return (
         <nav>

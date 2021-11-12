@@ -29,6 +29,8 @@ import {
     faCalendar, //calendar
     faReply, //reply
     faEnvelope, //envelope
+    faCity, //city
+    faUsersCog, //users-cog
 
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -61,7 +63,9 @@ library.add(
     faCalendar,
     faReply,
     faEnvelope,
-
+    faCity,
+    faUsersCog,
+    
 );
 
 const Icon = (props) => {
