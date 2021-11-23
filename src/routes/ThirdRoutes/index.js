@@ -4,6 +4,7 @@ import * as Constants from '../../services/constants'
 import ThirdList from "../../pages/Third/ThirdList";
 import ThirdAdd from "../../pages/Third/ThirdAdd";
 import ThirdEdit from "../../pages/Third/ThirdEdit";
+import ThirdSearch from '../../pages/Third/ThirdSearch';
 
 const ThirdListRoute = {
     key: 'ThirdList',
@@ -14,6 +15,11 @@ const ThirdAddRoute = {
     key: 'ThirdAdd',
     path: '/thirds/add',
     component: ThirdAdd
+}
+const ThirdSearchRoute = {
+    key: 'ThirdSearch',
+    path: '/thirds/search',
+    component: ThirdSearch
 }
 const ThirdEditRoute = {
     key: 'ThirdEdit',
@@ -27,10 +33,10 @@ const ThirdRoutes = userKind => {
         case(Constants.USER_KIND['RESIDENT']):
             break
         case(Constants.USER_KIND['GUARD']):
-            routes.push(ThirdAddRoute, ThirdListRoute)
+            routes.push(ThirdAddRoute, ThirdListRoute, ThirdSearchRoute)
             break
         case(Constants.USER_KIND['SUPERINTENDENT']):
-            routes.push(ThirdListRoute, ThirdAddRoute, ThirdEditRoute)
+            routes.push(ThirdListRoute, ThirdAddRoute, ThirdEditRoute, ThirdSearchRoute)
             break
         case(Constants.USER_KIND['VISITOR']):
             break

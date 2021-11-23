@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import genericProfile from '../../Images/generic-profile.png'
-import * as Constants from '../../services/constants'
 
 const ImageBlob = (props) => {
     const [source, setSource] = useState(props.path)
@@ -10,6 +9,7 @@ const ImageBlob = (props) => {
             <img 
                 src={URL.createObjectURL(source)} 
                 loading='lazy' 
+                alt='user'
                 height={props.height || '250'} 
                 onError={(err)=>{console.log(err); setSource(genericProfile)}}
             />
@@ -17,6 +17,7 @@ const ImageBlob = (props) => {
             <img 
                 src={genericProfile} 
                 loading='lazy' 
+                alt='user'
                 height={props.height || '250'} 
                 onError={(err)=>{console.log(err); setSource(genericProfile)}}
             />

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment, useCallback} from 'react';
+import React, {useState, Fragment, useCallback} from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Icon from '../../Icon'
 import Cropper from 'react-easy-crop';

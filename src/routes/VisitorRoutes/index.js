@@ -4,6 +4,7 @@ import * as Constants from '../../services/constants'
 import VisitorList from '../../pages/Visitor/VisitorList';
 import VisitorAdd from '../../pages/Visitor/VisitorAdd';
 import VisitorEdit from '../../pages/Visitor/VisitorEdit';
+import VisitorSearch from '../../pages/Visitor/VisitorSearch';
 
 const VisitorListRoute = {
     key: 'visitorList',
@@ -20,6 +21,11 @@ const VisitorEditRoute = {
     path: '/visitors/edit',
     component: VisitorEdit
 }
+const VisitorSearchRoute = {
+    key: 'VisitorSearch',
+    path: '/visitors/search',
+    component: VisitorSearch
+}
 
 const ResidentRoutes = userKind => {
     const routes = []
@@ -27,10 +33,10 @@ const ResidentRoutes = userKind => {
         case(Constants.USER_KIND['RESIDENT']):
             break
         case(Constants.USER_KIND['GUARD']):
-            routes.push(VisitorListRoute, VisitorAddRoute)
+            routes.push(VisitorListRoute, VisitorAddRoute, VisitorSearchRoute)
             break
         case(Constants.USER_KIND['SUPERINTENDENT']):
-            routes.push(VisitorListRoute, VisitorAddRoute, VisitorEditRoute)
+            routes.push(VisitorListRoute, VisitorAddRoute, VisitorEditRoute, VisitorSearchRoute)
             break
         case(Constants.USER_KIND['VISITOR']):
             break

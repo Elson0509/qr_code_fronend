@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Body from '../../../layout/Body';
-import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
@@ -14,7 +13,6 @@ import {
   } from 'reactstrap';
 
 const CondoList = (props) => {
-    const {user} = useAuth()
     const [condos, setCondos] = useState([])
     const [loading, setLoading] = useState(true)
     const [modal, setModal] = useState(false)

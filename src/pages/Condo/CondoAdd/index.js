@@ -1,20 +1,13 @@
 import React, { useState} from 'react';
 import Body from '../../../layout/Body';
-import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
-import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
-import classes from './CondoAdd.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
-import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
-import PicModal from '../../../components/Modals/PicModal'
-import CropImageModal from '../../../components/Modals/CropImageModal';
 
 const CondoAdd = (props) => {
-    const {user} = useAuth()
     const [loading, setLoading] = useState(false)
     const [condoBeingAdded, setCondoBeingAdded] = useState({id: "0", name: '', address: '', city: '', state: ''})
     const [errorMessage, setErrorMessage] = useState('')  

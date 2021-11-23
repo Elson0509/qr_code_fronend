@@ -4,7 +4,6 @@ import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
-import Plate from '../../../components/Plate'
 import Image from '../../../components/Image'
 import ImageBlob from '../../../components/ImageBlob'
 import BlocoModal from '../../../components/Modals/BlocoModal'
@@ -187,7 +186,7 @@ const ResidentEdit = (props) => {
             if(nr.email === re.email && 
                 nr.name === re.name && 
                 nr.identification === re.identification &&
-                re.pic != "")
+                re.pic !== "")
                 residentsPics.push({id:nr.id, pic: re.pic})
           })
         })

@@ -14,11 +14,10 @@ import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import classes from './CarSearch.module.css'
 import {
-    Card, CardText, CardBody, CardLink,
-    CardTitle, CardSubtitle, CardHeader,
+    Card, CardBody, CardTitle, CardSubtitle, CardHeader,
   } from 'reactstrap';
 
-const CarSearch = (props) => {
+const CarSearch = () => {
     const {user} = useAuth()
     const [cars, setCars] = useState([])
     const [checked, setChecked] = useState(false)
@@ -76,7 +75,7 @@ const CarSearch = (props) => {
     }
 
     const uploadImg = newId =>{
-        if(image!=''){
+        if(image!==''){
           //resizing and uploading
           Utils.resizeFile(image).then(data=>{
             api.post(`upload`,{
@@ -217,7 +216,7 @@ const CarSearch = (props) => {
                                </div>
                                {!!image &&
                                     <div className={classes.ImgUserTookPic}>
-                                        <img src={URL.createObjectURL(image)} height={150}/>
+                                        <img src={URL.createObjectURL(image)} alt='pic user' height={150}/>
                                     </div>
                                 }
                                 {!image && 

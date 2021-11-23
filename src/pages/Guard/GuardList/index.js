@@ -1,28 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Body from '../../../layout/Body';
-import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import api from '../../../services/api'
-import Icon from '../../../components/Icon';
 import IconButtons from '../../../components/Buttons/IconButtons';
 import ConfirmModal from '../../../components/Modals/ConfirmModal';
-import Plate from '../../../components/Plate'
 import Image from '../../../components/Image'
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import {
-    Card, CardText, CardBody, CardLink,
-    CardTitle, CardSubtitle, CardHeader,
+    Card, CardBody, CardHeader,
   } from 'reactstrap';
 
-const GuardList = (props) => {
-    const {user} = useAuth()
+const GuardList = () => {
     const [guards, setGuards] = useState([])
     const [loading, setLoading] = useState(true)
     const [modal, setModal] = useState(false)
     const [message, setMessage] = useState('')
     const [guardSelected, setGuardSelected] = useState(null)
-
 
     const breadcrumb=[
         {

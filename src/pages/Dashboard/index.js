@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter  } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import {useAuth} from '../../contexts/auth';
 import Header from '../../layout/Header'
 import * as Constants from '../../services/constants'
@@ -31,9 +31,15 @@ const Dashboard = () => {
         { menuName: "Listar", icon: 'list-alt', key: 'list', url: 'List' }
     ]
 
+    const menuOptionsAddListAndSeach = [
+        { menuName: "Adicionar", icon: 'plus-square', key: 'plus', url: 'add' },
+        { menuName: "Listar", icon: 'list-alt', key: 'list', url: 'list' },
+        { menuName: "Pesquisar", icon: 'search', key: 'search', url: 'Search' },
+    ]
+
     const subMenuOptionsResidents = [ ]
 
-    if(user.user_kind == Constants.USER_KIND['SUPERINTENDENT']){
+    if(user.user_kind === Constants.USER_KIND['SUPERINTENDENT']){
         subMenuOptionsResidents.push({ menuName: "Adicionar", icon: 'plus-square', key: 'plus', url: 'Add' })
     }
     subMenuOptionsResidents.push({ menuName: "Listar", icon: 'list-alt', key: 'list', url: 'List' })
@@ -44,8 +50,8 @@ const Dashboard = () => {
         menuOptionsScan : { menuName: "Escanear", icon: 'camera', key: 'Scan', url: 'Scan', code: 'Scan' },
         menuOptionsUnits : { menuName: "Unidades", icon: 'building', key: 'building', url: 'Units', code: 'Units', submenuOptions, toggle: setModalUnits, modal: modalUnits },
         menuOptionsResidents : { menuName: "Moradores", icon: 'house-user', key: 'resident', url: 'Residents', code: 'Residents', submenuOptions: subMenuOptionsResidents, toggle: setModalResidents, modal: modalResidents },
-        menuOptionsVisitor : { menuName: "Visitantes", icon: 'user-friends', key: 'visitor', url: 'Visitors', code: 'Visitors', submenuOptions, toggle: setModalVisitors, modal: modalVisitors },
-        menuOptionsService : { menuName: "Terceirizados", icon: 'people-carry', key: 'service', url: 'Thirds', code: 'Thirds', submenuOptions, toggle: setModalThirds, modal: modalThirds },
+        menuOptionsVisitor : { menuName: "Visitantes", icon: 'user-friends', key: 'visitor', url: 'Visitors', code: 'Visitors', submenuOptions: menuOptionsAddListAndSeach, toggle: setModalVisitors, modal: modalVisitors },
+        menuOptionsService : { menuName: "Terceirizados", icon: 'people-carry', key: 'service', url: 'Thirds', code: 'Thirds', submenuOptions: menuOptionsAddListAndSeach, toggle: setModalThirds, modal: modalThirds },
         menuOptionsGuard : { menuName: "Colaboradores", icon: 'user-shield', key: 'guard', url: 'Guards', code: 'Guards', submenuOptions, toggle: setModalGuard, modal: modalGuard  },
         menuOptionsCarSuperIntendent : { menuName: "Pernoite", icon: 'car', key: 'car', url: 'Car', code: 'Cars', submenuOptions:menuOptionsCars, toggle: setModalCar, modal: modalCar },
         menuOptionsCarGuard : { menuName: "Pernoite", icon: 'car', key: 'car', url: 'Car/Search', code: 'Cars' },
@@ -97,7 +103,7 @@ const Dashboard = () => {
                         {profiles[user.user_kind].map(el=>{
                             if(el.submenuOptions){
                                     return (
-                                        <div onClick key={el.key} onClick={()=>el.toggle(prev=>!prev)}>
+                                        <div key={el.key} onClick={()=>el.toggle(prev=>!prev)}>
                                             {getDivCard(el)}
                                         </div>
                                     )

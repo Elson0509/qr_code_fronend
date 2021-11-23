@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Body from '../../layout/Body';
-import { useAuth } from '../../contexts/auth'
 import * as Constants from '../../services/constants'
 import QrReader from 'react-qr-reader'
 import * as Utils from '../../services/util'
@@ -10,8 +9,7 @@ import Image from '../../components/Image';
 import classes from './scan.module.css'
 import { Spinner } from 'reactstrap';
 
-const MyQrCode = (props) => {
-    const {user} = useAuth()
+const MyQrCode = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const [dataFetched, setDataFetched] = useState(null)
     const [userType, setUserType] = useState('')
@@ -34,11 +32,11 @@ const MyQrCode = (props) => {
     const handleScan = data => {
         if(data){
             const prefix = data.substring(0, 4)
-            if(prefix != Constants.QR_CODE_PREFIX){
+            if(prefix !== Constants.QR_CODE_PREFIX){
                 return setErrorMessage(messageError)
             }
             const dataParts = data.split(':')
-            if(dataParts.length!=2 || !Utils.isUUID(dataParts[1])){
+            if(dataParts.length!==2 || !Utils.isUUID(dataParts[1])){
                 return setErrorMessage(messageError)
             }
             setLoading(true)
@@ -47,13 +45,13 @@ const MyQrCode = (props) => {
                 setErrorMessage('')
                 setDataFetched(res.data)
                 setIsScanning(false)
-                if(res.data.user_kind_id == Constants.USER_KIND['RESIDENT']){
+                if(res.data.user_kind_id === Constants.USER_KIND['RESIDENT']){
                     setUserType('Residente')
                 }
-                if(res.data.user_kind_id == Constants.USER_KIND['GUARD']){
+                if(res.data.user_kind_id === Constants.USER_KIND['GUARD']){
                     setUserType('Vigilante')
                 }
-                if(res.data.user_kind_id == Constants.USER_KIND['SUPERINTENDENT']){
+                if(res.data.user_kind_id === Constants.USER_KIND['SUPERINTENDENT']){
                     setUserType('Administrador')
                 }
                 if(res.data.unit_kind_id && res.data.unit_kind_id === Constants.USER_KIND['VISITOR']){

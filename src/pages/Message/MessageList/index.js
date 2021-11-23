@@ -5,14 +5,11 @@ import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import Icon from '../../../components/Icon';
-import IconButtons from '../../../components/Buttons/IconButtons';
 import ConfirmModal from '../../../components/Modals/ConfirmModal';
-import Image from '../../../components/Image'
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import {
-    Card, CardText, CardBody, CardLink,
-    CardTitle, CardSubtitle, CardHeader,
+    Card, CardBody, 
     Button, Modal, ModalHeader, ModalBody, ModalFooter
   } from 'reactstrap';
 

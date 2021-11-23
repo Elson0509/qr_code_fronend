@@ -1,6 +1,5 @@
 import React, { useState} from 'react';
 import Body from '../../../layout/Body';
-import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import api from '../../../services/api'
 import { Spinner } from 'reactstrap'
@@ -8,14 +7,12 @@ import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 
-
 const CondoEdit = (props) => {
   //if there is not state in router, go to dashboard
   if(!props.location?.state?.condoBeingAdded){
     props.history.push('/dashboard')
   }
 
-  const {user} = useAuth()
   const [loading, setLoading] = useState(false)
   const [condoBeingAdded, setCondoBeingAdded] = useState(props.location.state?.condoBeingAdded)
   const [errorMessage, setErrorMessage] = useState('')  

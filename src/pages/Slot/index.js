@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Body from '../../layout/Body';
-import { useAuth } from '../../contexts/auth'
 import * as Constants from '../../services/constants'
-import * as Utils from '../../services/util'
 import SelectButton from '../../components/Buttons/SelectButton'
 import api from '../../services/api'
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import {
-    Card, CardText, CardBody, CardLink,
-    CardTitle, CardSubtitle, CardHeader,
+    Card, CardBody, CardHeader,
   } from 'reactstrap';
 
-const Slot = (props) => {
-  const {user} = useAuth()
+const Slot = () => {
   const [loading, setLoading] = useState(true)
-  const [modal, setModal] = useState(false)
   const [freeSlots, setFreeSlots] = useState(0)
   const [totalSlots, setTotalSlots] = useState(0)
-
 
   const breadcrumb=[
       {

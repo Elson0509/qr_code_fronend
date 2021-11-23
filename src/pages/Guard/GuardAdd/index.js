@@ -1,19 +1,12 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState } from 'react';
 import Body from '../../../layout/Body';
 import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
-import Plate from '../../../components/Plate'
-import Image from '../../../components/Image'
-import ImageBlob from '../../../components/ImageBlob'
-import BlocoModal from '../../../components/Modals/BlocoModal'
-import UnitModal from '../../../components/Modals/UnitModal'
-import Icon from '../../../components/Icon'
 import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
-import SelectButton from '../../../components/Buttons/SelectButton'
 import classes from './GuardAdd.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
@@ -54,7 +47,7 @@ const GuardAdd = (props) => {
 
 
     const uploadImg = newId =>{
-      if(userBeingAdded.pic!=''){
+      if(userBeingAdded.pic!==''){
         //resizing and uploading
         Utils.resizeFile(userBeingAdded.pic).then(data=>{
           api.post(`upload`,{
@@ -150,7 +143,7 @@ const GuardAdd = (props) => {
           />
           {!!userBeingAdded.pic &&
             <div className={classes.ImgUserTookPic}>
-              <img src={URL.createObjectURL(userBeingAdded.pic)} height={120}/>
+              <img src={URL.createObjectURL(userBeingAdded.pic)} alt='pic user' height={120}/>
             </div>
           }
           {!userBeingAdded.pic && 

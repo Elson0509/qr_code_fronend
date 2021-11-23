@@ -16,13 +16,13 @@ const InputDate = (props) => {
     'Dezembro']
 
     const dayChangeHandler = ev => {
-        if((ev.target.value > 31 || ev.target.value < 1) && ev.target.value!='')
+        if((ev.target.value > 31 || ev.target.value < 1) && ev.target.value!=='')
             return
         props.setDate({...props.date, day:ev.target.value})
     }
 
     const yearChangeHandler = ev => {
-        if(ev.target.value > new Date().getFullYear()+3 && ev.target.value!='')
+        if(ev.target.value > new Date().getFullYear()+3 && ev.target.value!=='')
             return
         props.setDate({...props.date, year:ev.target.value})
     }

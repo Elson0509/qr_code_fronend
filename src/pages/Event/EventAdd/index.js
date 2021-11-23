@@ -1,28 +1,19 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState } from 'react';
 import Body from '../../../layout/Body';
-import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
-import Plate from '../../../components/Plate'
-import Image from '../../../components/Image'
-import ImageBlob from '../../../components/ImageBlob'
-import BlocoModal from '../../../components/Modals/BlocoModal'
-import UnitModal from '../../../components/Modals/UnitModal'
-import Icon from '../../../components/Icon'
 import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
 import FormComment from '../../../components/Form/FormComment';
-import SelectButton from '../../../components/Buttons/SelectButton'
 import classes from './EventAdd.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
 import CropImageModal from '../../../components/Modals/CropImageModal';
 
-const EventAdd = (props) => {
-    const {user} = useAuth()
+const EventAdd = () => {
     const [loading, setLoading] = useState(false)
     const [userBeingAdded, setUserBeingAdded]= useState({title: '', place: '', description: '', pic: ''})
     const [errorMessage, setErrorMessage] = useState('')

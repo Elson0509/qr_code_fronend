@@ -102,7 +102,7 @@ const PicModal = (props) => {
             }
             {
                 !playing && !!imgPath && (
-                    <img src={URL.createObjectURL(imgPath)} height={HEIGHT}/>
+                    <img src={URL.createObjectURL(imgPath)} alt='pic user' height={HEIGHT}/>
                 )
             }
             </ModalBody>

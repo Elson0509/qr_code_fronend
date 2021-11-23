@@ -8,8 +8,7 @@ import Image from '../../../components/Image'
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import {
-    Card, CardText, CardBody, CardLink,
-    CardTitle, CardSubtitle, CardHeader,
+    Card, CardText, CardBody, CardTitle, CardSubtitle, CardHeader,
   } from 'reactstrap';
 
 const ResidentSearch = (props) => {
@@ -63,9 +62,8 @@ const ResidentSearch = (props) => {
 
         if(searchInput){
             unitsInfo = unitsInfo.filter(el=>{
-                
-                return el.residents.some(res=>res.name.toLowerCase().indexOf(searchInput.toLowerCase()) != -1) ||
-                    el.vehicles.some(vei=> vei.plate.toLowerCase().indexOf(searchInput.toLowerCase()) != -1)
+                return el.residents.some(res=>res.name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1) ||
+                    el.vehicles.some(vei=> vei.plate.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1)
             })
         }
 
@@ -84,19 +82,19 @@ const ResidentSearch = (props) => {
         <Body breadcrumb={breadcrumb}>
             <div className='row'>
                 <div className='col-12'>
-                <form>
-                    <div class="form-group">
-                        <label>Pesquisar</label>
-                        <input type="email" className="form-control" placeholder="Nome ou placa" value={searchInput} onChange={(ev)=>setSearchinput(ev.target.value)}/>
-                    </div>
-                </form>
-                {
-                    generateInfoUnits().length === 0 && (
-                        <div className="alert alert-danger my-4" role="alert">
-                            Não há unidades que satisfazem a pesquisa
+                    <form>
+                        <div class="form-group">
+                            <label>Pesquisar</label>
+                            <input type="email" className="form-control" placeholder="Nome ou placa" value={searchInput} onChange={(ev)=>setSearchinput(ev.target.value)}/>
                         </div>
-                    )
-                }
+                    </form>
+                    {
+                        generateInfoUnits().length === 0 && (
+                            <div className="alert alert-danger my-4" role="alert">
+                                Não há unidades que satisfazem a pesquisa
+                            </div>
+                        )
+                    }
                 </div>
                     {
                         units.length>0 && (

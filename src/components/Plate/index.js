@@ -12,9 +12,9 @@ const Plate = (props) => {
         isNewModel ?
         <div className={classes.NewPlatediv}>
             <div className={classes.NewPlateHeader}>
-                <img src={mercosulImg} className={classes.PlateImages}/>
+                <img src={mercosulImg} alt='mercosul' className={classes.PlateImages}/>
                 <span className={classes.NewPlateCountry}>Brasil</span>
-                <img src={brazilImg} className={classes.PlateImages}/>
+                <img src={brazilImg} alt='brasil' className={classes.PlateImages}/>
             </div>
             <span className={classes.OldPlateText}>{plate}</span>
         </div>
