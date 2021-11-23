@@ -46,7 +46,7 @@ const Dashboard = () => {
         menuOptionsResidents : { menuName: "Moradores", icon: 'house-user', key: 'resident', url: 'Residents', code: 'Residents', submenuOptions: subMenuOptionsResidents, toggle: setModalResidents, modal: modalResidents },
         menuOptionsVisitor : { menuName: "Visitantes", icon: 'user-friends', key: 'visitor', url: 'Visitors', code: 'Visitors', submenuOptions, toggle: setModalVisitors, modal: modalVisitors },
         menuOptionsService : { menuName: "Terceirizados", icon: 'people-carry', key: 'service', url: 'Thirds', code: 'Thirds', submenuOptions, toggle: setModalThirds, modal: modalThirds },
-        menuOptionsGuard : { menuName: "Guardas", icon: 'user-shield', key: 'guard', url: 'Guards', code: 'Guards', submenuOptions, toggle: setModalGuard, modal: modalGuard  },
+        menuOptionsGuard : { menuName: "Colaboradores", icon: 'user-shield', key: 'guard', url: 'Guards', code: 'Guards', submenuOptions, toggle: setModalGuard, modal: modalGuard  },
         menuOptionsCarSuperIntendent : { menuName: "Pernoite", icon: 'car', key: 'car', url: 'Car', code: 'Cars', submenuOptions:menuOptionsCars, toggle: setModalCar, modal: modalCar },
         menuOptionsCarGuard : { menuName: "Pernoite", icon: 'car', key: 'car', url: 'Car/Search', code: 'Cars' },
         menuOptionsEventResident : { menuName: "Ocorrências", icon: 'exclamation', key: 'event', url: 'Events/Add', code: 'Events' },
@@ -55,13 +55,15 @@ const Dashboard = () => {
         menuOptionsSurvey : { menuName: "Avaliação", icon: 'smile', key: 'pesquisa', url: 'Survey', code: 'Survey' },
         menuOptionsInfo : { menuName: "Informações", icon: 'info-circle', key: 'info', url: 'Info', code: 'Info' },
         menuOptionsCondo : { menuName: "Condomínios", icon: 'city', key: 'condo', url: 'Condo', code: 'Residents', submenuOptions, toggle: setModalCondo, modal: modalCondo},
-        menuOptionsSindico : { menuName: "Síndicos", icon: 'users-cog', key: 'sindico', url: 'Sindico', code: 'Visitors', submenuOptions, toggle: setModalSindico, modal: modalSindico }
+        menuOptionsSindico : { menuName: "Administradores", icon: 'users-cog', key: 'sindico', url: 'Sindico', code: 'Visitors', submenuOptions, toggle: setModalSindico, modal: modalSindico },
+        menuOptionsSlot : { menuName: "Estacionamento", icon: 'car-side', key: 'slot', url: 'Slot', code: 'Slot'},
+        
     }
 
     const profiles = []
     profiles[Constants.USER_KIND['RESIDENT']]=[menu.menuOptionsQRCode, menu.menuOptionsEventResident, menu.menuOptionsSurvey]
-    profiles[Constants.USER_KIND['GUARD']]=[menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsResidents, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsCarGuard, menu.menuOptionsEventGuard]
-    profiles[Constants.USER_KIND['SUPERINTENDENT']]=[menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsUnits, menu.menuOptionsResidents, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsGuard, menu.menuOptionsCarSuperIntendent, menu.menuOptionsEventSuperintendent]
+    profiles[Constants.USER_KIND['GUARD']]=[menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsResidents, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsCarGuard, menu.menuOptionsEventGuard, menu.menuOptionsSlot]
+    profiles[Constants.USER_KIND['SUPERINTENDENT']]=[menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsUnits, menu.menuOptionsResidents, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsGuard, menu.menuOptionsCarSuperIntendent, menu.menuOptionsEventSuperintendent, menu.menuOptionsSlot]
     profiles[Constants.USER_KIND['ADM']]=[menu.menuOptionsCondo, menu.menuOptionsSindico]
 
     const getArrayOptionsWithSubmenu = _ => {

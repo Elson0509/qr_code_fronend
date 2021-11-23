@@ -9,6 +9,11 @@ const PicModal = (props) => {
     const HEIGHT = 250;
     const WIDTH = HEIGHT / 4 * 3;
 
+    navigator.getUserMedia = ( navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia);
+
     useEffect(()=>{
         if(props.takePic)
             startVideo()

@@ -9,6 +9,7 @@ const SelectButton = (props) => {
                 <div className={`col-lg-4 col-md-5 col-sm-6 text-center ${classes.Button}`} onClick={props.action}>
                     <div>
                         <Icon icon={props.icon} size='2x' color='white'/>
+                        {props.icon2 && <Icon icon={props.icon2} size='2x' color='white'/>}
                     </div>
                     <div>
                         {props.text}

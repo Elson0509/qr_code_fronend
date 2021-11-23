@@ -25,7 +25,7 @@ const Greeting = (props) => {
     }
 
     return (
-        <GeneralCard title='Dashboard'>
+        <GeneralCard title='Painel Principal'>
             <div className={classes.Row}>
                 <p className={classes.Greeting}>
                     <span className={classes.GreetingIcon}>

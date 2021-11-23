@@ -26,11 +26,11 @@ const GuardList = (props) => {
 
     const breadcrumb=[
         {
-            name: 'Dashboard',
+            name: 'Painel Principal',
             link: '/'
         },
         {
-            name: 'Listar Guardas',
+            name: 'Listar Colaboradores',
             link: '/guards/list'
         }
     ]

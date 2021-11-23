@@ -64,7 +64,7 @@ const VisitorAdd = (props) => {
 
     const breadcrumb=[
         {
-            name: 'Dashboard',
+            name: 'Painel Principal',
             link: '/'
         },
         {
@@ -273,11 +273,11 @@ const VisitorAdd = (props) => {
     }
 
     if(loading){
-        return (
-            <Body breadcrumb={breadcrumb}>
-                <Spinner color="primary"/>
-            </Body>
-        )
+      return (
+        <Body breadcrumb={breadcrumb}>
+          <Spinner color="primary"/>
+        </Body>
+      )
     }
 
     return (

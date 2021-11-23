@@ -31,6 +31,11 @@ import {
     faEnvelope, //envelope
     faCity, //city
     faUsersCog, //users-cog
+    faCarSide, //car-side
+    faLevelUpAlt, //level-up-alt
+    faLevelDownAlt, //level-down-alt
+    faSignInAlt, //sign-in-alt
+    faSignOutAlt, //sign-out-alt
 
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -65,20 +70,21 @@ library.add(
     faEnvelope,
     faCity,
     faUsersCog,
-    
+    faCarSide,
+    faLevelUpAlt, 
+    faLevelDownAlt,
+    faSignInAlt,
+    faSignOutAlt,
 );
 
 const Icon = (props) => {
     return (
         props.icon != null ?
-            <Fragment>
-                <FontAwesomeIcon 
-                    icon={props.icon} 
-                    size={props.size || '1x'} 
-                    color={props.color || 'black'}
-                    
-                />
-            </Fragment>
+            <FontAwesomeIcon 
+                icon={props.icon} 
+                size={props.size || '1x'} 
+                color={props.color || 'black'}
+            />
         :
         null
     );
