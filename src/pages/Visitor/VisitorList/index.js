@@ -11,7 +11,7 @@ import ConfirmModal from '../../../components/Modals/ConfirmModal';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import {
-    Card, CardText, CardBody, CardLink,
+    Card, CardText, CardBody,
     CardTitle, CardSubtitle, CardHeader,
   } from 'reactstrap';
 import QRCodeModal from '../../../components/Modals/QRCodeModal';
@@ -148,7 +148,7 @@ const VisitorList = (props) => {
                                             <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                                             <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
                                             {
-                                                user.user_kind==Constants.USER_KIND['SUPERINTENDENT'] &&
+                                                user.user_kind===Constants.USER_KIND['SUPERINTENDENT'] &&
                                                 <IconButtons
                                                     action1={()=>editUnit(el)}
                                                     action2={()=> delUnitModal(el)}

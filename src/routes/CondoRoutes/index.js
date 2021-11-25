@@ -37,6 +37,8 @@ const CondoRoutes = userKind => {
         case(Constants.USER_KIND['ADM']):
             routes.push(CondoListRoute, CondoAddRoute, CondoEditRoute)
             break
+        default:
+            break
     }
     return routes
     

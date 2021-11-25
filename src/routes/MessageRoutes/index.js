@@ -1,6 +1,3 @@
-import React, {Fragment} from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom'
-
 //import pages
 import MessageList from '../../pages/Message/MessageList';
 

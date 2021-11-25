@@ -32,6 +32,8 @@ const SindicoRoutes = userKind => {
         case(Constants.USER_KIND['ADM']):
             routes.push(SindicoListRoute, SindicoAddRoute)
             break
+        default:
+            break
     }
     return routes
     

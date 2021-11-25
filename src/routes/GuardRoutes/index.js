@@ -32,6 +32,8 @@ const GuardRoutes = userKind => {
             break
         case(Constants.USER_KIND['ADM']):
             break
+        default:
+            break
     }
     return routes
     
