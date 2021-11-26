@@ -32,7 +32,7 @@ const VisitorSearch = (props) => {
             link: '/'
         },
         {
-            name: 'Procurar Visitantes',
+            name: 'Listar Visitantes',
             link: '/visitors/list'
         }
     ]
@@ -126,9 +126,12 @@ const VisitorSearch = (props) => {
         if(searchInput){
             unitsInfo = unitsInfo.filter(el=>{
                 return el.residents.some(res=>res.name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1) ||
-                    el.vehicles.some(vei=> vei.plate.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1)
+                    el.vehicles.some(vei=> vei.plate.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1) ||
+                    el.bloco_name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+                    el.number.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 
             })
         }
+
         return unitsInfo
     }
 
@@ -147,7 +150,7 @@ const VisitorSearch = (props) => {
                     <form>
                         <div class="form-group">
                             <label>Pesquisar</label>
-                            <input type="email" className="form-control" placeholder="Nome ou placa" value={searchInput} onChange={(ev)=>setSearchinput(ev.target.value)}/>
+                            <input type="email" className="form-control" placeholder="Nome, placa, bloco ou número" value={searchInput} onChange={(ev)=>setSearchinput(ev.target.value)}/>
                         </div>
                     </form>
                     {

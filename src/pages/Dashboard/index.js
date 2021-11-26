@@ -31,27 +31,21 @@ const Dashboard = () => {
         { menuName: "Listar", icon: 'list-alt', key: 'list', url: 'List' }
     ]
 
-    const menuOptionsAddListAndSeach = [
-        { menuName: "Adicionar", icon: 'plus-square', key: 'plus', url: 'add' },
-        { menuName: "Listar", icon: 'list-alt', key: 'list', url: 'list' },
-        { menuName: "Pesquisar", icon: 'search', key: 'search', url: 'Search' },
-    ]
-
     const subMenuOptionsResidents = [ ]
 
     if(user.user_kind === Constants.USER_KIND['SUPERINTENDENT']){
         subMenuOptionsResidents.push({ menuName: "Adicionar", icon: 'plus-square', key: 'plus', url: 'Add' })
     }
     subMenuOptionsResidents.push({ menuName: "Listar", icon: 'list-alt', key: 'list', url: 'List' })
-    subMenuOptionsResidents.push({ menuName: "Pesquisar", icon: 'search', key: 'search', url: 'Search' })   
     
     const menu = {
         menuOptionsQRCode : { menuName: "Meu QR Code", icon: 'qrcode', key: 'QRCode', url: 'MyQRCode', code: 'MyQRCode' },
         menuOptionsScan : { menuName: "Escanear", icon: 'camera', key: 'Scan', url: 'Scan', code: 'Scan' },
         menuOptionsUnits : { menuName: "Unidades", icon: 'building', key: 'building', url: 'Units', code: 'Units', submenuOptions, toggle: setModalUnits, modal: modalUnits },
         menuOptionsResidents : { menuName: "Moradores", icon: 'house-user', key: 'resident', url: 'Residents', code: 'Residents', submenuOptions: subMenuOptionsResidents, toggle: setModalResidents, modal: modalResidents },
-        menuOptionsVisitor : { menuName: "Visitantes", icon: 'user-friends', key: 'visitor', url: 'Visitors', code: 'Visitors', submenuOptions: menuOptionsAddListAndSeach, toggle: setModalVisitors, modal: modalVisitors },
-        menuOptionsService : { menuName: "Terceirizados", icon: 'people-carry', key: 'service', url: 'Thirds', code: 'Thirds', submenuOptions: menuOptionsAddListAndSeach, toggle: setModalThirds, modal: modalThirds },
+        menuOptionsResidentsToGuard : { menuName: "Moradores", icon: 'house-user', key: 'residentGuard', url: 'Residents/list', code: 'Residents' },
+        menuOptionsVisitor : { menuName: "Visitantes", icon: 'user-friends', key: 'visitor', url: 'Visitors', code: 'Visitors', submenuOptions, toggle: setModalVisitors, modal: modalVisitors },
+        menuOptionsService : { menuName: "Terceirizados", icon: 'people-carry', key: 'service', url: 'Thirds', code: 'Thirds', submenuOptions, toggle: setModalThirds, modal: modalThirds },
         menuOptionsGuard : { menuName: "Colaboradores", icon: 'user-shield', key: 'guard', url: 'Guards', code: 'Guards', submenuOptions, toggle: setModalGuard, modal: modalGuard  },
         menuOptionsCarSuperIntendent : { menuName: "Pernoite", icon: 'car', key: 'car', url: 'Car', code: 'Cars', submenuOptions:menuOptionsCars, toggle: setModalCar, modal: modalCar },
         menuOptionsCarGuard : { menuName: "Pernoite", icon: 'car', key: 'car', url: 'Car/Search', code: 'Cars' },
@@ -63,12 +57,11 @@ const Dashboard = () => {
         menuOptionsCondo : { menuName: "Condomínios", icon: 'city', key: 'condo', url: 'Condo', code: 'Residents', submenuOptions, toggle: setModalCondo, modal: modalCondo},
         menuOptionsSindico : { menuName: "Administradores", icon: 'users-cog', key: 'sindico', url: 'Sindico', code: 'Visitors', submenuOptions, toggle: setModalSindico, modal: modalSindico },
         menuOptionsSlot : { menuName: "Estacionamento", icon: 'car-side', key: 'slot', url: 'Slot', code: 'Slot'},
-        
     }
 
     const profiles = []
     profiles[Constants.USER_KIND['RESIDENT']]=[menu.menuOptionsQRCode, menu.menuOptionsEventResident, menu.menuOptionsSurvey]
-    profiles[Constants.USER_KIND['GUARD']]=[menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsResidents, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsCarGuard, menu.menuOptionsEventGuard, menu.menuOptionsSlot]
+    profiles[Constants.USER_KIND['GUARD']]=[menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsResidentsToGuard, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsCarGuard, menu.menuOptionsEventGuard, menu.menuOptionsSlot]
     profiles[Constants.USER_KIND['SUPERINTENDENT']]=[menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsUnits, menu.menuOptionsResidents, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsGuard, menu.menuOptionsCarSuperIntendent, menu.menuOptionsEventSuperintendent, menu.menuOptionsSlot]
     profiles[Constants.USER_KIND['ADM']]=[menu.menuOptionsCondo, menu.menuOptionsSindico]
 

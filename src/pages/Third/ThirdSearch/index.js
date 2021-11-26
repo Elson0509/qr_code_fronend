@@ -32,7 +32,7 @@ const ThirdSearch = (props) => {
             link: '/'
         },
         {
-            name: 'Pesquisar Terceirizados',
+            name: 'Listar Terceirizados',
             link: '/thirds/list'
         }
     ]
@@ -127,7 +127,9 @@ const ThirdSearch = (props) => {
             unitsInfo = unitsInfo.filter(el=>{
                 return el.residents.some(res=>res.name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1) ||
                     el.vehicles.some(vei=> vei.plate.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1) ||
-                    el.residents.some(res=>res.company && res.company.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1)
+                    el.residents.some(res=>res.company && res.company.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1) ||
+                    el.bloco_name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+                    el.number.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 
             })
         }
 
@@ -149,7 +151,7 @@ const ThirdSearch = (props) => {
                     <form>
                         <div class="form-group">
                             <label>Pesquisar</label>
-                            <input type="email" className="form-control" placeholder="Nome, placa ou empresa" value={searchInput} onChange={(ev)=>setSearchinput(ev.target.value)}/>
+                            <input type="email" className="form-control" placeholder="Nome, placa, empresa, bloco ou número" value={searchInput} onChange={(ev)=>setSearchinput(ev.target.value)}/>
                         </div>
                     </form>
                     {

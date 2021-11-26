@@ -9,7 +9,7 @@ import ResidentEdit from '../../pages/Resident/ResidentEdit';
 const ResidentListRoute = {
     key: 'residentList',
     path: '/residents/list',
-    component: ResidentList
+    component: ResidentSearch
 }
 const ResidentSearchRoute = {
     key: 'residentSearch',
@@ -33,10 +33,10 @@ const ResidentRoutes = userKind => {
         case(Constants.USER_KIND['RESIDENT']):
             break
         case(Constants.USER_KIND['GUARD']):
-            routes.push(ResidentListRoute, ResidentSearchRoute)
+            routes.push(ResidentListRoute)
             break
         case(Constants.USER_KIND['SUPERINTENDENT']):
-            routes.push(ResidentListRoute, ResidentSearchRoute, ResidentAddRoute, ResidentEditRoute)
+            routes.push(ResidentListRoute, ResidentAddRoute, ResidentEditRoute)
             break
         case(Constants.USER_KIND['VISITOR']):
             break

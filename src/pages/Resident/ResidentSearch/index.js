@@ -3,7 +3,10 @@ import Body from '../../../layout/Body';
 import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import api from '../../../services/api'
+import IconButtons from '../../../components/Buttons/IconButtons'
 import Plate from '../../../components/Plate'
+import ConfirmPassModal from '../../../components/Modals/ConfirmPassModal'
+import ConfirmModal from '../../../components/Modals/ConfirmModal'
 import Image from '../../../components/Image'
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
@@ -15,6 +18,10 @@ const ResidentSearch = (props) => {
     const {user} = useAuth()
     const [units, setUnits] = useState([])
     const [loading, setLoading] = useState(true)
+    const [modal, setModal] = useState(false)
+    const [message, setMessage] = useState('')
+    const [unitSelected, setUnitSelected] = useState(null)
+    const [passModal, setPassModal] = useState(false)
     const [searchInput, setSearchinput] = useState('')
 
     const breadcrumb=[
@@ -23,7 +30,7 @@ const ResidentSearch = (props) => {
             link: '/'
         },
         {
-            name: 'Pesquisar Moradores',
+            name: 'Listar Moradores',
             link: '/residents/search'
         }
     ]
@@ -63,11 +70,64 @@ const ResidentSearch = (props) => {
         if(searchInput){
             unitsInfo = unitsInfo.filter(el=>{
                 return el.residents.some(res=>res.name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1) ||
-                    el.vehicles.some(vei=> vei.plate.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1)
+                    el.vehicles.some(vei=> vei.plate.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1) ||
+                    el.bloco_name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+                    el.number.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 
             })
         }
 
         return unitsInfo
+    }
+
+    const delUnitModal = unit => {
+        if(!unit.residents.length && !unit.vehicles.length){
+          return toast.info('Unidade sem moradores para apagar.', Constants.TOAST_CONFIG)
+        }
+        setUnitSelected(unit)
+        setMessage(`Excluir moradores e veículos do Bloco ${unit.bloco_name} unidade ${unit.number}?`)
+        setModal(true)
+    }
+
+    const modalConfirmPassHandler = () => {
+        setModal(false)
+        setPassModal(true)
+    }
+
+    const deleteUnitConfirmed = _ =>{
+        setPassModal(false)
+        setLoading(true)
+        api.delete(`user/unit/${unitSelected.id}`,{
+          data:{
+            user_id_last_modify: user.id,
+          }
+        })
+          .then(res=>{
+            toast.info(res.data.message, Constants.TOAST_CONFIG)
+            fetchUsers()
+          })
+          .catch((err)=>{
+            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RL2)', Constants.TOAST_CONFIG)
+          })
+          .finally(()=>{
+            setLoading(false)
+          })
+    }
+
+    const editHandler = unit => {
+        props.history.push('/residents/edit', 
+          {
+            selectedBloco: {
+              id: unit.bloco_id,
+              name: unit.bloco_name
+            },
+            selectedUnit:{
+              id: unit.id,
+              number: unit.number
+            },
+            residents: unit.residents,
+            vehicles: unit.vehicles,
+          }
+        )
     }
 
     if(loading){
@@ -85,7 +145,7 @@ const ResidentSearch = (props) => {
                     <form>
                         <div class="form-group">
                             <label>Pesquisar</label>
-                            <input type="email" className="form-control" placeholder="Nome ou placa" value={searchInput} onChange={(ev)=>setSearchinput(ev.target.value)}/>
+                            <input type="email" className="form-control" placeholder="Nome, placa, bloco ou unidade" value={searchInput} onChange={(ev)=>setSearchinput(ev.target.value)}/>
                         </div>
                     </form>
                     {
@@ -104,6 +164,13 @@ const ResidentSearch = (props) => {
                                         <CardHeader>
                                             <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                                             <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
+                                            {
+                                                user.user_kind===Constants.USER_KIND['SUPERINTENDENT'] &&
+                                                <IconButtons
+                                                    action1={()=>editHandler(el)}
+                                                    action2={()=>delUnitModal(el)}
+                                                />
+                                            }
                                         </CardHeader>
                                         <CardBody>
                                             <CardText tag='h6'>Moradores:</CardText>
@@ -148,6 +215,18 @@ const ResidentSearch = (props) => {
                         )
                     }
             </div>
+            <ConfirmModal
+                message={message}
+                modal={modal}
+                toggle={()=>setModal(false)}
+                title='Apagar moradores'
+                action1={()=>modalConfirmPassHandler()}
+            />
+            <ConfirmPassModal
+                modal={passModal}
+                toggle={()=>setPassModal(false)}
+                action={()=>deleteUnitConfirmed()}
+            />
         </Body>
     );
 };
