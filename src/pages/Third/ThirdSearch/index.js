@@ -149,7 +149,7 @@ const ThirdSearch = (props) => {
             <div className='row'>
                 <div className='col-12'>
                     <form>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label>Pesquisar</label>
                             <input type="email" className="form-control" placeholder="Nome, placa, empresa, bloco ou número" value={searchInput} onChange={(ev)=>setSearchinput(ev.target.value)}/>
                         </div>

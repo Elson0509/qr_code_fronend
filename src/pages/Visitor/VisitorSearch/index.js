@@ -148,7 +148,7 @@ const VisitorSearch = (props) => {
             <div className='row'>
                 <div className='col-12'>
                     <form>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label>Pesquisar</label>
                             <input type="email" className="form-control" placeholder="Nome, placa, bloco ou número" value={searchInput} onChange={(ev)=>setSearchinput(ev.target.value)}/>
                         </div>
@@ -174,7 +174,7 @@ const VisitorSearch = (props) => {
                                             <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                                             <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
                                             {
-                                                user.user_kind==Constants.USER_KIND['SUPERINTENDENT'] &&
+                                                user.user_kind===Constants.USER_KIND['SUPERINTENDENT'] &&
                                                 <IconButtons
                                                     action1={()=>editUnit(el)}
                                                     action2={()=> delUnitModal(el)}

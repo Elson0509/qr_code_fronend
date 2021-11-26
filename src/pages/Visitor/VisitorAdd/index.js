@@ -1,10 +1,9 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import Body from '../../../layout/Body';
 import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
-import Plate from '../../../components/Plate'
 import Image from '../../../components/Image'
 import ImageBlob from '../../../components/ImageBlob'
 import BlocoModal from '../../../components/Modals/BlocoModal'
@@ -108,6 +107,12 @@ const VisitorAdd = (props) => {
         if(!userBeingAdded.name){
           return setErrorAddResidentMessage('Nome não pode estar vazio.')
         }
+        if(!userBeingAdded.identification){
+          return setErrorAddResidentMessage('Documento não pode estar vazio.')
+        }
+        if(!userBeingAdded.pic){
+          return setErrorAddResidentMessage('É necessário adicionar uma foto.')
+        }
         setResidents(prev=> [...prev, userBeingAdded])
         setErrorAddResidentMessage('')
         setUserBeingAdded({id: "0", name: '', identification: '', pic: ''})
@@ -192,7 +197,7 @@ const VisitorAdd = (props) => {
             if(nr.email === re.email && 
                 nr.name === re.name && 
                 nr.identification === re.identification &&
-                re.pic != "")
+                re.pic !== "")
                 residentsPics.push({id:nr.id, pic: re.pic})
           })
         })
@@ -312,13 +317,13 @@ const VisitorAdd = (props) => {
                       changeValue={(val) => setUserBeingAdded({...userBeingAdded, name: val})}
                     />
                     <FormInput
-                      label='Identidade:'
+                      label='Documento*:'
                       value={userBeingAdded.identification}
                       changeValue={(val) => setUserBeingAdded({...userBeingAdded, identification: val})}
                     />
                     {!!userBeingAdded.pic &&
                       <div className={classes.ImgUserTookPic}>
-                        <img src={URL.createObjectURL(userBeingAdded.pic)} height={120}/>
+                        <img src={URL.createObjectURL(userBeingAdded.pic)} alt='user' height={120}/>
                       </div>
                     }
                     {!userBeingAdded.pic && 

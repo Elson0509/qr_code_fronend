@@ -46,7 +46,7 @@ const EventAdd = () => {
 
 
     const uploadImg = newId =>{
-      if(userBeingAdded.pic!=''){
+      if(userBeingAdded.pic!==''){
         //resizing and uploading
         Utils.resizeFile(userBeingAdded.pic).then(data=>{
           api.post(`upload`,{
@@ -151,7 +151,7 @@ const EventAdd = () => {
           />
           {!!userBeingAdded.pic &&
             <div className={classes.ImgUserTookPic}>
-              <img src={URL.createObjectURL(userBeingAdded.pic)} height={120}/>
+              <img src={URL.createObjectURL(userBeingAdded.pic)} height={120} alt='user'/>
             </div>
           }
           {!userBeingAdded.pic && 

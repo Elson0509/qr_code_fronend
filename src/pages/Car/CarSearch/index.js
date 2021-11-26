@@ -157,11 +157,11 @@ const CarSearch = () => {
             <div className='row'>
                 <div className='col-12'>
                 <form>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label>Pesquisar</label>
                         <input className="form-control" placeholder="Digite a placa" value={searchInput} onChange={(ev)=>setSearchInput(ev.target.value)}/>
                     </div>
-                    <div class="form-check py-2">
+                    <div className="form-check py-2">
                         <label>Registrar ocorrência?</label>
                         <input 
                             className="form-check-input" 

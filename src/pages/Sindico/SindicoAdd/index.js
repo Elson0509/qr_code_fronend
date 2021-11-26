@@ -77,7 +77,7 @@ const SindicoAdd = (props) => {
     }
 
     const uploadImg = newId =>{
-      if(userBeingAdded.pic!=''){
+      if(userBeingAdded.pic!==''){
         //resizing and uploading
         Utils.resizeFile(userBeingAdded.pic).then(data=>{
           api.post(`upload`,{

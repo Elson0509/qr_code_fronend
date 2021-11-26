@@ -309,7 +309,7 @@ const ResidentEdit = (props) => {
                     />
                     {!!userBeingAdded.pic &&
                       <div className={classes.ImgUserTookPic}>
-                        <img src={URL.createObjectURL(userBeingAdded.pic)} height={120}/>
+                        <img src={URL.createObjectURL(userBeingAdded.pic)} height={120} alt='user'/>
                       </div>
                     }
                     {!userBeingAdded.pic && 

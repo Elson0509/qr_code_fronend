@@ -31,12 +31,12 @@ const ConfirmModal = (props) => {
         <Modal isOpen={props.modal} toggle={props.toggle} className={props.className}>
             <ModalHeader toggle={props.toggle}>Confirmação de senha</ModalHeader>
             {
-                loading &&
+                loading && (
                     <div className='text-center p-4'>
                         <Spinner color="primary"/>
-                    </div>
+                    </div> )
                 ||
-                <Fragment>
+                (<Fragment>
                     <ModalBody>
                         <FormInput
                             label='Confirme a operação com sua senha.'
@@ -54,7 +54,7 @@ const ConfirmModal = (props) => {
                         <Button color="primary" onClick={()=>confirmHandler()}>{'Confirmar'}</Button>
                         <Button color="secondary" onClick={props.toggle}>{'Cancelar'}</Button>
                     </ModalFooter>
-                </Fragment>
+                </Fragment>)
             }
       </Modal>
     );

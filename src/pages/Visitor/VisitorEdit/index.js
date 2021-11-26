@@ -56,8 +56,8 @@ const VisitorEdit = (props) => {
     const [selectedDateInit, setSelectedDateInit] = useState(new Date(props.location.state?.residents[0].initial_date))
     const [selectedDateEnd, setSelectedDateEnd] = useState(new Date(props.location.state?.residents[0].final_date))
     const [showModalQRCode, setShowModalQRCode] = useState(false)
-    const [unitIdModalQRCode, setUnitIdModalQRCode] = useState('')
-    const [infoModalQRCode, setInfoModalQRCode] = useState('')
+    const [unitIdModalQRCode] = useState('')
+    const [infoModalQRCode] = useState('')
     const [finished, setFinished] = useState(false)
 
     const paperClipImageHandler = imgPath => {
@@ -194,7 +194,7 @@ const VisitorEdit = (props) => {
             if(nr.email === re.email && 
                 nr.name === re.name && 
                 nr.identification === re.identification &&
-                re.pic != "")
+                re.pic !== "")
                 residentsPics.push({id:nr.id, pic: re.pic})
           })
         })
@@ -325,7 +325,7 @@ const VisitorEdit = (props) => {
                     />
                     {!!userBeingAdded.pic &&
                       <div className={classes.ImgUserTookPic}>
-                        <img src={URL.createObjectURL(userBeingAdded.pic)} height={120}/>
+                        <img src={URL.createObjectURL(userBeingAdded.pic)} height={120} alt='user'/>
                       </div>
                     }
                     {!userBeingAdded.pic && 

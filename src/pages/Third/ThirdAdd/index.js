@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import Body from '../../../layout/Body';
 import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
@@ -104,13 +104,22 @@ const ThirdAdd = (props) => {
     }
 
     const addResidentHandler = _ =>{
-        if(!userBeingAdded.name){
-          return setErrorAddResidentMessage('Nome não pode estar vazio.')
-        }
-        setResidents(prev=> [...prev, userBeingAdded])
-        setErrorAddResidentMessage('')
-        setUserBeingAdded({id: "0", name: '', identification: '', company:'', pic: ''})
-        setIsAddingResident(false)
+      if(!userBeingAdded.name){
+        return setErrorAddResidentMessage('Nome não pode estar vazio.')
+      }
+      if(!userBeingAdded.identification){
+        return setErrorAddResidentMessage('Documento não pode estar vazio.')
+      }
+      if(!userBeingAdded.company){
+        return setErrorAddResidentMessage('Empresa não pode estar vazia.')
+      }
+      if(!userBeingAdded.pic){
+        return setErrorAddResidentMessage('É necessário adicionar uma foto.')
+      }
+      setResidents(prev=> [...prev, userBeingAdded])
+      setErrorAddResidentMessage('')
+      setUserBeingAdded({id: "0", name: '', identification: '', company:'', pic: ''})
+      setIsAddingResident(false)
     }
 
     const selectDatesHandler = _ =>{
@@ -191,7 +200,7 @@ const ThirdAdd = (props) => {
             if(nr.email === re.email && 
                 nr.name === re.name && 
                 nr.identification === re.identification &&
-                re.pic != "")
+                re.pic !== "")
                 residentsPics.push({id:nr.id, pic: re.pic})
           })
         })
@@ -311,18 +320,18 @@ const ThirdAdd = (props) => {
                       changeValue={(val) => setUserBeingAdded({...userBeingAdded, name: val})}
                     />
                     <FormInput
-                      label='Identidade:'
+                      label='Documento*:'
                       value={userBeingAdded.identification}
                       changeValue={(val) => setUserBeingAdded({...userBeingAdded, identification: val})}
                     />
                     <FormInput
-                      label='Empresa:'
+                      label='Empresa*:'
                       value={userBeingAdded.company}
                       changeValue={(val) => setUserBeingAdded({...userBeingAdded, company: val})}
                     />
                     {!!userBeingAdded.pic &&
                       <div className={classes.ImgUserTookPic}>
-                        <img src={URL.createObjectURL(userBeingAdded.pic)} height={120}/>
+                        <img src={URL.createObjectURL(userBeingAdded.pic)} height={120} alt='user'/>
                       </div>
                     }
                     {!userBeingAdded.pic && 

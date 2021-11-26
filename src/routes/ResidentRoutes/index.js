@@ -1,7 +1,6 @@
 import * as Constants from '../../services/constants'
 
 //import pages
-import ResidentList from '../../pages/Resident/ResidentList';
 import ResidentSearch from '../../pages/Resident/ResidentSearch'
 import ResidentAdd from '../../pages/Resident/ResidentAdd';
 import ResidentEdit from '../../pages/Resident/ResidentEdit';
@@ -9,11 +8,6 @@ import ResidentEdit from '../../pages/Resident/ResidentEdit';
 const ResidentListRoute = {
     key: 'residentList',
     path: '/residents/list',
-    component: ResidentSearch
-}
-const ResidentSearchRoute = {
-    key: 'residentSearch',
-    path: '/residents/search',
     component: ResidentSearch
 }
 const ResidentAddRoute = {

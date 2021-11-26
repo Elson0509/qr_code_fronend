@@ -180,7 +180,7 @@ const ResidentAdd = (props) => {
             if(nr.email === re.email && 
                 nr.name === re.name && 
                 nr.identification === re.identification &&
-                re.pic != "")
+                re.pic !== "")
                 residentsPics.push({id:nr.id, pic: re.pic})
           })
         })

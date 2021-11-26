@@ -5,6 +5,7 @@ import * as Constants from '../../../services/constants'
 import api from '../../../services/api'
 import Icon from '../../../components/Icon';
 import ConfirmModal from '../../../components/Modals/ConfirmModal';
+import ConfirmPassModal from '../../../components/Modals/ConfirmPassModal'
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -19,6 +20,7 @@ const UnitList = (props) => {
     const [modalConfirm, setModalConfirm] = useState(false)
     const [modalEditUnit, setModalEditUnit] = useState(false)
     const [modalMessage, setmodalMessage] = useState('')
+    const [passModal, setPassModal] = useState(false)
 
     const breadcrumb=[
         {
@@ -64,8 +66,6 @@ const UnitList = (props) => {
         return units
     }
 
-
-
     const editClickHandler = (unit) => {
         setSelectedUnit(unit)
         setUnitWillUpdate(unit)
@@ -79,8 +79,13 @@ const UnitList = (props) => {
         setModalConfirm(true)
     }
 
-    const confirmDeleteHandler = () => {
+    const modalConfirmPassHandler = () => {
         setModalConfirm(false)
+        setPassModal(true)
+    }
+
+    const confirmDeleteHandler = () => {
+        setPassModal(false)
         setLoading(true)
         api.delete(`/unit`, {
             data:{
@@ -145,10 +150,10 @@ const UnitList = (props) => {
                                         {`Bloco ${unit.bloco_name} unidade ${unit.unit_number}`}
                                         <span>
                                             <span style={{marginRight: '15px', cursor: 'pointer'}}>
-                                                <a onClick={()=> editClickHandler(unit)}><Icon icon='edit' size='lg' color='#B39C00'/></a>
+                                                <span onClick={()=> editClickHandler(unit)}><Icon icon='edit' size='lg' color='#B39C00'/></span>
                                             </span>
                                             <span style={{cursor: 'pointer'}}>
-                                                <a onClick={()=> deleteClickHandler(unit)}><Icon icon='window-close' size='lg' color='#FF6666'/></a>
+                                                <span onClick={()=> deleteClickHandler(unit)}><Icon icon='window-close' size='lg' color='#FF6666'/></span>
                                             </span>
                                         </span>
                                     </li>
@@ -168,7 +173,7 @@ const UnitList = (props) => {
                     toggle={()=>setModalConfirm(prev=>!prev)}
                     title='Confirma exclusão de unidade?'
                     message={modalMessage}
-                    action1={()=>confirmDeleteHandler()}
+                    action1={()=>modalConfirmPassHandler()}
                 />
                 <Modal isOpen={modalEditUnit} toggle={()=>setModalEditUnit(prev=>!prev)}>
                     <ModalHeader toggle={()=>setModalEditUnit(prev=>!prev)}>Editar unidade</ModalHeader>
@@ -199,13 +204,16 @@ const UnitList = (props) => {
                     </div>}
                     </ModalBody>
                     <ModalFooter>
-                    
                         <Button color="primary" onClick={()=>{editUnitConfirmed()}}>Confirmar</Button>
                         <Button color="secondary" onClick={()=>setModalEditUnit(prev=>!prev)}>Cancelar</Button>
                     </ModalFooter>
                 </Modal>
             </div>
-            
+            <ConfirmPassModal
+                modal={passModal}
+                toggle={()=>setPassModal(false)}
+                action={()=>confirmDeleteHandler()}
+            />
         </Body>
     );
 };
