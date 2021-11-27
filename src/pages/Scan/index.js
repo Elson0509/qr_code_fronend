@@ -8,13 +8,24 @@ import Plate from '../../components/Plate';
 import Image from '../../components/Image';
 import classes from './scan.module.css'
 import { Spinner } from 'reactstrap';
+import ConfirmModal from '../../components/Modals/ConfirmModal';
+import GenericModal from '../../components/Modals/GenericModal';
+import { toast } from 'react-toastify';
 
 const MyQrCode = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const [dataFetched, setDataFetched] = useState(null)
     const [userType, setUserType] = useState('')
     const [isScanning, setIsScanning] = useState(true)
+    const [reading, setReading] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [loadingMessage, setLoadingMessage] = useState(false)
+    const [modalEntrance, setModalEntrance] = useState(false)
+    const [modalExit, setModalExit] = useState(false)
+    const [modalGeneric, setModalGeneric] = useState(false)
+    const [messageInfoModal, setMessageInfoModal] = useState('')
+    const [messageErrorModal, setMessageErrorModal] = useState('')
+    const [disableButtons, setDisableButtons] = useState(false)
 
     const breadcrumb=[
         {
@@ -42,22 +53,25 @@ const MyQrCode = () => {
             setLoading(true)
             api.get(`reading/${dataParts[1]}`)
             .then(res=>{
+                console.log(res.data)
                 setErrorMessage('')
-                setDataFetched(res.data)
+                const found = res.data.userFound || res.data.unitFound
+                setDataFetched(found)
+                setReading(res.data.read)
                 setIsScanning(false)
-                if(res.data.user_kind_id === Constants.USER_KIND['RESIDENT']){
+                if(found.user_kind_id === Constants.USER_KIND['RESIDENT']){
                     setUserType('Residente')
                 }
-                if(res.data.user_kind_id === Constants.USER_KIND['GUARD']){
-                    setUserType('Vigilante')
+                if(found.user_kind_id === Constants.USER_KIND['GUARD']){
+                    setUserType('Colaborador')
                 }
-                if(res.data.user_kind_id === Constants.USER_KIND['SUPERINTENDENT']){
+                if(found.user_kind_id === Constants.USER_KIND['SUPERINTENDENT']){
                     setUserType('Administrador')
                 }
-                if(res.data.unit_kind_id && res.data.unit_kind_id === Constants.USER_KIND['VISITOR']){
+                if(found.unit_kind_id && found.unit_kind_id === Constants.USER_KIND['VISITOR']){
                     setUserType('Visitantes')
                 }
-                if(res.data.unit_kind_id && res.data.unit_kind_id === Constants.USER_KIND['THIRD']){
+                if(found.unit_kind_id && found.unit_kind_id === Constants.USER_KIND['THIRD']){
                     setUserType('Terceirizados')
                 }
                 
@@ -76,12 +90,81 @@ const MyQrCode = () => {
         setErrorMessage('')
         setDataFetched('')
         setUserType('')
+        setReading(null)
         setIsScanning(true)
         setLoading(false)
+        setDisableButtons(false)
+        setMessageInfoModal('')
+        setMessageErrorModal('')
     }
 
     const handleError = err => {
         console.log(err)
+    }
+
+    const entranceHandler = _ => {
+        setModalEntrance(true)
+        setDisableButtons(true)
+    }
+
+    const exitHandler = _ => {
+        setLoading(true)
+        api.put(`reading/${reading.id}`)
+        .then(resp=>{
+            setDisableButtons(true)
+            setLoading(false)
+            setModalExit(true)
+        })
+        .catch(err=>{
+            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (SC3)', Constants.TOAST_CONFIG)
+            setLoading(false)
+        })  
+    }
+
+    const confirmSlotEntrance = _ => {
+        setMessageInfoModal('')
+        setMessageErrorModal('')
+        setModalEntrance(false)
+        setModalGeneric(true)
+        setLoadingMessage(true)
+        api.get(`condo/occupyslot`)
+        .then(resp=>{
+            const freeslots = resp.data.freeslots
+            let message = resp.data.message + ' '
+            if(freeslots > 0){
+                message+= `Ainda ${freeslots > 1 ? `restam ${freeslots} vagas` : 'resta 1 vaga'}.`
+            }
+            else{
+                message+= 'Não restam mais novas vagas.'
+            }
+
+            setMessageInfoModal(message)
+        })
+        .catch(err=>{
+            setMessageErrorModal(err.response?.data?.message)
+        })
+        .finally(()=>{
+            setLoadingMessage(false)
+        })
+    }
+    const confirmSlotExit = _ => {
+        setMessageInfoModal('')
+        setMessageErrorModal('')
+        setModalExit(false)
+        setModalGeneric(true)
+        setLoadingMessage(true)
+        api.get(`condo/freeslot`)
+        .then(resp=>{
+            const freeslots = resp.data.freeslots
+            const message = resp.data.message + ` Ainda ${freeslots > 1 ? `restam ${freeslots} vagas` : 'resta 1 vaga'}.`
+            setMessageInfoModal(message)
+        })
+        .catch(err=>{
+            setMessageErrorModal(err.response?.data?.message)
+        })
+        .finally(()=>{
+            setLoadingMessage(false)
+        })
     }
 
     if(loading){
@@ -121,7 +204,7 @@ const MyQrCode = () => {
                             <div className={classes.UserInfoDiv}>
                                 <p style={{marginTop: 8, fontSize: 18, fontWeight: 'bold'}}>{dataFetched.name}</p>
                                 {!!dataFetched.Unit?.Bloco?.name && <p style={{marginTop: 4, fontSize: 18}}>{`Bloco ${dataFetched.Unit.Bloco.name}`} - {`Unidade ${dataFetched.Unit.number}`}</p>}
-                                {!dataFetched.Unit?.Vehicles.length && <p style={{pDecorationLine: 'underline', fontSize: 15,}}>Não há veículos cadastrados.</p>}
+                                {!dataFetched.Unit?.Vehicles.length && <p style={{textDecorationLine: 'underline', fontSize: 15, textAlign: 'center'}}>Não há veículos cadastrados.</p>}
                                 <div className={classes.VehiclesDiv}>
                                     {!!dataFetched.Unit?.Vehicles.length && <p style={{fontSize: 15}}>Veículos cadastrados:</p>}
                                     {!!dataFetched.Unit?.Vehicles.length && 
@@ -147,7 +230,7 @@ const MyQrCode = () => {
                         {
                             dataFetched.Users.map((el, ind)=>{
                                 return(
-                                    <div className={classes.UserDataDiv}>
+                                    <div className={classes.UserDataDiv} key={ind}>
                                         <div><Image id={el.id}/></div>
                                         <div className={classes.UserInfoDiv}>
                                             {!!el.name && <p style={{marginTop: 4, fontSize: 18, fontWeight: 'bold'}}>{el.name}</p>}
@@ -160,7 +243,7 @@ const MyQrCode = () => {
                         }
                         
                         <div style={{alignItems:'center', marginTop: 10}}>
-                            {!dataFetched.Vehicles.length && <p style={{textDecorationLine: 'underline', fontSize: 15,}}>Não há veículos cadastrados.</p>}
+                            {!dataFetched.Vehicles.length && <p style={{textDecorationLine: 'underline', fontSize: 15, textAlign: 'center'}}>Não há veículos cadastrados.</p>}
                             {!!dataFetched.Vehicles.length && <p style={{textAlign: 'center', fontSize: 22, fontWeight: 'bold', marginBottom: 0, letterSpacing: 1, textDecorationLine: 'underline'}}>Veículos cadastrados</p>}
                             {!!dataFetched.Vehicles.length && 
                                 dataFetched.Vehicles.map((el, ind)=>{
@@ -174,12 +257,63 @@ const MyQrCode = () => {
                                     )
                             })}
                         </div>
+                        <div className={classes.ButtonsRegister}>
+                            <button type="button" className="btn btn-success" disabled={disableButtons} onClick={()=>entranceHandler()}>Registrar ENTRADA</button>
+                            <button type="button" className="btn btn-warning" disabled={disableButtons} onClick={()=>exitHandler()}>Registrar SAÍDA</button>
+                        </div>
                     </div>
                 }
                 { !isScanning && <div className='col-12 my-4 text-center'>
                     <button type="button" className="btn btn-primary btn-lg" onClick={rescanHandler}>Reescanear</button>
                 </div>}
             </div>
+            <ConfirmModal
+                modal={modalEntrance}
+                toggle={()=>setModalEntrance(false)}
+                message={`Confirmado. ${userType} vão UTILIZAR uma vaga de estacionamento?`}
+                button1='Sim'
+                button2='Não'
+                action1={confirmSlotEntrance}
+            />
+            <ConfirmModal
+                modal={modalExit}
+                toggle={()=>setModalExit(false)}
+                message={`Confirmado. ${userType} vão LIBERAR uma vaga de estacionamento?`}
+                button1='Sim'
+                button2='Não'
+                action1={confirmSlotExit}
+            />
+            <GenericModal
+                modal={modalGeneric}
+                toggle={()=>setModalGeneric(false)}
+            >
+                {loadingMessage &&
+                    <Spinner color="primary" />
+                    ||
+                    <div>
+                        {
+                            !!messageInfoModal &&
+                            <div className="alert alert-info text-center p-2" role="alert">
+                                {messageInfoModal}
+                            </div>
+                        }
+                        {
+                            !!messageErrorModal &&
+                            <div className="alert alert-danger text-center p-2" role="alert">
+                                {messageErrorModal}
+                            </div>
+                        }
+                        
+                        <div className='text-center mb-4'>
+                            
+                        </div>
+                        <div className='text-center'>
+                            <button type="button" className="btn btn-primary p-2" onClick={()=>setModalGeneric(false)}>Entendi</button>
+                        </div>
+                    </div>
+                }
+            </GenericModal>
+            
         </Body>
     );
 };

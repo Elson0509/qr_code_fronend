@@ -20,3 +20,8 @@
 .VehiclesDiv{
     margin-top: 30px;
 }
+
+.ButtonsRegister{
+    display: flex;
+    justify-content: space-evenly;
+}

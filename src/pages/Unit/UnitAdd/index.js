@@ -6,7 +6,7 @@ import api from '../../../services/api'
 import Icon from '../../../components/Icon';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import classes from './UnitAdd.module.css'
 
 const UnitAdd = (props) => {
@@ -69,7 +69,6 @@ const UnitAdd = (props) => {
 
     const confirmAddHandler = ev => {
         ev.preventDefault()
-        const errors = []
         if(!bloco){
             return setErrorMessage('Bloco não pode estar vazio.')
         }

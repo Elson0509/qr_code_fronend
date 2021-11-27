@@ -36,6 +36,8 @@ import {
     faLevelDownAlt, //level-down-alt
     faSignInAlt, //sign-in-alt
     faSignOutAlt, //sign-out-alt
+    faThumbsUp, //thumbs-up
+    faThumbsDown, //thumbs-down
 
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -75,6 +77,8 @@ library.add(
     faLevelDownAlt,
     faSignInAlt,
     faSignOutAlt,
+    faThumbsUp,
+    faThumbsDown,
 );
 
 const Icon = (props) => {
