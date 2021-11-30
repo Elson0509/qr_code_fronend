@@ -8,6 +8,8 @@ import Plate from '../../../components/Plate'
 import Image from '../../../components/Image'
 import IconButtons from '../../../components/Buttons/IconButtons';
 import ConfirmModal from '../../../components/Modals/ConfirmModal';
+import MessageModal from '../../../components/Modals/MessageModal';
+import GenericModal from '../../../components/Modals/GenericModal';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import {
@@ -25,6 +27,15 @@ const VisitorSearch = (props) => {
     const [message, setMessage] = useState('')
     const [unitSelected, setUnitSelected] = useState(null)
     const [searchInput, setSearchinput] = useState('')
+    const [entranceExitModal, setEntranceExitModal] = useState(false)
+    const [modalEntrance, setModalEntrance] = useState(false)
+    const [modalExit, setModalExit] = useState(false)
+    const [modalMessage, setModalMessage] = useState(false)
+    const [freeSlots, setFreeSlots] = useState(0)
+    const [messageInfoModal, setMessageInfoModal] = useState('')
+    const [messageErrorModal, setMessageErrorModal] = useState('')
+    const [modalGeneric, setModalGeneric] = useState(false)
+    const [loadingMessage, setLoadingMessage] = useState(false)
 
     const breadcrumb=[
         {
@@ -108,6 +119,15 @@ const VisitorSearch = (props) => {
         )
     }
 
+    const carIconHandler = unit => {
+        setUnitSelected(unit)
+        //valid user?
+        if(!(new Date(unit.residents[0].final_date) >= beginOfDay && new Date(unit.residents[0].initial_date) <= beginOfDay)){
+            return toast.error('Visitantes fora da data de autorização.', Constants.TOAST_CONFIG)
+        }
+        setEntranceExitModal(true)
+    }
+
     const generateInfoUnits = _ =>{
         let unitsInfo = []
         units.forEach(bloco=>{
@@ -133,6 +153,103 @@ const VisitorSearch = (props) => {
         }
 
         return unitsInfo
+    }
+
+    const exitHandler = _ => {
+        setMessageInfoModal('')
+        setMessageErrorModal('')
+        setLoading(true)
+        api.get(`reading/${unitSelected.id}/0`)
+        .then(res=>{
+            setLoading(false)
+            setFreeSlots(res.data.freeslots)
+            let message = 'Confirmado. Visitantes vão LIBERAR uma vaga de estacionamento? '
+            setMessageInfoModal(message)
+            setModalExit(true)
+            setEntranceExitModal(false)
+        })
+        .catch(err=> {
+            setLoading(false)
+            setEntranceExitModal(false)
+            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (VS3)', Constants.TOAST_CONFIG)
+        })
+    }
+
+    const entranceHandler = _ => {
+        setMessageInfoModal('')
+        setMessageErrorModal('')
+        setLoading(true)
+        api.get(`reading/${unitSelected.id}/1`)
+        .then(res=>{
+            setLoading(false)
+            setFreeSlots(res.data.freeslots)
+            let message = 'Confirmado. '
+            if(res.data.freeslots ===0){
+                //there are not free slots
+                message+='Mas não há vagas de estacionamento disponíveis.'
+                setMessageErrorModal(message)
+                setModalMessage(true)
+            }
+            else{
+                //there are free slots
+                message+= res.data.freeslots > 1 ? `Há ${res.data.freeslots} vagas livres. Visitantes vão OCUPAR uma vaga?` : 'Há uma vaga livre. Visitantes vão ocupar esta vaga?'
+                setMessageInfoModal(message)
+                setModalEntrance(true)
+            }
+            setEntranceExitModal(false)
+        })
+        .catch(err=> {
+            setLoading(false)
+            setEntranceExitModal(false)
+            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (VS2)', Constants.TOAST_CONFIG)
+        })
+    }
+
+    const confirmSlotEntrance = _ => {
+        setMessageInfoModal('')
+        setMessageErrorModal('')
+        setModalEntrance(false)
+        setModalGeneric(true)
+        setLoadingMessage(true)
+        api.get(`condo/occupyslot`)
+        .then(resp=>{
+            const freeslots = resp.data.freeslots
+            let message = resp.data.message + ' '
+            if(freeslots > 0){
+                message+= `Ainda ${freeslots > 1 ? `restam ${freeslots} vagas` : 'resta 1 vaga'}.`
+            }
+            else{
+                message+= 'Não restam mais novas vagas.'
+            }
+
+            setMessageInfoModal(message)
+        })
+        .catch(err=>{
+            setMessageErrorModal(err.response?.data?.message)
+        })
+        .finally(()=>{
+            setLoadingMessage(false)
+        })
+    }
+
+    const confirmSlotExit = _ => {
+        setMessageInfoModal('')
+        setMessageErrorModal('')
+        setModalExit(false)
+        setModalGeneric(true)
+        setLoadingMessage(true)
+        api.get(`condo/freeslot`)
+        .then(resp=>{
+            const freeslots = resp.data.freeslots
+            const message = resp.data.message + ` Ainda ${freeslots > 1 ? `restam ${freeslots} vagas` : 'resta 1 vaga'}.`
+            setMessageInfoModal(message)
+        })
+        .catch(err=>{
+            setMessageErrorModal(err.response?.data?.message)
+        })
+        .finally(()=>{
+            setLoadingMessage(false)
+        })
     }
 
     if(loading){
@@ -179,6 +296,13 @@ const VisitorSearch = (props) => {
                                                     action1={()=>editUnit(el)}
                                                     action2={()=> delUnitModal(el)}
                                                     action3={()=>modalHandler(el)}
+                                                />
+                                            }
+                                            {
+                                                user.user_kind===Constants.USER_KIND['GUARD'] &&
+                                                <IconButtons
+                                                    action1={()=>carIconHandler(el)}
+                                                    icon1='car-side'
                                                 />
                                             }
                                         </CardHeader>
@@ -242,6 +366,67 @@ const VisitorSearch = (props) => {
                 title='Apagar visitantes'
                 action1={()=>deleteUnitConfirmed()}
             />
+            <ConfirmModal
+                message={'Deseja registrar entrada ou saída de visitante?'}
+                modal={entranceExitModal}
+                toggle={()=>setEntranceExitModal(false)}
+                title='Entrada/Saída'
+                button1='ENTRADA'
+                button2='SAÍDA'
+                action1={()=>entranceHandler()}
+                action2={()=>exitHandler()}
+            />
+            <ConfirmModal
+                modal={modalEntrance}
+                toggle={()=>setModalEntrance(false)}
+                message={messageInfoModal}
+                button1='Sim'
+                button2='Não'
+                action1={confirmSlotEntrance}
+            />
+            <ConfirmModal
+                modal={modalExit}
+                toggle={()=>setModalExit(false)}
+                message={messageInfoModal}
+                button1='Sim'
+                button2='Não'
+                action1={confirmSlotExit}
+            />
+            <MessageModal
+                modal={modalMessage}
+                toggle={()=>setModalMessage(false)}
+                message={messageErrorModal}
+            />
+            <GenericModal
+                modal={modalGeneric}
+                toggle={()=>setModalGeneric(false)}
+            >
+                {loadingMessage &&
+                    <Spinner color="primary" />
+                    ||
+                    <div>
+                        {
+                            !!messageInfoModal &&
+                            <div className="alert alert-info text-center p-2" role="alert">
+                                {messageInfoModal}
+                            </div>
+                        }
+                        {
+                            !!messageErrorModal &&
+                            <div className="alert alert-danger text-center p-2" role="alert">
+                                {messageErrorModal}
+                            </div>
+                        }
+                        
+                        <div className='text-center mb-4'>
+                            
+                        </div>
+                        <div className='text-center'>
+                            <button type="button" className="btn btn-primary p-2" onClick={()=>setModalGeneric(false)}>Entendido</button>
+                        </div>
+                    </div>
+                }
+            </GenericModal>
             {
                 !!unitSelected &&
                 <QRCodeModal
