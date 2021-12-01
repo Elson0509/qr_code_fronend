@@ -1,12 +1,13 @@
+import {lazy} from 'react';
 //import pages
-import MessageList from '../../pages/Message/MessageList';
+const MessageListLazy = lazy(()=> import ('../../pages/Message/MessageList'))
 
 
 const MessageRoutes = [
     {
         key: 'MessageList',
         path: '/message/list',
-        component: MessageList
+        component: MessageListLazy
     },
     
 ]

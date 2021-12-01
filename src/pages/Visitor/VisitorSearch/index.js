@@ -31,7 +31,6 @@ const VisitorSearch = (props) => {
     const [modalEntrance, setModalEntrance] = useState(false)
     const [modalExit, setModalExit] = useState(false)
     const [modalMessage, setModalMessage] = useState(false)
-    const [freeSlots, setFreeSlots] = useState(0)
     const [messageInfoModal, setMessageInfoModal] = useState('')
     const [messageErrorModal, setMessageErrorModal] = useState('')
     const [modalGeneric, setModalGeneric] = useState(false)
@@ -162,7 +161,6 @@ const VisitorSearch = (props) => {
         api.get(`reading/${unitSelected.id}/0`)
         .then(res=>{
             setLoading(false)
-            setFreeSlots(res.data.freeslots)
             let message = 'Confirmado. Visitantes vão LIBERAR uma vaga de estacionamento? '
             setMessageInfoModal(message)
             setModalExit(true)
@@ -182,7 +180,6 @@ const VisitorSearch = (props) => {
         api.get(`reading/${unitSelected.id}/1`)
         .then(res=>{
             setLoading(false)
-            setFreeSlots(res.data.freeslots)
             let message = 'Confirmado. '
             if(res.data.freeslots ===0){
                 //there are not free slots

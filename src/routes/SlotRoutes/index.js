@@ -1,12 +1,13 @@
+import {lazy} from 'react';
 import * as Constants from '../../services/constants'
 
 //import pages
-import Slot from '../../pages/Slot'
+const SlotLazy = lazy(()=> import ('../../pages/Slot'))
 
 const SlotRoute = {
     key: 'Slot',
     path: '/slot',
-    component: Slot
+    component: SlotLazy
 }
 
 const SlotRoutes = userKind => {

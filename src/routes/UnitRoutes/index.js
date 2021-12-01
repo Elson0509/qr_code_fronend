@@ -1,18 +1,19 @@
+import {lazy} from 'react';
 import * as Constants from '../../services/constants'
 
 //import pages
-import UnitList from '../../pages/Unit/UnitList';
-import UnitAdd from '../../pages/Unit/UnitAdd';
+const UnitListLazy = lazy(()=> import ('../../pages/Unit/UnitList'))
+const UnitAddLazy = lazy(()=> import ('../../pages/Unit/UnitAdd'))
 
 const  UnitListRoute = {
     key: 'unitList',
     path: '/units/list',
-    component: UnitList
+    component: UnitListLazy
 }
 const  UnitAddRoute = {
     key: 'unitAdd',
     path: '/units/add',
-    component: UnitAdd
+    component: UnitAddLazy
 }
 
 const UnitRoutes = userKind => {

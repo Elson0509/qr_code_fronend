@@ -1,19 +1,20 @@
+import {lazy} from 'react';
 import * as Constants from '../../services/constants'
 
 //import pages
-import CarList from '../../pages/Car/CarList';
-import CarSearch from '../../pages/Car/CarSearch';
+const CarListLazy = lazy(()=> import ('../../pages/Car/CarList'))
+const CarSearchLazy = lazy(()=> import ('../../pages/Car/CarSearch'))
 
 const CarListRoute = { 
     key: 'CarList',
     path: '/car/list',
-    component: CarList
+    component: CarListLazy
 }
 
 const CarSearchRoute = {
     key: 'CarSearch',
     path: '/car/search',
-    component: CarSearch
+    component: CarSearchLazy
 }
 
 const CarRoutes = userKind => {

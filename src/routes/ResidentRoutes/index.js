@@ -1,24 +1,26 @@
+import {lazy} from 'react';
 import * as Constants from '../../services/constants'
 
+
 //import pages
-import ResidentSearch from '../../pages/Resident/ResidentSearch'
-import ResidentAdd from '../../pages/Resident/ResidentAdd';
-import ResidentEdit from '../../pages/Resident/ResidentEdit';
+const ResidentSearchLazy = lazy(()=> import ('../../pages/Resident/ResidentSearch'))
+const ResidentAddLazy = lazy(()=> import ('../../pages/Resident/ResidentAdd'))
+const ResidentEditLazy = lazy(()=> import ('../../pages/Resident/ResidentEdit'))
 
 const ResidentListRoute = {
     key: 'residentList',
     path: '/residents/list',
-    component: ResidentSearch
+    component: ResidentSearchLazy
 }
 const ResidentAddRoute = {
     key: 'residentAdd',
     path: '/residents/add',
-    component: ResidentAdd
+    component: ResidentAddLazy
 }
 const ResidentEditRoute = {
     key: 'residentEdit',
     path: '/residents/edit',
-    component: ResidentEdit
+    component: ResidentEditLazy
 }
 
 const ResidentRoutes = userKind => {

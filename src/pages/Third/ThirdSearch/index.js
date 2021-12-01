@@ -289,7 +289,7 @@ const ThirdSearch = (props) => {
                                         <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                                         <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
                                         {
-                                            user.user_kind==Constants.USER_KIND['SUPERINTENDENT'] &&
+                                            user.user_kind===Constants.USER_KIND['SUPERINTENDENT'] &&
                                             <IconButtons
                                                 action1={()=>editUnit(el)}
                                                 action2={()=>delUnitModal(el)}

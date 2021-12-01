@@ -1,24 +1,25 @@
+import {lazy} from 'react';
 import * as Constants from '../../services/constants'
 
 //import pages
-import CondoList from '../../pages/Condo/CondoList'
-import CondoAdd from '../../pages/Condo/CondoAdd'
-import CondoEdit from '../../pages/Condo/CondoEdit'
+const CondoListLazy = lazy(()=> import ('../../pages/Condo/CondoList'))
+const CondoAddLazy = lazy(()=> import ('../../pages/Condo/CondoAdd'))
+const CondoEditLazy = lazy(()=> import ('../../pages/Condo/CondoEdit'))
 
 const CondoListRoute = {
     key: 'CondoList',
     path: '/condo/list',
-    component: CondoList
+    component: CondoListLazy
 }
 const CondoAddRoute = {
     key: 'CondoAdd',
     path: '/condo/add',
-    component: CondoAdd
+    component: CondoAddLazy
 }
 const CondoEditRoute = {
     key: 'CondoEdit',
     path: '/condo/edit',
-    component: CondoEdit
+    component: CondoEditLazy
 }
 
 const CondoRoutes = userKind => {

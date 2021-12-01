@@ -1,30 +1,26 @@
+import {lazy} from 'react';
 import * as Constants from '../../services/constants'
 
 //import pages
-//import ThirdList from "../../pages/Third/ThirdList";
-import ThirdAdd from "../../pages/Third/ThirdAdd";
-import ThirdEdit from "../../pages/Third/ThirdEdit";
-import ThirdSearch from '../../pages/Third/ThirdSearch';
+const ThirdAddLazy = lazy(()=> import ('../../pages/Third/ThirdAdd'))
+const ThirdEditLazy = lazy(()=> import ('../../pages/Third/ThirdEdit'))
+const ThirdSearchLazy = lazy(()=> import ('../../pages/Third/ThirdSearch'))
 
 const ThirdListRoute = {
     key: 'ThirdList',
     path: '/thirds/list',
-    component: ThirdSearch
+    component: ThirdSearchLazy
 }
 const ThirdAddRoute = {
     key: 'ThirdAdd',
     path: '/thirds/add',
-    component: ThirdAdd
+    component: ThirdAddLazy
 }
-// const ThirdSearchRoute = {
-//     key: 'ThirdSearch',
-//     path: '/thirds/search',
-//     component: ThirdSearch
-// }
+
 const ThirdEditRoute = {
     key: 'ThirdEdit',
     path: '/thirds/edit',
-    component: ThirdEdit
+    component: ThirdEditLazy
 }
 
 const ThirdRoutes = userKind => {

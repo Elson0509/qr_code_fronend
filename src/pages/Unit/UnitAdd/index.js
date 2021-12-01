@@ -57,7 +57,7 @@ const UnitAdd = (props) => {
 
     const selectBlocoHandler = bloco =>{
         setModalSelectBloco(false)
-        if(bloco.id!='0'){
+        if(bloco.id!=='0'){
           setBloco(bloco.name)
           setSelectedBloco(bloco)
           setReadOnlyBlocoInput(true)

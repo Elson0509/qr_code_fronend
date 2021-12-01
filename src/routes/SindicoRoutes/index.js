@@ -1,18 +1,19 @@
+import {lazy} from 'react';
 import * as Constants from '../../services/constants'
 
 //import pages
-import SindicoList from '../../pages/Sindico/SindicoList'
-import SindicoAdd from '../../pages/Sindico/SindicoAdd'
+const SindicoListLazy = lazy(()=> import ('../../pages/Sindico/SindicoList'))
+const SindicoAddLazy = lazy(()=> import ('../../pages/Sindico/SindicoAdd'))
 
 const SindicoListRoute = {
     key: 'SindicoList',
     path: '/sindico/list',
-    component: SindicoList
+    component: SindicoListLazy
 }
 const SindicoAddRoute = {
     key: 'SindicoAdd',
     path: '/sindico/add',
-    component: SindicoAdd
+    component: SindicoAddLazy
 }
 
 

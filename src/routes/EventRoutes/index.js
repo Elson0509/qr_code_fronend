@@ -1,18 +1,19 @@
+import {lazy} from 'react';
 import * as Constants from '../../services/constants'
 
 //import pages
-import EventList from '../../pages/Event/EventList';
-import EventAdd from '../../pages/Event/EventAdd';
+const EventListLazy = lazy(()=> import ('../../pages/Event/EventList'))
+const EventAddLazy = lazy(()=> import ('../../pages/Event/EventAdd'))
 
 const EventListRoute = {
     key: 'EventList',
     path: '/events/list',
-    component: EventList
+    component: EventListLazy
 }
 const EventAddRoute = {
     key: 'EventAdd',
     path: '/events/add',
-    component: EventAdd
+    component: EventAddLazy
 }
 
 const EventRoutes = userKind => {
