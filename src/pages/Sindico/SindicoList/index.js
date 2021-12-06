@@ -24,7 +24,7 @@ const SindicoList = () => {
         link: '/'
       },
       {
-        name: 'Listar Síndicos',
+        name: 'Listar Administradores',
         link: '/sindico/list'
       }
     ]
