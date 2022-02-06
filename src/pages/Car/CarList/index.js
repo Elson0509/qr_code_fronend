@@ -5,7 +5,7 @@ import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import IconButtons from '../../../components/Buttons/IconButtons';
 import ConfirmModal from '../../../components/Modals/ConfirmModal';
-import Image from '../../../components/Image'
+import ImageCloud from '../../../components/ImageCloud'
 import ImageModal from '../../../components/Modals/ImageModal';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
@@ -132,7 +132,7 @@ const CarList = () => {
                   <CardBody>
                     <div style={{border: '1px solid #ddd', paddingBottom: '10px'}}>
                       <div style={{display: 'flex', justifyContent:'center', paddingTop: '15px', cursor: 'pointer'}} onClick={()=>onClickPhotoHandler(el)} >
-                        <Image id={el.id} height={150}/>
+                        <ImageCloud id={el.photo_id} height={150}/>
                       </div>
                       <div className='p-2'>
                         {!!el.created_at && <p className='pt-2 m-0'><span className='enfase'>Data:</span> {Utils.printDateAndHour(new Date(el.created_at))}</p>}

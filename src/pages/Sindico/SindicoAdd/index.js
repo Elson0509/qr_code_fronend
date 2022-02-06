@@ -50,7 +50,6 @@ const SindicoAdd = (props) => {
       api.get(`condo`)
       .then(resp=>{
         setCondos(resp.data)
-        console.log(resp.data)
         if(resp.data.length)
           setUserBeingAdded({...userBeingAdded, condo_id: resp.data[0].id})
       })
@@ -82,7 +81,8 @@ const SindicoAdd = (props) => {
         Utils.resizeFile(userBeingAdded.pic).then(data=>{
           api.post(`upload`,{
             base64Image: data,
-            fileName: newId
+            fileName: newId,
+            type: 'user'
           })
           .then(res=>{
             console.log('success', res.data)
@@ -118,7 +118,7 @@ const SindicoAdd = (props) => {
         user_id_last_modify: user.id,
       })
       .then((res)=>{
-        uploadImg(res.data.userId)
+        uploadImg(res.data.user.id)
         setErrorMessage('')
         setErrorAddResidentMessage('')
         toast.info('Cadastro realizado', Constants.TOAST_CONFIG)

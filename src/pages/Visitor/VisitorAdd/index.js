@@ -206,7 +206,8 @@ const VisitorAdd = (props) => {
           Utils.resizeFile(el.pic).then(data=>{
             api.post(`upload`,{
               base64Image: data,
-              fileName: el.id
+              fileName: el.id,
+              type: 'user'
             })
             .then(res=>{
               console.log('success', res.data)

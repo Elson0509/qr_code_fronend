@@ -15,6 +15,8 @@ export const TOAST_CONFIG = {
     progress: undefined,
 }
 
+export const PREFIX_IMG_GOOGLE_CLOUD = 'https://drive.google.com/uc?export=view&id='
+
 export const MIN_PASSWORD_SIZE = 6
 
 export const borderTextInputWidth = 3

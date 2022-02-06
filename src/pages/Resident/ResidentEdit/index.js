@@ -6,6 +6,7 @@ import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import Image from '../../../components/Image'
 import ImageBlob from '../../../components/ImageBlob'
+import ImageCloud from '../../../components/ImageCloud';
 import BlocoModal from '../../../components/Modals/BlocoModal'
 import UnitModal from '../../../components/Modals/UnitModal'
 import Icon from '../../../components/Icon'
@@ -20,452 +21,456 @@ import PicModal from '../../../components/Modals/PicModal'
 import CropImageModal from '../../../components/Modals/CropImageModal';
 
 const ResidentEdit = (props) => {
-    //if there is not state in router, go to dashboard
-    if(!props.location?.state?.residents){
-      props.history.push('/dashboard')
+  //if there is not state in router, go to dashboard
+  if (!props.location?.state?.residents) {
+    props.history.push('/dashboard')
+  }
+
+  const { user } = useAuth()
+  const [units, setUnits] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [residents, setResidents] = useState(props.location.state?.residents)
+  const [vehicles, setVehicles] = useState(props.location.state?.vehicles)
+  const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
+  const [errorAddVehicleMessage, setErrorAddVehicleMessage] = useState('')
+  const [vehicleBeingAdded, setVehicleBeingAdded] = useState({ id: "0", maker: '', model: '', color: '', plate: '' })
+  const [userBeingAdded, setUserBeingAdded] = useState({ id: "0", name: '', identification: '', email: '', pic: '' })
+  const [modalPic, setModalPic] = useState(false)
+  const [modalCrop, setModalCrop] = useState(false)
+  const [modalSelectBloco, setModalSelectBloco] = useState(false)
+  const [modalSelectUnit, setModalSelectUnit] = useState(false)
+  const [selectedBloco, setSelectedBloco] = useState(props.location.state?.selectedBloco)
+  const [selectedUnit, setSelectedUnit] = useState(props.location.state?.selectedUnit)
+  const [isAddingResident, setIsAddingResident] = useState(false)
+  const [isAddingVehicle, setIsAddingVehicle] = useState(false)
+  const [takePic, setTakePic] = useState(false)
+  const [pathImgToCrop, setPathImgToCrop] = useState('')
+  const [finished, setFinished] = useState(false)
+
+  const paperClipImageHandler = imgPath => {
+    setPathImgToCrop(imgPath)
+    setModalCrop(true)
+  }
+
+  console.log(props.location.state?.residents)
+
+  const breadcrumb = [
+    {
+      name: 'Painel Principal',
+      link: '/'
+    },
+    {
+      name: 'Editar Morador',
+      link: '/residents/edit'
     }
+  ]
 
-    const {user} = useAuth()
-    const [units, setUnits] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [residents, setResidents] = useState(props.location.state?.residents)
-    const [vehicles, setVehicles] = useState(props.location.state?.vehicles)
-    const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
-    const [errorAddVehicleMessage, setErrorAddVehicleMessage] = useState('')
-    const [vehicleBeingAdded, setVehicleBeingAdded] = useState({id: "0", maker:'', model:'', color:'', plate:''})
-    const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', email: '', pic: ''})
-    const [modalPic, setModalPic] = useState(false)
-    const [modalCrop, setModalCrop] = useState(false)
-    const [modalSelectBloco, setModalSelectBloco] = useState(false)
-    const [modalSelectUnit, setModalSelectUnit] = useState(false)
-    const [selectedBloco, setSelectedBloco] = useState(props.location.state?.selectedBloco)
-    const [selectedUnit, setSelectedUnit] = useState(props.location.state?.selectedUnit)
-    const [isAddingResident, setIsAddingResident] = useState(false)
-    const [isAddingVehicle, setIsAddingVehicle] = useState(false)
-    const [takePic, setTakePic] = useState(false)
-    const [pathImgToCrop, setPathImgToCrop] = useState('')
-    const [finished, setFinished] = useState(false)
-
-    const paperClipImageHandler = imgPath => {
-      setPathImgToCrop(imgPath)
-      setModalCrop(true)
-    }
-
-    const breadcrumb=[
-        {
-            name: 'Painel Principal',
-            link: '/'
-        },
-        {
-            name: 'Editar Morador',
-            link: '/residents/edit'
-        }
-    ]
-
-    useEffect(()=>{
-        api.get(`condo/${user.condo_id}`)
-          .then(res=>{
-            setUnits(res.data)
-            setModalSelectBloco(false)
-          })
-          .catch(err=>{
-            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
-          })
-          .finally(()=>{
-            setLoading(false)
-          })
-    },[])
-
-    const closeModalCropHandler = _ => {
-      setPathImgToCrop('')
-      setModalCrop('')
-    }
-
-    const removeResident = index => {
-        let residentsCopy = [...residents]
-        residentsCopy.splice(index, 1)
-        setResidents(residentsCopy)
-    }
-  
-    const removeVehicle = index => {
-        const vehiclesCopy = [...vehicles]
-        vehiclesCopy.splice(index, 1)
-        setVehicles(vehiclesCopy)
-    }
-
-    const addResidentHandler = _ =>{
-        if(!userBeingAdded.name){
-          return setErrorAddResidentMessage('Nome não pode estar vazio.')
-        }
-        if(!userBeingAdded.email){
-          return setErrorAddResidentMessage('Email não pode estar vazio.')
-        }
-        if(!Utils.validateEmail(userBeingAdded.email)){
-          return setErrorAddResidentMessage('Email não é válido.')
-        }
-        setResidents(prev=> [...prev, userBeingAdded])
-        setErrorAddResidentMessage('')
-        setUserBeingAdded({id: "0", name: '', identification: '', email: '', pic: ''})
-        setIsAddingResident(false)
-    }
-
-    const cancelAddResidentHandler = _ => {
-      setIsAddingResident(false)
-      setUserBeingAdded({id: '0', name: '', identification: '', email: '', pic: ''})
-    }
-
-    const addVehicleHandler = _ =>{
-        if(!vehicleBeingAdded.maker){
-          return setErrorAddVehicleMessage('Fabricante não pode estar vazio.')
-        }
-        if(!vehicleBeingAdded.model){
-          return setErrorAddVehicleMessage('Modelo não pode estar vazio.')
-        }
-        if(!vehicleBeingAdded.color){
-          return setErrorAddVehicleMessage('Cor não pode estar vazia.')
-        }
-        if(!vehicleBeingAdded.plate){
-          return setErrorAddVehicleMessage('Placa não pode estar vazia.')
-        }
-        if(!Utils.validatePlateFormat(vehicleBeingAdded.plate)){
-          return setErrorAddVehicleMessage('Formato de placa inválido.')
-        }
-        setVehicles(prev=> [...prev, vehicleBeingAdded])
-        setErrorAddVehicleMessage('')
-        setVehicleBeingAdded({id: '0', maker:'', model:'', color:'', plate:''})
-        setIsAddingVehicle(false)
-    }
-
-    const cancelVehicleHandler = _ => {
-        setVehicleBeingAdded({id: '0', maker:'', model:'', color:'', plate:''})
-        setIsAddingVehicle(false)
-    }
-
-    const selectBlocoHandler = bloco => {
-        setSelectedBloco(bloco)
+  useEffect(() => {
+    api.get(`condo/${user.condo_id}`)
+      .then(res => {
+        setUnits(res.data)
         setModalSelectBloco(false)
-        setModalSelectUnit(true)
-    }
+      })
+      .catch(err => {
+        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
 
-    const selectUnitHandler = unit => {
-        setSelectedUnit(unit)
-        setModalSelectUnit(false)
-        setLoading(true)
-        api.get(`user/unit/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
-          .then(res=>{
-            setResidents(res.data)
-            api.get(`vehicle/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
-              .then(res2=>{
-                setVehicles(res2.data)
-              })
-              .catch(err2=>{
-                toast.error(err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA2)', Constants.TOAST_CONFIG)
-                setSelectedUnit(null)
-                setSelectedBloco(null)
-              })
+  const closeModalCropHandler = _ => {
+    setPathImgToCrop('')
+    setModalCrop('')
+  }
+
+  const removeResident = index => {
+    let residentsCopy = [...residents]
+    residentsCopy.splice(index, 1)
+    setResidents(residentsCopy)
+  }
+
+  const removeVehicle = index => {
+    const vehiclesCopy = [...vehicles]
+    vehiclesCopy.splice(index, 1)
+    setVehicles(vehiclesCopy)
+  }
+
+  const addResidentHandler = _ => {
+    if (!userBeingAdded.name) {
+      return setErrorAddResidentMessage('Nome não pode estar vazio.')
+    }
+    if (!userBeingAdded.email) {
+      return setErrorAddResidentMessage('Email não pode estar vazio.')
+    }
+    if (!Utils.validateEmail(userBeingAdded.email)) {
+      return setErrorAddResidentMessage('Email não é válido.')
+    }
+    setResidents(prev => [...prev, userBeingAdded])
+    setErrorAddResidentMessage('')
+    setUserBeingAdded({ id: "0", name: '', identification: '', email: '', pic: '' })
+    setIsAddingResident(false)
+  }
+
+  const cancelAddResidentHandler = _ => {
+    setIsAddingResident(false)
+    setUserBeingAdded({ id: '0', name: '', identification: '', email: '', pic: '' })
+  }
+
+  const addVehicleHandler = _ => {
+    if (!vehicleBeingAdded.maker) {
+      return setErrorAddVehicleMessage('Fabricante não pode estar vazio.')
+    }
+    if (!vehicleBeingAdded.model) {
+      return setErrorAddVehicleMessage('Modelo não pode estar vazio.')
+    }
+    if (!vehicleBeingAdded.color) {
+      return setErrorAddVehicleMessage('Cor não pode estar vazia.')
+    }
+    if (!vehicleBeingAdded.plate) {
+      return setErrorAddVehicleMessage('Placa não pode estar vazia.')
+    }
+    if (!Utils.validatePlateFormat(vehicleBeingAdded.plate)) {
+      return setErrorAddVehicleMessage('Formato de placa inválido.')
+    }
+    setVehicles(prev => [...prev, vehicleBeingAdded])
+    setErrorAddVehicleMessage('')
+    setVehicleBeingAdded({ id: '0', maker: '', model: '', color: '', plate: '' })
+    setIsAddingVehicle(false)
+  }
+
+  const cancelVehicleHandler = _ => {
+    setVehicleBeingAdded({ id: '0', maker: '', model: '', color: '', plate: '' })
+    setIsAddingVehicle(false)
+  }
+
+  const selectBlocoHandler = bloco => {
+    setSelectedBloco(bloco)
+    setModalSelectBloco(false)
+    setModalSelectUnit(true)
+  }
+
+  const selectUnitHandler = unit => {
+    setSelectedUnit(unit)
+    setModalSelectUnit(false)
+    setLoading(true)
+    api.get(`user/unit/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
+      .then(res => {
+        setResidents(res.data)
+        api.get(`vehicle/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
+          .then(res2 => {
+            setVehicles(res2.data)
           })
-          .catch(err=>{
-            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA3)', Constants.TOAST_CONFIG)
+          .catch(err2 => {
+            toast.error(err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA2)', Constants.TOAST_CONFIG)
             setSelectedUnit(null)
             setSelectedBloco(null)
           })
-          .finally(()=>{
-            setLoading(false)
-          })
-    }
-
-    const clearUnit = _ =>{
-        setSelectedBloco(null)
+      })
+      .catch(err => {
+        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA3)', Constants.TOAST_CONFIG)
         setSelectedUnit(null)
-    }
+        setSelectedBloco(null)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
 
-    const uploadImgs = newResidents =>{
-        const residentsPics = []
-        newResidents.forEach(nr => {
-          residents.forEach(re => {
-            if(nr.email === re.email && 
-                nr.name === re.name && 
-                nr.identification === re.identification &&
-                re.pic !== "")
-                residentsPics.push({id:nr.id, pic: re.pic})
-          })
-        })
-        residentsPics.forEach(el=>{
-          //resizing and uploading
-          Utils.resizeFile(el.pic).then(data=>{
-            api.post(`upload`,{
-              base64Image: data,
-              fileName: el.id
-            })
-            .then(res=>{
-              console.log('success', res.data)
-            })
-            .catch(err=>{
-              console.log('error', err.response)
-            })
-          })
-          
-        })
-    }
+  const clearUnit = _ => {
+    setSelectedBloco(null)
+    setSelectedUnit(null)
+  }
 
-    const confirmHandler = _ =>{
-        setLoading(true)
-        api.post('vehicle/unit', {
+  const uploadImgs = newResidents => {
+    const residentsPics = []
+    newResidents.forEach(nr => {
+      residents.forEach(re => {
+        if (nr.email === re.email &&
+          nr.name === re.name &&
+          nr.identification === re.identification &&
+          re.pic !== "")
+          residentsPics.push({ id: nr.id, pic: re.pic })
+      })
+    })
+    residentsPics.forEach(el => {
+      //resizing and uploading
+      Utils.resizeFile(el.pic).then(data => {
+        api.post(`upload`, {
+          base64Image: data,
+          fileName: el.id,
+          type: 'user'
+        })
+          .then(res => {
+            console.log('success', res.data)
+          })
+          .catch(err => {
+            console.log('error', err.response)
+          })
+      })
+
+    })
+  }
+
+  const confirmHandler = _ => {
+    setLoading(true)
+    api.post('vehicle/unit', {
+      unit_id: selectedUnit.id,
+      vehicles,
+      user_id_last_modify: user.id
+    })
+      .then((res) => {
+        api.post('user/resident/unit', {
           unit_id: selectedUnit.id,
-          vehicles,
+          residents,
+          condo_id: user.condo_id,
           user_id_last_modify: user.id
         })
-        .then((res)=>{
-          api.post('user/resident/unit', {
-            unit_id: selectedUnit.id,
-            residents, 
-            condo_id: user.condo_id, 
-            user_id_last_modify: user.id
+          .then(res2 => {
+            uploadImgs(res2.data.addedResidents)
+            toast.info(res2.data.message || 'Registro realizado com sucesso.', Constants.TOAST_CONFIG)
+            setSelectedUnit(null)
+            setModalSelectBloco(null)
+            setFinished(true)
           })
-            .then(res2=>{
-              uploadImgs(res2.data.addedResidents)
-              toast.info(res2.data.message || 'Registro realizado com sucesso.', Constants.TOAST_CONFIG)
-              setSelectedUnit(null)
-              setModalSelectBloco(null)
-              setFinished(true)
-            })
-            .catch(err2=>{
-              toast.error(err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA4)', Constants.TOAST_CONFIG)
-            })
+          .catch(err2 => {
+            toast.error(err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA4)', Constants.TOAST_CONFIG)
           })
-          .catch((err)=>{
-            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA5)', Constants.TOAST_CONFIG)
-          })
-          .finally(()=>{
-            setLoading(false)
-          })
-    }
+      })
+      .catch((err) => {
+        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA5)', Constants.TOAST_CONFIG)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
 
-    const takePicHandler = _ => {
-      setTakePic(true)
-      setModalPic(true)
-    }
+  const takePicHandler = _ => {
+    setTakePic(true)
+    setModalPic(true)
+  }
 
-    const confirmTakePick = _ => {
-      setTakePic(false)
-      setModalPic(false)
-    }
+  const confirmTakePick = _ => {
+    setTakePic(false)
+    setModalPic(false)
+  }
 
-    const toggleModalPic = _ => {
-      setModalPic(false)
-      setTakePic(false)
-    }
+  const toggleModalPic = _ => {
+    setModalPic(false)
+    setTakePic(false)
+  }
 
-    if(loading){
-        return (
-            <Body breadcrumb={breadcrumb}>
-                <Spinner color="primary"/>
-            </Body>
-        )
-    }
-
+  if (loading) {
     return (
-        <Body breadcrumb={breadcrumb}>
-          {!finished && <Fragment>
-            {/*units*/}
-            <SelectButton 
-              icon='building'
-              text='Selecionar Unidade'
-              //action={()=>setModalSelectBloco(true)}
-            >
-              {!!selectedBloco && !!selectedUnit && (
-                <ul className="list-group">
-                  <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start">
-                    <span>Bloco {selectedBloco.name} unidade {selectedUnit.number}</span>
-                    <span className={classes.CloseIcon} onClick={()=>clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor}/></span>
-                  </li>
-                </ul>
-              )}
-            </SelectButton>
-            {/*residents*/}
-            {!!selectedBloco && !!selectedUnit && (
-              <SelectButton 
-                icon='user'
-                text='Adicionar Morador'
-                action={()=>setIsAddingResident(true)}
-              >
-                {isAddingResident && (
-                  <form className='pb-4'>
-                    <FormInput
-                      label='Nome*:'
-                      value={userBeingAdded.name}
-                      changeValue={(val) => setUserBeingAdded({...userBeingAdded, name: val})}
-                    />
-                    <FormInput
-                      label='Identidade:'
-                      value={userBeingAdded.identification}
-                      changeValue={(val) => setUserBeingAdded({...userBeingAdded, identification: val})}
-                    />
-                    <FormInput
-                      label='Email*:'
-                      value={userBeingAdded.email}
-                      type='email'
-                      changeValue={(val) => setUserBeingAdded({...userBeingAdded, email: val})}
-                    />
-                    {!!userBeingAdded.pic &&
-                      <div className={classes.ImgUserTookPic}>
-                        <img src={URL.createObjectURL(userBeingAdded.pic)} height={120} alt='user'/>
-                      </div>
-                    }
-                    {!userBeingAdded.pic && 
-                      <ImportPhotoButtons 
-                        setImgPath={(img)=>setUserBeingAdded({...userBeingAdded, pic: img})} 
-                        paperClipImageHandler={(path)=>paperClipImageHandler(path)}
-                        setErrorMessage={setErrorAddResidentMessage}
-                        cameraClick={() => takePicHandler()}/>
-                    }
-                    {!!errorAddResidentMessage && 
-                      <div className="alert alert-danger text-center mt-2" role="alert">
-                        {errorAddResidentMessage}
-                      </div>
-                    }
-                    <ActionButtons
-                      textButton1='Confirmar'
-                      textButton2='Cancelar'
-                      action1={()=>addResidentHandler()}
-                      action2={()=>cancelAddResidentHandler()}
-                    />
-                  </form>
-                )}
-                <ul className="list-group">
-                {
-                  !!residents.length && residents.map((el, ind)=>(
-                    <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start" key={el.id + el.name + el.email}>
-                      <div className={classes.ResidentBox}>
-                        <div className={classes.ResidentImage}>
-                          {
-                            el.id==='0' ?
-                            <ImageBlob path={el.pic} height={100}/>
-                            :
-                            <Image id={el.id} height={100}/>
-                          }
-                          
-                        </div>
-                        <div>
-                          <p className={classes.Text}><span className={classes.Bold}>Nome:</span> {el.name}</p>
-                          <p className={classes.Text}><span className={classes.Bold}>Email:</span> {el.email}</p>
-                        </div>
-                      </div>
-                      <span className={classes.CloseIcon} onClick={()=>removeResident(ind)}><Icon icon='window-close' color={Constants.closeButtonCollor}/></span>
-                    </li>
-                  ))
+      <Body breadcrumb={breadcrumb}>
+        <Spinner color="primary" />
+      </Body>
+    )
+  }
+
+  return (
+    <Body breadcrumb={breadcrumb}>
+      {!finished && <Fragment>
+        {/*units*/}
+        <SelectButton
+          icon='building'
+          text='Selecionar Unidade'
+        //action={()=>setModalSelectBloco(true)}
+        >
+          {!!selectedBloco && !!selectedUnit && (
+            <ul className="list-group">
+              <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start">
+                <span>Bloco {selectedBloco.name} unidade {selectedUnit.number}</span>
+                <span className={classes.CloseIcon} onClick={() => clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span>
+              </li>
+            </ul>
+          )}
+        </SelectButton>
+        {/*residents*/}
+        {!!selectedBloco && !!selectedUnit && (
+          <SelectButton
+            icon='user'
+            text='Adicionar Morador'
+            action={() => setIsAddingResident(true)}
+          >
+            {isAddingResident && (
+              <form className='pb-4'>
+                <FormInput
+                  label='Nome*:'
+                  value={userBeingAdded.name}
+                  changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, name: val })}
+                />
+                <FormInput
+                  label='Identidade:'
+                  value={userBeingAdded.identification}
+                  changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, identification: val })}
+                />
+                <FormInput
+                  label='Email*:'
+                  value={userBeingAdded.email}
+                  type='email'
+                  changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, email: val })}
+                />
+                {!!userBeingAdded.pic &&
+                  <div className={classes.ImgUserTookPic}>
+                    <img src={URL.createObjectURL(userBeingAdded.pic)} height={120} alt='user' />
+                  </div>
                 }
-                </ul>
-              </SelectButton>
-              )
-            }
-            {/*vehicles*/}
-            {!!selectedBloco && !!selectedUnit && (
-              <SelectButton 
-                icon='car'
-                text='Adicionar Veículo'
-                action={()=>setIsAddingVehicle(true)}
-              >
-                {isAddingVehicle && (
-                  <form className='pb-4'>
-                    <FormInput
-                      label='Fabricante*:'
-                      value={vehicleBeingAdded.maker}
-                      changeValue={(val) => setVehicleBeingAdded({...vehicleBeingAdded, maker: val})}
-                    />
-                    <FormInput
-                      label='Modelo*:'
-                      value={vehicleBeingAdded.model}
-                      changeValue={(val) => setVehicleBeingAdded({...vehicleBeingAdded, model: val})}
-                    />
-                    <FormInput
-                      label='Cor*:'
-                      value={vehicleBeingAdded.color}
-                      changeValue={(val) => setVehicleBeingAdded({...vehicleBeingAdded, color: val})}
-                    />
-                    <FormInput
-                      label='Placa*:'
-                      value={vehicleBeingAdded.plate}
-                      changeValue={(val) => setVehicleBeingAdded({...vehicleBeingAdded, plate: val})}
-                    />
-                    {!!errorAddVehicleMessage && 
-                      <div className="alert alert-danger text-center mt-2" role="alert">
-                        {errorAddVehicleMessage}
+                {!userBeingAdded.pic &&
+                  <ImportPhotoButtons
+                    setImgPath={(img) => setUserBeingAdded({ ...userBeingAdded, pic: img })}
+                    paperClipImageHandler={(path) => paperClipImageHandler(path)}
+                    setErrorMessage={setErrorAddResidentMessage}
+                    cameraClick={() => takePicHandler()} />
+                }
+                {!!errorAddResidentMessage &&
+                  <div className="alert alert-danger text-center mt-2" role="alert">
+                    {errorAddResidentMessage}
+                  </div>
+                }
+                <ActionButtons
+                  textButton1='Confirmar'
+                  textButton2='Cancelar'
+                  action1={() => addResidentHandler()}
+                  action2={() => cancelAddResidentHandler()}
+                />
+              </form>
+            )}
+            <ul className="list-group">
+              {
+                !!residents.length && residents.map((el, ind) => (
+                  <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start" key={el.id + el.name + el.email}>
+                    <div className={classes.ResidentBox}>
+                      <div className={classes.ResidentImage}>
+                        {
+                          el.id === '0' &&
+                          <ImageBlob path={el.pic} height={100} />
+                        }
+                        {
+                          !!el.photo_id &&
+                          <ImageCloud id={el.photo_id} height={100} />
+                        }
                       </div>
-                    }
-                    <ActionButtons
-                      textButton1='Confirmar'
-                      textButton2='Cancelar'
-                      action1={()=>addVehicleHandler()}
-                      action2={()=>cancelVehicleHandler()}
-                    />
-                  </form>
-                )}
-                <ul className="list-group">
-                {
-                  !!vehicles.length && vehicles.map((el, ind)=>(
-                    <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start" key={el.id + el.color + el.model + el.plate + el.maker}>
                       <div>
-                        <p className={classes.Text}>{el.maker} {el.model} {el.color}</p>
-                        <p className={classes.Text}><span className={classes.Bold}>Placa:</span> {el.plate}</p>
+                        <p className={classes.Text}><span className={classes.Bold}>Nome:</span> {el.name}</p>
+                        <p className={classes.Text}><span className={classes.Bold}>Email:</span> {el.email}</p>
                       </div>
-                      <span className={classes.CloseIcon} onClick={()=>removeVehicle(ind)}><Icon icon='window-close' color={Constants.closeButtonCollor}/></span>
-                    </li>
-                  ))
+                    </div>
+                    <span className={classes.CloseIcon} onClick={() => removeResident(ind)}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span>
+                  </li>
+                ))
+              }
+            </ul>
+          </SelectButton>
+        )
+        }
+        {/*vehicles*/}
+        {!!selectedBloco && !!selectedUnit && (
+          <SelectButton
+            icon='car'
+            text='Adicionar Veículo'
+            action={() => setIsAddingVehicle(true)}
+          >
+            {isAddingVehicle && (
+              <form className='pb-4'>
+                <FormInput
+                  label='Fabricante*:'
+                  value={vehicleBeingAdded.maker}
+                  changeValue={(val) => setVehicleBeingAdded({ ...vehicleBeingAdded, maker: val })}
+                />
+                <FormInput
+                  label='Modelo*:'
+                  value={vehicleBeingAdded.model}
+                  changeValue={(val) => setVehicleBeingAdded({ ...vehicleBeingAdded, model: val })}
+                />
+                <FormInput
+                  label='Cor*:'
+                  value={vehicleBeingAdded.color}
+                  changeValue={(val) => setVehicleBeingAdded({ ...vehicleBeingAdded, color: val })}
+                />
+                <FormInput
+                  label='Placa*:'
+                  value={vehicleBeingAdded.plate}
+                  changeValue={(val) => setVehicleBeingAdded({ ...vehicleBeingAdded, plate: val })}
+                />
+                {!!errorAddVehicleMessage &&
+                  <div className="alert alert-danger text-center mt-2" role="alert">
+                    {errorAddVehicleMessage}
+                  </div>
                 }
-                </ul>
-              </SelectButton>
-              )
-            }
-            {!!selectedBloco && !!selectedUnit && (
-              <ActionButtons
-                textButton1='Atualizar'
-                textButton2='Cancelar'
-                action1={()=>confirmHandler()}
-                action2={()=>props.history.push('/dashboard')}
-              />
-              )
-            }
-            {
-              !!units.length && 
-              <BlocoModal
-                blocos={units}
-                modal={modalSelectBloco}
-                toggle={setModalSelectBloco}
-                action={(el)=>{selectBlocoHandler(el)}}
-              />
-            }
-            {
-              !!selectedBloco && 
-              <UnitModal
-                bloco={selectedBloco}
-                modal={modalSelectUnit}
-                toggle={setModalSelectUnit}
-                action={(el)=>{selectUnitHandler(el)}}
-              />
-            }
-            {
-              takePic && <PicModal 
-                modal={modalPic}
-                toggle={()=> toggleModalPic()}
-                setImgPath={(img)=>setUserBeingAdded({...userBeingAdded, pic: img})}
-                confirmTakePick={confirmTakePick}
-                takePic={takePic}
-              />
-            }
-            {
-              modalCrop && 
-              <CropImageModal
-                modal={modalCrop}
-                closeModalCropHandler={closeModalCropHandler}
-                pathImgToCrop={pathImgToCrop}
-                setImgPath={(img)=>setUserBeingAdded({...userBeingAdded, pic: img})}
-                setModalCrop={setModalCrop}
-              />
-            }
-          </Fragment>}
-        </Body>
-    );
+                <ActionButtons
+                  textButton1='Confirmar'
+                  textButton2='Cancelar'
+                  action1={() => addVehicleHandler()}
+                  action2={() => cancelVehicleHandler()}
+                />
+              </form>
+            )}
+            <ul className="list-group">
+              {
+                !!vehicles.length && vehicles.map((el, ind) => (
+                  <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start" key={el.id + el.color + el.model + el.plate + el.maker}>
+                    <div>
+                      <p className={classes.Text}>{el.maker} {el.model} {el.color}</p>
+                      <p className={classes.Text}><span className={classes.Bold}>Placa:</span> {el.plate}</p>
+                    </div>
+                    <span className={classes.CloseIcon} onClick={() => removeVehicle(ind)}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span>
+                  </li>
+                ))
+              }
+            </ul>
+          </SelectButton>
+        )
+        }
+        {!!selectedBloco && !!selectedUnit && (
+          <ActionButtons
+            textButton1='Atualizar'
+            textButton2='Cancelar'
+            action1={() => confirmHandler()}
+            action2={() => props.history.push('/dashboard')}
+          />
+        )
+        }
+        {
+          !!units.length &&
+          <BlocoModal
+            blocos={units}
+            modal={modalSelectBloco}
+            toggle={setModalSelectBloco}
+            action={(el) => { selectBlocoHandler(el) }}
+          />
+        }
+        {
+          !!selectedBloco &&
+          <UnitModal
+            bloco={selectedBloco}
+            modal={modalSelectUnit}
+            toggle={setModalSelectUnit}
+            action={(el) => { selectUnitHandler(el) }}
+          />
+        }
+        {
+          takePic && <PicModal
+            modal={modalPic}
+            toggle={() => toggleModalPic()}
+            setImgPath={(img) => setUserBeingAdded({ ...userBeingAdded, pic: img })}
+            confirmTakePick={confirmTakePick}
+            takePic={takePic}
+          />
+        }
+        {
+          modalCrop &&
+          <CropImageModal
+            modal={modalCrop}
+            closeModalCropHandler={closeModalCropHandler}
+            pathImgToCrop={pathImgToCrop}
+            setImgPath={(img) => setUserBeingAdded({ ...userBeingAdded, pic: img })}
+            setModalCrop={setModalCrop}
+          />
+        }
+      </Fragment>}
+    </Body>
+  );
 };
 
 export default ResidentEdit;

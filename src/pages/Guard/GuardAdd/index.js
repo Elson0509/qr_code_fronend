@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import Body from '../../../layout/Body';
+import React, { useState } from 'react'
+import Body from '../../../layout/Body'
 import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
@@ -11,7 +11,7 @@ import classes from './GuardAdd.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
-import CropImageModal from '../../../components/Modals/CropImageModal';
+import CropImageModal from '../../../components/Modals/CropImageModal'
 
 const GuardAdd = (props) => {
     const {user} = useAuth()
@@ -45,14 +45,14 @@ const GuardAdd = (props) => {
       setModalCrop('')
     }
 
-
     const uploadImg = newId =>{
       if(userBeingAdded.pic!==''){
         //resizing and uploading
         Utils.resizeFile(userBeingAdded.pic).then(data=>{
           api.post(`upload`,{
             base64Image: data,
-            fileName: newId
+            fileName: newId,
+            type: 'user'
           })
           .then(res=>{
             console.log('success', res.data)
@@ -77,7 +77,7 @@ const GuardAdd = (props) => {
       if(!Utils.validateEmail(userBeingAdded.email)){
         return setErrorMessage('Email não válido.')
       }
-      if(!Utils.validateEmail(userBeingAdded.pic)){
+      if(!userBeingAdded.pic){
         return setErrorMessage('É necessário adicionar uma foto.')
       }
 
@@ -91,7 +91,7 @@ const GuardAdd = (props) => {
         userBeingAdded_id_last_modify: user.id,
       })
       .then((res)=>{
-        uploadImg(res.data.userId)
+        uploadImg(res.data.user.id)
         setErrorMessage('')
         setErrorAddResidentMessage('')
         toast.info('Cadastro realizado', Constants.TOAST_CONFIG)

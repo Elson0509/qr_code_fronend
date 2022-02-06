@@ -5,6 +5,7 @@ import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import Image from '../../../components/Image'
+import ImageCloud from '../../../components/ImageCloud'
 import ImageBlob from '../../../components/ImageBlob'
 import BlocoModal from '../../../components/Modals/BlocoModal'
 import UnitModal from '../../../components/Modals/UnitModal'
@@ -189,7 +190,8 @@ const ResidentAdd = (props) => {
           Utils.resizeFile(el.pic).then(data=>{
             api.post(`upload`,{
               base64Image: data,
-              fileName: el.id
+              fileName: el.id,
+              type: 'user'
             })
             .then(res=>{
               console.log('success', res.data)
@@ -334,7 +336,7 @@ const ResidentAdd = (props) => {
                             el.id==='0' ?
                             <ImageBlob path={el.pic} height={100}/>
                             :
-                            <Image id={el.id} height={100}/>
+                            <ImageCloud id={el.photo_id} height={100}/>
                           }
                           
                         </div>
