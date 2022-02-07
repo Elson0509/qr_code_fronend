@@ -18,7 +18,7 @@ const SindicoAdd = (props) => {
     const {user} = useAuth()
     const [condos, setCondos] = useState([])
     const [loading, setLoading] = useState(true)
-    const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', email: '', condo_id: '', pic: ''})
+    const [userBeingAdded, setUserBeingAdded]= useState({id: "0", name: '', identification: '', email: '', condoIndex: 0, pic: ''})
     const [errorMessage, setErrorMessage] = useState('')
     const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
     const [modalPic, setModalPic] = useState(false)
@@ -65,15 +65,7 @@ const SindicoAdd = (props) => {
       setPathImgToCrop('')
       setModalCrop('')
     }
-
-    const inputValuesCondos = _ => {
-      return condos.map(el=>{
-        return {
-          value: el.id,
-          label: el.name
-        }
-      })
-    }
+    console.log({condos})
 
     const uploadImg = newId =>{
       if(userBeingAdded.pic!==''){
@@ -111,7 +103,7 @@ const SindicoAdd = (props) => {
       setLoading(true)
       api.post('user/signup', {
         name: userBeingAdded.name,
-        condo_id: userBeingAdded.condo_id,
+        condo_id: condos[userBeingAdded.condoIndex].id,
         user_kind_id: Constants.USER_KIND["SUPERINTENDENT"],
         identification: userBeingAdded.identification,
         email: userBeingAdded.email,
@@ -122,7 +114,7 @@ const SindicoAdd = (props) => {
         setErrorMessage('')
         setErrorAddResidentMessage('')
         toast.info('Cadastro realizado', Constants.TOAST_CONFIG)
-        setUserBeingAdded({id: "0", name: '', identification: '', email: '', pic: ''})
+        setUserBeingAdded({...userBeingAdded, id: "0", name: '', identification: '', email: '', pic: ''})
       })
       .catch((err)=> {
         toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (GA1)', Constants.TOAST_CONFIG)
@@ -177,9 +169,9 @@ const SindicoAdd = (props) => {
           />
           <SelectInput
             label='Condomínio*:'
-            value={userBeingAdded.condo_id}
-            changeValue={(val) => setUserBeingAdded({...userBeingAdded, condo_id: val})}
-            options={inputValuesCondos()}
+            value={userBeingAdded.condoIndex}
+            changeValue={(val) => setUserBeingAdded({...userBeingAdded, condoIndex: val})}
+            options={condos}
           />
           {!!userBeingAdded.pic &&
             <div className={classes.ImgUserTookPic}>

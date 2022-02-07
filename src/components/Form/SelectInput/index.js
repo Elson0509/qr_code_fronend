@@ -6,12 +6,10 @@ const SelectInput = (props) => {
             <label>{props.label}</label>
             <select className="form-control" value={props.value} onChange={(ev)=>props.changeValue(ev.target.value)}>
                 {
-                    props.options.map(el=>(
-                        <option key={el.value} value={el.value}>{el.label}</option>
+                    props.options.map((el, ind) => (
+                        <option key={ind} value={ind}>{el.name}</option>
                     ))
                 }
-                
-                
             </select>
         </div>
     );

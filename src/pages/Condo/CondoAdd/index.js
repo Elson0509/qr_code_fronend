@@ -9,7 +9,7 @@ import ActionButtons from '../../../components/Buttons/ActionButtons'
 
 const CondoAdd = (props) => {
     const [loading, setLoading] = useState(false)
-    const [condoBeingAdded, setCondoBeingAdded] = useState({id: "0", name: '', address: '', city: '', state: ''})
+    const [condoBeingAdded, setCondoBeingAdded] = useState({id: "0", name: '', address: '', city: '', state: '', slots: ''})
     const [errorMessage, setErrorMessage] = useState('')  
 
     const breadcrumb=[
@@ -36,17 +36,21 @@ const CondoAdd = (props) => {
       if(!condoBeingAdded.state){
         return setErrorMessage('Estado não pode estar vazio.')
       }
+      if(isNaN(condoBeingAdded.slots) || !condoBeingAdded.slots || Number(condoBeingAdded.slots) < 0){
+        return setErrorMessage('Quantidade de vagas inválida.')
+      }
       setLoading(true)
       api.post('condo', {
         name: condoBeingAdded.name,
         address: condoBeingAdded.address,
         city: condoBeingAdded.city,
         state: condoBeingAdded.state,
+        slots: condoBeingAdded.slots,
       })
       .then((res)=>{
         setErrorMessage('')
         toast.info('Cadastro realizado', Constants.TOAST_CONFIG)
-        setCondoBeingAdded({id: "0", name: '', address: '', city: '', state: ''})
+        setCondoBeingAdded({id: "0", name: '', address: '', city: '', state: '', slots: ''})
       })
       .catch((err)=> {
         toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoA1)', Constants.TOAST_CONFIG)
@@ -86,6 +90,12 @@ const CondoAdd = (props) => {
             label='Estado*:'
             value={condoBeingAdded.state}
             changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, state: val})}
+          />
+          <FormInput
+            label='Vagas de estacionamento*:'
+            type='number'
+            value={condoBeingAdded.slots}
+            changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, slots: val})}
           />
           {!!errorMessage && 
             <div className="alert alert-danger text-center mt-2" role="alert">
