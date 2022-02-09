@@ -1,6 +1,8 @@
 import {memo} from 'react';
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {fab} from '@fortawesome/free-brands-svg-icons'
+import {
+
+} from '@fortawesome/free-brands-svg-icons'
 import {
     faBuilding, /*building*/
     faQrcode, /*qrcode*/ 
@@ -38,7 +40,7 @@ import {
     faSignOutAlt, //sign-out-alt
     faThumbsUp, //thumbs-up
     faThumbsDown, //thumbs-down
-
+    faShieldAlt, //shield
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -79,6 +81,7 @@ library.add(
     faSignOutAlt,
     faThumbsUp,
     faThumbsDown,
+    faShieldAlt,
 );
 
 const Icon = (props) => {

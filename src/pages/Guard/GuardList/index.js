@@ -106,6 +106,11 @@ const GuardList = () => {
             ))
           )
         }
+        {
+          guards.length === 0 && (
+            <h3 className='h3 text-center'>Não há colaboradores cadastrados</h3>
+          )
+        }
       </div>
       <ConfirmModal
         message={message}

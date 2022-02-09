@@ -343,12 +343,10 @@ const ResidentEdit = (props) => {
                     <div className={classes.ResidentBox}>
                       <div className={classes.ResidentImage}>
                         {
-                          el.id === '0' &&
-                          <ImageBlob path={el.pic} height={100} />
-                        }
-                        {
-                          !!el.photo_id &&
-                          <ImageCloud id={el.photo_id} height={100} />
+                          el.id === '0' ?
+                            <ImageBlob path={el.pic} height={100} />
+                            :
+                            <ImageCloud id={el.photo_id} height={100} />
                         }
                       </div>
                       <div>

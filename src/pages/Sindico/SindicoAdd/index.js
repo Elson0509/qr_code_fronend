@@ -65,7 +65,6 @@ const SindicoAdd = (props) => {
       setPathImgToCrop('')
       setModalCrop('')
     }
-    console.log({condos})
 
     const uploadImg = newId =>{
       if(userBeingAdded.pic!==''){

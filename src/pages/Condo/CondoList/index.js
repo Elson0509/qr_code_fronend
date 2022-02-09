@@ -18,6 +18,8 @@ const CondoList = (props) => {
     const [modal, setModal] = useState(false)
     const [selectedCondo, setSelectedCondo] = useState(null)
 
+    console.log(condos)
+
     const breadcrumb=[
         {
             name: 'Painel Principal',
@@ -76,6 +78,7 @@ const CondoList = (props) => {
             address: condo.address,
             city: condo.city,
             state: condo.state,
+            slots: condo.slots
           },
         }
       )
@@ -106,11 +109,17 @@ const CondoList = (props) => {
                       <CardBody>
                         {!!el.name && <p className='p-0 m-0'><span className='enfase'> Nome: </span> {el.name}</p>}
                         {!!el.city && <p className='p-0 m-0'><span className='enfase'> Endereço: </span> {el.address}, {el.city} - {el.state}</p>}
+                        <p className='p-0 m-0'><span className='enfase'> Vagas de estacionamento: </span>{el.slots}</p>
                         {!!el.createdAt && <p className='p-0 m-0'><span className='enfase'> Ativo desde </span> {Utils.printDate(new Date(el.createdAt))}</p>}
                       </CardBody>
                     </Card>
                   </div>
                 ))
+              )
+            }
+            {
+              condos.length === 0 && (
+                <h3 className='h3 text-center'>Não há condomínios cadastrados</h3>
               )
             }
           </div>

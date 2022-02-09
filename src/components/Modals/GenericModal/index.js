@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalBody} from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 const GenericModal = (props) => {
     return (
@@ -8,7 +8,7 @@ const GenericModal = (props) => {
             <ModalBody>
                 {props.children}
             </ModalBody>
-      </Modal>
+        </Modal>
     );
 };
 

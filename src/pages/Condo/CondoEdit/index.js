@@ -41,12 +41,16 @@ const CondoEdit = (props) => {
     if(!condoBeingAdded.state){
       return setErrorMessage('Estado não pode estar vazio.')
     }
+    if(isNaN(condoBeingAdded.slots) || !condoBeingAdded.slots || Number(condoBeingAdded.slots) < 0){
+      return setErrorMessage('Quantidade de vagas inválida.')
+    }
     setLoading(true)
     api.put(`condo/${condoBeingAdded.id}`, {
       name: condoBeingAdded.name,
       address: condoBeingAdded.address,
       city: condoBeingAdded.city,
       state: condoBeingAdded.state,
+      slots: condoBeingAdded.slots,
     })
     .then((res)=>{
       setErrorMessage('')
@@ -91,6 +95,12 @@ const CondoEdit = (props) => {
           label='Estado*:'
           value={condoBeingAdded?.state}
           changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, state: val})}
+        />
+        <FormInput
+            label='Vagas de estacionamento*:'
+            type='number'
+            value={condoBeingAdded.slots}
+            changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, slots: val})}
         />
         {!!errorMessage && 
           <div className="alert alert-danger text-center mt-2" role="alert">

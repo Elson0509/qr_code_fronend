@@ -356,20 +356,11 @@ const VisitorEdit = (props) => {
                   <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start" key={el.id + el.name + el.email}>
                     <div className={classes.ResidentBox}>
                       <div className={classes.ResidentImage}>
-                        {/* {
-                            el.id==='0' ?
-                            <ImageBlob path={el.pic} height={100}/>
+                        {
+                          el.id === '0' ?
+                            <ImageBlob path={el.pic} height={100} />
                             :
-                            <Image id={el.id} height={100}/>
-                          }
-                           */}
-                        {
-                          el.id === '0' &&
-                          <ImageBlob path={el.pic} height={100} />
-                        }
-                        {
-                          !!el.photo_id &&
-                          <ImageCloud id={el.photo_id} height={100} />
+                            <ImageCloud id={el.photo_id} height={100} />
                         }
                       </div>
                       <div>

@@ -2,8 +2,9 @@ import React from 'react';
 import * as Constants from '../../../services/constants'
 
 const FormComment = (props) => {
+    const maxValue = props.max || Constants.MAX_COMMENT_SIZE
     const changeHandler = value => {
-        if(value.length <= Constants.MAX_COMMENT_SIZE)
+        if(value.length <= maxValue)
             props.changeValue(value)
     }
 
@@ -18,7 +19,7 @@ const FormComment = (props) => {
                 value={props.value} 
                 onChange={(ev)=>changeHandler(ev.target.value)}
             />
-            <h6 className='h6 py-2 text-end'>{Constants.MAX_COMMENT_SIZE-props.value.length}/{Constants.MAX_COMMENT_SIZE}</h6>
+            <h6 className='h6 py-2 text-end'>{maxValue-props.value.length}/{maxValue}</h6>
         </div>
     );
 };

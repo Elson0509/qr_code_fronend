@@ -1,0 +1,119 @@
+.Footer {
+    background: rgba(0, 0, 0, 1);
+    background: -moz-linear-gradient(left, rgba(0, 0, 0, 1) 0%, rgba(64, 64, 64, 1) 50%, rgba(0, 0, 0, 1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0, 0, 0, 1)), color-stop(50%, rgba(64, 64, 64, 1)), color-stop(100%, rgba(0, 0, 0, 1)));
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 1) 0%, rgba(64, 64, 64, 1) 50%, rgba(0, 0, 0, 1) 100%);
+    background: -o-linear-gradient(left, rgba(0, 0, 0, 1) 0%, rgba(64, 64, 64, 1) 50%, rgba(0, 0, 0, 1) 100%);
+    background: -ms-linear-gradient(left, rgba(0, 0, 0, 1) 0%, rgba(64, 64, 64, 1) 50%, rgba(0, 0, 0, 1) 100%);
+    background: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(64, 64, 64, 1) 50%, rgba(0, 0, 0, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=1);
+    padding: 60px 20px 20px 20px;
+    color: white;
+}
+
+.FooterSpace {
+    width: 70%;
+    margin: 0 auto;
+}
+
+@media only screen and (max-width: 1200px) {
+    .FooterSpace {
+        width: 90%;
+    }
+}
+
+.FooterColumns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding-bottom: 25px;
+}
+
+@media only screen and (max-width: 880px) {
+    .FooterColumns {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media only screen and (max-width: 880px) {
+    .DivChild{
+        margin-bottom: 40px;
+        text-align: center;
+    }
+}
+
+.FooterPrivacy {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-top: 1px solid #46AEF7;
+    padding: 20px 0;
+}
+
+.FooterPrivacy li {
+    list-style: none;
+    display: inline;
+    margin-left: 20px;
+}
+
+.FooterPrivacy ul {
+    padding-left: 0px;
+}
+
+.FooterPrivacy a {
+    color: white;
+}
+
+.SocialmediaDiv ul {
+    padding-left: 0;
+}
+
+.SocialmediaDiv li {
+    list-style: none;
+    display: inline;
+    margin-left: 5px;
+}
+
+.TitleCompany {
+    display: flex;
+    align-items: center;
+}
+
+@media only screen and (max-width: 880px) {
+    .TitleCompany {
+        justify-content: center;
+    }
+}
+
+.SubDiv {
+    margin-top: 30px;
+}
+
+.SubDiv li {
+    list-style: none;
+}
+
+.SubDiv ul {
+    padding-left: 0;
+}
+
+.SubDivTitle {
+    font-weight: bold;
+}
+
+.ImgTP {
+    width: 220px;
+    background-color: white;
+    border: 10px solid white
+}
+
+.TitleMessage {
+    color: red;
+    font-size: 25px;
+    font-family: 'Hind Siliguri', sans-serif;
+}
+
+.ButtonLink {
+    border: none;
+    background: transparent;
+    color: white;
+}
