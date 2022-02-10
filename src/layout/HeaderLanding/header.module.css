@@ -1,0 +1,26 @@
+.Header{
+    background-color: #46AEF7;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.ButtonLogout{
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.ButtonLogout:hover{
+    transition: all 0.2s;
+    transform: scale(1.05);
+}
+
+@media only screen and (max-width: 992px) {
+    .EmptyDiv {
+      display: none;
+    }
+}

@@ -52,11 +52,11 @@ const ForgetPasswordModal = (props) => {
                     </div>}
             </ModalBody>
                 {
-                    spinner &&
+                    spinner ?
                     <ModalFooter style={{margin: '0 auto'}}>
                         <Spinner color="primary"/>
                     </ModalFooter>
-                    ||
+                    :
                     <ModalFooter>
                         <Button color="primary" onClick={submitHandler} disabled={buttonDisable}>Confirmar</Button>
                         <Button color="secondary" onClick={props.toggle} disabled={buttonDisable}>Cancelar</Button>

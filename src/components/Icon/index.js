@@ -40,7 +40,7 @@ import {
     faSignOutAlt, //sign-out-alt
     faThumbsUp, //thumbs-up
     faThumbsDown, //thumbs-down
-    faShieldAlt, //shield
+    faShieldAlt, //shield,
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
