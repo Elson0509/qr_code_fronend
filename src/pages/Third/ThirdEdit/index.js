@@ -4,7 +4,6 @@ import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
-import Image from '../../../components/Image'
 import ImageCloud from '../../../components/ImageCloud'
 import ImageBlob from '../../../components/ImageBlob'
 import BlocoModal from '../../../components/Modals/BlocoModal'
@@ -195,7 +194,7 @@ const ThirdEdit = (props) => {
         if (nr.email === re.email &&
           nr.name === re.name &&
           nr.identification === re.identification &&
-          re.pic != "")
+          re.pic !== "")
           residentsPics.push({ id: nr.id, pic: re.pic })
       })
     })
@@ -332,7 +331,7 @@ const ThirdEdit = (props) => {
                 />
                 {!!userBeingAdded.pic &&
                   <div className={classes.ImgUserTookPic}>
-                    <img src={URL.createObjectURL(userBeingAdded.pic)} height={120} />
+                    <img src={URL.createObjectURL(userBeingAdded.pic)} height={120} alt='user pic'/>
                   </div>
                 }
                 {!userBeingAdded.pic &&

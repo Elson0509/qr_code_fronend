@@ -287,9 +287,9 @@ const MyQrCode = () => {
                 modal={modalGeneric}
                 toggle={()=>setModalGeneric(false)}
             >
-                {loadingMessage &&
+                {loadingMessage ?
                     <Spinner color="primary" />
-                    ||
+                    :
                     <div>
                         {
                             !!messageInfoModal &&

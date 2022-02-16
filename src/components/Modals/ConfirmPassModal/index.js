@@ -31,11 +31,11 @@ const ConfirmModal = (props) => {
         <Modal isOpen={props.modal} toggle={props.toggle} className={props.className}>
             <ModalHeader toggle={props.toggle}>Confirmação de senha</ModalHeader>
             {
-                loading && (
+                loading ? (
                     <div className='text-center p-4'>
                         <Spinner color="primary"/>
                     </div> )
-                ||
+                :
                 (<Fragment>
                     <ModalBody>
                         <FormInput

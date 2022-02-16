@@ -4,7 +4,6 @@ import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
-import Image from '../../../components/Image'
 import ImageBlob from '../../../components/ImageBlob'
 import ImageCloud from '../../../components/ImageCloud';
 import BlocoModal from '../../../components/Modals/BlocoModal'

@@ -66,22 +66,22 @@ const Footer = () => {
               <div className={classes.SocialmediaDiv}>
                 <ul>
                   <li>
-                    <a href="" target="_blank" rel="noopener noreferrer" aria-label="facebook">
+                    <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="facebook">
                       <FontAwesomeIcon icon={faFacebook} size="2x" color='#3b5998 ' />
                     </a>
                   </li>
                   <li>
-                    <a href="" target="_blank" rel="noopener noreferrer" aria-label="instagram">
+                    <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="instagram">
                       <FontAwesomeIcon icon={faInstagram} size="2x" color='#DD2A7B' />
                     </a>
                   </li>
                   <li>
-                    <a href="" target="_blank" rel="noopener noreferrer" aria-label="youtube">
+                    <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="youtube">
                       <FontAwesomeIcon icon={faYoutube} size="2x" color='#c4302b' />
                     </a>
                   </li>
                   <li>
-                    <a href="" target="_blank" rel="noopener noreferrer" aria-label="linkedin">
+                    <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="linkedin">
                       <FontAwesomeIcon icon={faLinkedin} size="2x" color='#3b5998' />
                     </a>
                   </li>

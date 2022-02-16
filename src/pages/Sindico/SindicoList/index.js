@@ -4,7 +4,6 @@ import * as Constants from '../../../services/constants'
 import api from '../../../services/api'
 import IconButtons from '../../../components/Buttons/IconButtons';
 import ConfirmModal from '../../../components/Modals/ConfirmModal';
-import Image from '../../../components/Image'
 import ImageCloud from '../../../components/ImageCloud';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';

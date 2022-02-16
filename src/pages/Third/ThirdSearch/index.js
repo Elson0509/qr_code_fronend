@@ -5,7 +5,6 @@ import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import Plate from '../../../components/Plate'
-import Image from '../../../components/Image'
 import ImageCloud from '../../../components/ImageCloud'
 import IconButtons from '../../../components/Buttons/IconButtons'
 import ConfirmModal from '../../../components/Modals/ConfirmModal'
@@ -402,9 +401,9 @@ const ThirdSearch = (props) => {
                 modal={modalGeneric}
                 toggle={() => setModalGeneric(false)}
             >
-                {loadingMessage &&
+                {loadingMessage ?
                     <Spinner color="primary" />
-                    ||
+                    :
                     <div>
                         {
                             !!messageInfoModal &&

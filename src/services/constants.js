@@ -1,10 +1,3 @@
-
-export const API_URL_PREFIX = 'http://'
-export const API_URL = 'localhost:3333'
-// export const API_URL_PREFIX = 'https://'
-// export const API_URL = 'mighty-wasp-65.loca.lt'
-export const API_SERVER_URL = '/api/'
-
 export const TOAST_CONFIG = {
     position: "bottom-center",
     autoClose: 3000,
