@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/auth'
 import { Alert, Spinner } from 'reactstrap'
 import Icon from '../../components/Icon'
 import GenericModal from '../../components/Modals/GenericModal'
+import LoginLogoutButton from '../../components/Buttons/LoginLogoutButton'
 import api from '../../services/api'
 import * as Constants from '../../services/constants'
 import * as Utils from '../../services/util'
@@ -66,15 +67,11 @@ const HeaderLanding = () => {
 
   return (
     <header className={classes.Header}>
-      <div className={classes.EmptyDiv}></div>
       <div>
-        logo
+        <img src='/imgs/logo.jpg' alt='logo qr condo' height={150}/>
       </div>
       <div>
-        <button className={classes.ButtonLogout} onClick={() => setLoginModal(true)}>
-          <span style={{ marginRight: '7px' }}>Logar</span>
-          <Icon icon='sign-in-alt' />
-        </button>
+        <LoginLogoutButton login clicked={() => setLoginModal(true)}/>
       </div>
       <GenericModal modal={loginModal} toggle={() => setLoginModal(false)} title={modalTitle}>
         {

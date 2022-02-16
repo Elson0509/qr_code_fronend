@@ -1,10 +1,9 @@
 .Header{
     background-color: #46AEF7;
-    height: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 15px 20px 20px 20px;
 }
 
 .ButtonLogout{
@@ -17,10 +16,4 @@
 .ButtonLogout:hover{
     transition: all 0.2s;
     transform: scale(1.05);
-}
-
-@media only screen and (max-width: 992px) {
-    .EmptyDiv {
-      display: none;
-    }
 }

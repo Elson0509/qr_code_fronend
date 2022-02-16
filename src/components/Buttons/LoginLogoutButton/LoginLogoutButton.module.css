@@ -1,0 +1,19 @@
+.Div {
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    gap: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+}
+
+.Div:hover {
+    background-color: #262626;
+    color: white;
+}
+
+.Right {
+    border-left: 1px solid #4d4d4d;
+    padding-left: 10px;
+}

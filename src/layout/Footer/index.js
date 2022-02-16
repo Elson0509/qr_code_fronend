@@ -58,7 +58,8 @@ const Footer = () => {
               <div className={classes.SubDiv}>
                 <h6 className={classes.SubDivTitle}>Contato</h6>
                 <ul>
-                  <li>Tel: (21) 98765-0712</li>
+                  <li>Tel: (21) 97509-3237 (Pedro Tarquínio)</li>
+                  <li>Tel: (21) 99776-4893 (Wander Pedreira)</li>
                   <li>Email: <a href='mailto:contato@qrcondo.com.br'>contato@qrcondo.com.br</a></li>
                 </ul>
               </div>
@@ -90,7 +91,7 @@ const Footer = () => {
             <div className={classes.DivChild}>
               <h6 className={`${classes.SubDivTitle}`}>Fornecedor</h6>
               <a href='https://tarquinioepedreira.com.br/' target="_blank" rel="noopener noreferrer" >
-                <img src='/imgs/logo-tp.png' alt='Logo Tarquínio e Pedreira' className={classes.ImgTP} />
+                <img src='/imgs/rsz_logo-tp.png' alt='Logo Tarquínio e Pedreira' className={classes.ImgTP} />
               </a>
             </div>
             <div className={classes.DivChild}>
