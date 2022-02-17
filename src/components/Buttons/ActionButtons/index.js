@@ -10,8 +10,8 @@ const ActionButtons = (props) => {
                 </div>
             }
 
-            { !!props.textButton1 && <button type="button" onClick={()=>props.action1()} className="btn btn-success mx-4">{props.textButton1}</button>}
             { !!props.textButton2 && <button type="button" onClick={()=>props.action2()} className="btn btn-danger mx-4">{props.textButton2}</button>}
+            { !!props.textButton1 && <button type="button" onClick={()=>props.action1()} className="btn btn-success mx-4">{props.textButton1}</button>}
         </div>
     );
 };
