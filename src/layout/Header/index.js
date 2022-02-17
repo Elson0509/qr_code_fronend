@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <header className={classes.Header}>
       <div>
-        <img src='/imgs/logo-h-min.jpg' alt='logo qr condo' height={110} />
+        <img src='/imgs/logo-h-min.jpg' className={classes.Logo} alt='logo qr condo'/>
       </div>
       <div>
         <LoginLogoutButton clicked={() => signOut()}/>
