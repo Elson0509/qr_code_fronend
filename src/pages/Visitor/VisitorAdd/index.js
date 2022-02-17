@@ -110,9 +110,9 @@ const VisitorAdd = (props) => {
         if(!userBeingAdded.identification){
           return setErrorAddResidentMessage('Documento não pode estar vazio.')
         }
-        if(!userBeingAdded.pic){
-          return setErrorAddResidentMessage('É necessário adicionar uma foto.')
-        }
+        // if(!userBeingAdded.pic){
+        //   return setErrorAddResidentMessage('É necessário adicionar uma foto.')
+        // }
         setResidents(prev=> [...prev, userBeingAdded])
         setErrorAddResidentMessage('')
         setUserBeingAdded({id: "0", name: '', identification: '', pic: ''})

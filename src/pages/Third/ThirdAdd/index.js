@@ -113,9 +113,9 @@ const ThirdAdd = (props) => {
       if(!userBeingAdded.company){
         return setErrorAddResidentMessage('Empresa não pode estar vazia.')
       }
-      if(!userBeingAdded.pic){
-        return setErrorAddResidentMessage('É necessário adicionar uma foto.')
-      }
+      // if(!userBeingAdded.pic){
+      //   return setErrorAddResidentMessage('É necessário adicionar uma foto.')
+      // }
       setResidents(prev=> [...prev, userBeingAdded])
       setErrorAddResidentMessage('')
       setUserBeingAdded({id: "0", name: '', identification: '', company:'', pic: ''})
