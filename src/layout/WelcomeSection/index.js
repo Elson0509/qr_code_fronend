@@ -4,10 +4,11 @@ import classes from './WelcomeSection.module.css'
 const WelcomeSection = () => {
     return (
         <section className={classes.Container}>
+            <h1>Barrinha faq price</h1>
             <div className={classes.DivGrid}>
                 <div className={classes.DivImg}>
                     <svg viewBox="0 0 713 685" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_2_24)">
+                        <g clipPath="url(#clip0_2_24)">
                             <path d="M68.135 674.622L66.7767 674.009C81.922 539.149 119.983 416.684 173.949 329.172C214.75 263.114 263.275 218.933 314.957 200.791C366.638 182.649 419.776 191.142 469.366 225.47C518.956 259.799 563.366 318.833 598.416 397.015C633.466 475.197 658.002 569.954 669.713 672.364L668.357 672.982C636.296 391.124 512.925 194.271 368.338 194.271C225.647 194.271 99.393 396.287 68.135 674.622Z" fill="#3F3D56" />
                             <path d="M587 272C610.196 272 629 253.644 629 231C629 208.356 610.196 190 587 190C563.804 190 545 208.356 545 231C545 253.644 563.804 272 587 272Z" fill="#FF6584" />
                             <path d="M579.619 572.095H578.227V682.212H579.619V572.095Z" fill="#3F3D56" />

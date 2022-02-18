@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gideon+Roman&display=swap');
+.Header {
+    position: relative;
+    height: 580px;
+}
+
+.DivLogin{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ButtonLogout {
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.ButtonLogout:hover {
+    transition: all 0.2s;
+    transform: scale(1.05);
+}
+
+.Video {
+    width: 100%;
+    height: 580px;
+    object-fit: cover;
+    position: absolute;
+    z-index: 0;
+}
+
+.Content {
+    z-index: 1;
+    position: relative;
+    text-align: center;
+    color: white;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    height: 100%;
+}
+
+.Title{
+    clear: both;
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Gideon Roman', cursive;
+    width: 100%;
+    letter-spacing: 5px;
+    padding: 20px 15%;
+    font-weight: bold;
+    font-size: 45px;
+    text-transform: uppercase;
+}
