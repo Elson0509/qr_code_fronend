@@ -51,8 +51,6 @@ const ResidentEdit = (props) => {
     setModalCrop(true)
   }
 
-  console.log(props.location.state?.residents)
-
   const breadcrumb = [
     {
       name: 'Painel Principal',

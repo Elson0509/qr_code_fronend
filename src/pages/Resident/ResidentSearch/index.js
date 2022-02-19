@@ -75,7 +75,6 @@ const ResidentSearch = (props) => {
           el.number.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1
       })
     }
-    console.log(unitsInfo)
     return unitsInfo
   }
 

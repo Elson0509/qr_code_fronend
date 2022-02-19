@@ -53,7 +53,6 @@ const MyQrCode = () => {
             setLoading(true)
             api.get(`reading/${dataParts[1]}`)
             .then(res=>{
-                console.log(res.data)
                 setErrorMessage('')
                 const found = res.data.userFound || res.data.unitFound
                 setDataFetched(found)

@@ -3,13 +3,17 @@ import HeaderLanding from './HeaderLanding';
 import WelcomeSection from '../WelcomeSection';
 import Presentation from './Presentation';
 import Footer from '../Footer';
+import Nav from './Nav';
+import Showcase from './Showcase'
 
 const index = (props) => {
     return (
         <Fragment>
             <HeaderLanding />
             {/* <Presentation/> */}
-            <WelcomeSection/>
+            {/* <WelcomeSection/> */}
+            <Nav/>
+            <Showcase/>
             <Footer/>
         </Fragment>
     );

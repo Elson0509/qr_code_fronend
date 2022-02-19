@@ -18,8 +18,6 @@ const CondoList = (props) => {
     const [modal, setModal] = useState(false)
     const [selectedCondo, setSelectedCondo] = useState(null)
 
-    console.log(condos)
-
     const breadcrumb=[
         {
             name: 'Painel Principal',

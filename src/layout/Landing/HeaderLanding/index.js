@@ -68,7 +68,7 @@ const HeaderLanding = () => {
     <header className={classes.Header}>
       <video autoPlay muted loop className={classes.Video}>
         <source
-          src="/imgs/institutional3.mp4"
+          src="/imgs/welcome2.mp4"
           type="video/mp4"
         />
       </video>

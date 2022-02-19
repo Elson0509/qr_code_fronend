@@ -1,7 +1,7 @@
 .Container {
     padding-top: 20px;
     background-color: #E5E5E5;
-
+    border-top: 6px solid #46AEF7;
 }
 
 .DivGrid {

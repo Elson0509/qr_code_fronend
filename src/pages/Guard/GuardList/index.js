@@ -37,7 +37,6 @@ const GuardList = () => {
     api.get(`user/kind/${Constants.USER_KIND["GUARD"]}`)
       .then(resp => {
         setGuards(resp.data)
-        console.log(resp.data)
       })
       .catch(err => {
         toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RL1)', Constants.TOAST_CONFIG)

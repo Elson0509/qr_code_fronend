@@ -42,7 +42,6 @@ const EventList = () => {
     api.get(`occurrence`)
       .then(resp => {
         setEvents(resp.data.occurences)
-        console.log(resp.data.occurences)
       })
       .catch(err => {
         toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (EL1)', Constants.TOAST_CONFIG)

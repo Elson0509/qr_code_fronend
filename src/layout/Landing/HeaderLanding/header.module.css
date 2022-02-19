@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Gideon+Roman&display=swap');
 .Header {
     position: relative;
@@ -30,6 +29,12 @@
     z-index: 0;
 }
 
+@media only screen and (max-width: 992px) {
+    .Video{
+        display: none;
+    }
+}
+
 .Content {
     z-index: 1;
     position: relative;
@@ -40,9 +45,15 @@
     height: 100%;
 }
 
+@media only screen and (max-width: 992px) {
+    .Content{
+        background-image: url("../../../Images/condo-header.jpg");
+        background-size: 100% 100%;
+    }
+}
+
 .Title{
     clear: both;
-    /* font-family: 'Roboto', sans-serif; */
     font-family: 'Gideon Roman', cursive;
     width: 100%;
     letter-spacing: 5px;
@@ -50,4 +61,21 @@
     font-weight: bold;
     font-size: 45px;
     text-transform: uppercase;
+    margin-top: 35px;
+    line-height: 80px;
+}
+
+@media only screen and (max-width: 992px) {
+    .Title{
+        font-size: 35px;
+        margin-top: 0px;
+        line-height: 60px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .Title{
+        font-size: 30px;
+        line-height: 40px;
+    }
 }

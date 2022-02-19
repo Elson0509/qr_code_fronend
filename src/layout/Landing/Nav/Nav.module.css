@@ -1,0 +1,31 @@
+.Nav{
+    border-top: 5px solid #46AEF7;
+    text-align: center;
+}
+
+.Nav ul{
+    margin: 0;
+    padding: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.Nav li{
+    list-style: none;
+    padding: 10px;
+    margin: 0px 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.Nav a{
+    color: black;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.Nav a:hover{
+    color: #46AEF7;
+    transition: all 0.2s;
+}

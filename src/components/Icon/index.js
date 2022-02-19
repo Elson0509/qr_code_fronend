@@ -41,6 +41,10 @@ import {
     faThumbsUp, //thumbs-up
     faThumbsDown, //thumbs-down
     faShieldAlt, //shield,
+    faHome, //home
+    faShoppingBag, //shopping-bag
+    faDollarSign, //dollar-sign
+    faQuestion, //question
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -82,6 +86,10 @@ library.add(
     faThumbsUp,
     faThumbsDown,
     faShieldAlt,
+    faHome,
+    faShoppingBag,
+    faDollarSign,
+    faQuestion,
 );
 
 const Icon = (props) => {
