@@ -76,6 +76,8 @@ const CarList = () => {
     }
 
     const onClickPhotoHandler = item => {
+      if(!item.photo_id)
+        return
       setSelectedOvernight(item)
       setIsModalPhotoActive(true)
     }
@@ -132,7 +134,7 @@ const CarList = () => {
                   <CardBody>
                     <div style={{border: '1px solid #ddd', paddingBottom: '10px'}}>
                       <div style={{display: 'flex', justifyContent:'center', paddingTop: '15px', cursor: 'pointer'}} onClick={()=>onClickPhotoHandler(el)} >
-                        <ImageCloud id={el.photo_id} height={150}/>
+                        <ImageCloud id={el.photo_id} isEvent height={150}/>
                       </div>
                       <div className='p-2'>
                         {!!el.created_at && <p className='pt-2 m-0'><span className='enfase'>Data:</span> {Utils.printDateAndHour(new Date(el.created_at))}</p>}
@@ -174,7 +176,7 @@ const CarList = () => {
           <ImageModal
             modal={isModalPhotoActive}
             toggle={()=>setIsModalPhotoActive(false)}
-            id={selectedOvernight.id}
+            id={selectedOvernight.photo_id}
           />
         }
       </Body>

@@ -119,9 +119,9 @@ const CarSearch = () => {
   }
 
   const confirmHandler = _ => {
-    if (!image) {
-      return setErrorMessage('É necessário inserir uma imagem.')
-    }
+    // if (!image) {
+    //   return setErrorMessage('É necessário inserir uma imagem.')
+    // }
     setErrorMessage('')
     api.post('overnight', {
       description: comment,

@@ -85,9 +85,9 @@ const EventAdd = () => {
     if (userBeingAdded.description.length <= MIN_DESCRIPTION_CHARACTERS) {
       return setErrorMessage(`Descrição muito curta. Pelo menos ${MIN_DESCRIPTION_CHARACTERS} caracteres.`)
     }
-    if (userBeingAdded.pic === '') {
-      return setErrorMessage('Uma foto é necessária.')
-    }
+    // if (userBeingAdded.pic === '') {
+    //   return setErrorMessage('Uma foto é necessária.')
+    // }
     setLoading(true)
     api.post('occurrence', {
       title: userBeingAdded.title,
