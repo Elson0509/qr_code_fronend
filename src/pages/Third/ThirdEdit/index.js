@@ -191,9 +191,9 @@ const ThirdEdit = (props) => {
     const residentsPics = []
     newResidents.forEach(nr => {
       residents.forEach(re => {
-        if (nr.email === re.email &&
-          nr.name === re.name &&
+        if (nr.name === re.name &&
           nr.identification === re.identification &&
+          nr.company === re.company &&
           re.pic !== "")
           residentsPics.push({ id: nr.id, pic: re.pic })
       })
