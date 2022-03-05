@@ -29,11 +29,11 @@
     z-index: 0;
 }
 
-@media only screen and (max-width: 992px) {
+/* @media only screen and (max-width: 992px) {
     .Video{
         display: none;
     }
-}
+} */
 
 .Content {
     z-index: 1;
@@ -45,12 +45,12 @@
     height: 100%;
 }
 
-@media only screen and (max-width: 992px) {
+/* @media only screen and (max-width: 992px) {
     .Content{
         background-image: url("../../../Images/condo-header.jpg");
         background-size: 100% 100%;
     }
-}
+} */
 
 .Title{
     clear: both;

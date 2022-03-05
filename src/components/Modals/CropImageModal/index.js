@@ -1,4 +1,4 @@
-import React, {useState, Fragment, useCallback} from 'react';
+import React, {useState, Fragment, useCallback, useEffect} from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Icon from '../../Icon'
 import Cropper from 'react-easy-crop';
@@ -11,6 +11,9 @@ const CropImageModal = (props) => {
     const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
         setCroppedAreaPixels(croppedAreaPixels)
     }, [])
+
+    const img = new Image()
+    img.src=props.pathImgToCrop
 
     const confirmHandler = _ => {
         const canvas = document.createElement('canvas')
@@ -42,6 +45,7 @@ const CropImageModal = (props) => {
         //props.setImgPath(canvas.toDataURL("image/jpeg"))
 
         canvas.toBlob(blob=>{
+            //console.log({blob})
             props.setImgPath(blob)
         })
 
@@ -57,7 +61,7 @@ const CropImageModal = (props) => {
                     image={props.pathImgToCrop}
                     crop={crop}
                     zoom={zoom}
-                    aspect={3 / 4}
+                    aspect={img.height ? img.width / img.height : 1}
                     onCropChange={setCrop}
                     onCropComplete={onCropComplete}
                     onZoomChange={setZoom}

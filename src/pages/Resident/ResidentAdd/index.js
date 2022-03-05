@@ -40,7 +40,7 @@ const ResidentAdd = (props) => {
   const [takePic, setTakePic] = useState(false)
   const [pathImgToCrop, setPathImgToCrop] = useState('')
 
-  const paperClipImageHandler = imgPath => {
+  const paperClipImageHandler = async imgPath => {
     setPathImgToCrop(imgPath)
     setModalCrop(true)
   }

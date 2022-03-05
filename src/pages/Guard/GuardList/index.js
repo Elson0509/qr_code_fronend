@@ -76,6 +76,8 @@ const GuardList = () => {
     )
   }
 
+  console.log(guards)
+
   return (
     <Body breadcrumb={breadcrumb}>
       <div className='row'>
@@ -97,6 +99,7 @@ const GuardList = () => {
                       </div>
                       {!!el.email && <p className='text-center p-0 m-0'>{el.email}</p>}
                       {!!el.identification && <p className='text-center p-0 m-0'>Id: {el.identification}</p>}
+                      {!!el.company && <p className='text-center p-0 m-0'>Empresa: {el.company}</p>}
                     </div>
                   </CardBody>
                 </Card>

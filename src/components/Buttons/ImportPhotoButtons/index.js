@@ -4,7 +4,7 @@ import classes from './ImportPhotoButtons.module.css'
 
 const ImportPhotoButtons = (props) => {
 
-    const paperClipHandler = ev => {
+    const paperClipHandler = async ev => {
         if(ev.target.files[0].type==='image/jpeg'){
             props.setErrorMessage('')
             props.paperClipImageHandler(URL.createObjectURL(ev.target.files[0]))

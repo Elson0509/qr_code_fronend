@@ -171,3 +171,7 @@ export const validatePlateFormat = plate => {
            isNumber(plate[5]) &&
            isNumber(plate[6])
 }
+
+export const urlToBlobObject = async url => {
+    return await fetch(url).then(r => r.blob())
+}
