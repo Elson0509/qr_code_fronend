@@ -175,3 +175,65 @@ export const validatePlateFormat = plate => {
 export const urlToBlobObject = async url => {
     return await fetch(url).then(r => r.blob())
 }
+
+export const aptNumberAnalyse = (first, last) => {
+    //verify if they are only numbers
+    if(isNaN(first) || isNaN(last)){
+        //not numbers
+        //verify if both are not numbers
+        if(!isNaN(first) || !isNaN(last)){
+            return null
+        }
+        //assume that the last digit is a letter
+        const letterFirstApt = first.charAt(first.length-1).toUpperCase()
+        const letterLastApt = last.charAt(last.length-1).toUpperCase()
+        if(letterFirstApt>letterLastApt)
+            return null
+        //removing last digit
+        const newFirst = first.substring(0, first.length-1)
+        const newLast = last.substring(0, last.length-1)
+        //checking if they are still numbers
+        if(isNaN(newFirst) || isNaN(newLast))
+            return null
+        //getting the array of apts
+        const aptArrayWhithoutLetters = aptNumberAnalyseOnlyNumbers(newFirst, newLast)
+        if(!aptArrayWhithoutLetters)
+            return null
+        const apts = []
+        for(let i = letterFirstApt.charCodeAt(); i<=letterLastApt.charCodeAt(); i++){
+            aptArrayWhithoutLetters.forEach(apt=>{
+                apts.push(apt+String.fromCharCode(i))
+            })
+        }
+        return apts
+    }
+    else{
+        return aptNumberAnalyseOnlyNumbers(first, last)
+    }
+}
+
+const aptNumberAnalyseOnlyNumbers = (first, last) => {
+    if(Number(last) <= (first)){
+        return null
+    }
+    const qttDigitsFirstApt = first.length
+    const qttDigitsLastApt = last.length
+    if(qttDigitsFirstApt>qttDigitsLastApt)
+        return null
+    //getting number of floors
+    const firstfloor = Number(first[0])
+    const lastFloor = Number(last.substr(0, qttDigitsLastApt - qttDigitsFirstApt + 1))
+    //getting qtt apartments per floor
+    const firstAptNumber = Number(first.substring(first.length - (qttDigitsFirstApt - 1)))
+    const lastAptNumber = Number(last.substring(last.length - (qttDigitsFirstApt - 1)))
+    //creating array of apartment numbers
+    const apts = []
+    for(let i = firstfloor; i <= lastFloor; i++){
+        for(let j = firstAptNumber; j <= lastAptNumber; j++){
+            let apt = i * Math.pow(10, qttDigitsFirstApt - 1)
+            apt+=j
+            apts.push(apt)
+        }
+    }
+    return apts
+}

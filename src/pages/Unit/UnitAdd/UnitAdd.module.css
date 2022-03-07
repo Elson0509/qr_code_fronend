@@ -18,3 +18,9 @@
     background: rgb(91, 138, 224);
     transition: all .3s;
 }
+
+.SuccessAnalyse{
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
