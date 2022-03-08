@@ -66,9 +66,10 @@ const HeaderLanding = () => {
 
   return (
     <header className={classes.Header}>
-      <video autoPlay muted loop className={classes.Video}>
+      <video autoPlay muted loop className={classes.Video} poster="/imgs/condo.jpg">
         <source
-          src="/imgs/welcome2.mp4"
+          //src="/imgs/welcome2.mp4"
+          src="https://drive.google.com/uc?id=1YfjzTrldXpmar7C00jM6JMwkJ8PmSWJA&export=download"
           type="video/mp4"
         />
       </video>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import Image from '../../Image';
 import ImageCloud from '../../ImageCloud';
 
 const ImageModal = (props) => { 
