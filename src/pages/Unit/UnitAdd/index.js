@@ -30,6 +30,7 @@ const UnitAdd = _ => {
   const [modalNewBlockAnalysed, setModalNewBlockAnalysed] = useState(false)
   const [newBlockAnalysed, setNewBlockAnalysed] = useState('')
   const [errornewBlockAnalysedMessage, setErrornewBlockAnalysedMessage] = useState('')
+  const [loadingAddingSmartBloco, setLoadingAddingSmartBloco] = useState(false)
 
   const breadcrumb = [
     {
@@ -133,13 +134,24 @@ const UnitAdd = _ => {
   }
 
   const confirmNewBlockAndUnits = _ => {
-    if(!newBlockAnalysed){
+    if (!newBlockAnalysed) {
       return setErrornewBlockAnalysedMessage('Por favor, digite o nome do bloco')
     }
-    console.log('enviando', {
-      bloco: newBlockAnalysed,
+    setLoadingAddingSmartBloco(true)
+    api.post('unit/bloco/smart',{
+      bloco_name: newBlockAnalysed,
       units: aptsAnalysed
     })
+    .then(res=>{
+      toast.info(res.data.message, Constants.TOAST_CONFIG)
+      setModalNewBlockAnalysed(false)
+    })
+    .catch(err=>{
+      setErrornewBlockAnalysedMessage(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UAS2)')
+    })
+    .finally(()=>{
+      setLoadingAddingSmartBloco(false)
+    })    
   }
 
   return (
@@ -206,7 +218,7 @@ const UnitAdd = _ => {
         toggle={() => setModalAssistent(false)}
         modal={modalAssistent}
       >
-        <p>Este é o assistente de unidades. Digite o primeiro e o último apartamento para que sejam adicionados automaticamente.</p>
+        <p>Este é o assistente de unidades. Digite o primeiro e o último apartamento do bloco para que sejam adicionados automaticamente.</p>
         <div className="form-group py-2">
           <label>Primeiro Apartamento:</label>
           <input
@@ -269,8 +281,15 @@ const UnitAdd = _ => {
         {errornewBlockAnalysedMessage && <div className="alert alert-danger my-4 text-center" role="alert">
           {errornewBlockAnalysedMessage}
         </div>}
-        <button className="btn btn-primary col-12 my-2" onClick={(ev) => confirmNewBlockAndUnits(ev)}>Confirmar</button>
-        <button className="btn btn-danger col-12" onClick={() => setModalNewBlockAnalysed(false)}>Cancelar</button>
+        {
+          loadingAddingSmartBloco ?
+            <Spinner />
+            :
+            <div>
+              <button className="btn btn-primary col-12 my-2" onClick={(ev) => confirmNewBlockAndUnits(ev)}>Confirmar</button>
+              <button className="btn btn-danger col-12" onClick={() => setModalNewBlockAnalysed(false)}>Cancelar</button>
+            </div>
+        }
       </GenericModal>
     </Body>
   );
