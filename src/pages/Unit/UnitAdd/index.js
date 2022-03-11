@@ -57,16 +57,7 @@ const UnitAdd = _ => {
         setLoading(false)
       })
   }, [])
-
-
-  if (loading) {
-    return (
-      <Body breadcrumb={breadcrumb}>
-        <Spinner color="primary" />
-      </Body>
-    )
-  }
-
+  
   const selectBlocoHandler = bloco => {
     setModalSelectBloco(false)
     if (bloco.id !== '0') {
@@ -80,7 +71,7 @@ const UnitAdd = _ => {
       setModalAssistent(true)
     }
   }
-
+  
   const confirmAptHandler = _ => {
     if (!firstApt || !lastApt) {
       return setErrorAptMessage('Por favor, complete os campos.')
@@ -97,12 +88,12 @@ const UnitAdd = _ => {
       toast.error('Desculpe. Não foi possível sugerir unidades com a informação fornecida.', Constants.TOAST_CONFIG)
     }
   }
-
+  
   const confirmAptAnalysed = _ => {
     setModalSuccessAptAnalyse(false)
     setModalNewBlockAnalysed(true)
   }
-
+  
   const confirmAddHandler = ev => {
     ev.preventDefault()
     if (!bloco) {
@@ -120,21 +111,21 @@ const UnitAdd = _ => {
       user_id_last_modify: user.id,
       condo_id: user.condo_id,
     })
-      .then((res) => {
-        setUnit('')
-        toast.info(res.data.message, Constants.TOAST_CONFIG)
-      })
-      .catch((err) => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UA2)', Constants.TOAST_CONFIG)
-      })
-      .finally(() => {
+    .then((res) => {
+      setUnit('')
+      toast.info(res.data.message, Constants.TOAST_CONFIG)
+    })
+    .catch((err) => {
+      toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UA2)', Constants.TOAST_CONFIG)
+    })
+    .finally(() => {
         setLoading(false)
       })
-
-  }
-
-  const confirmNewBlockAndUnits = _ => {
-    if (!newBlockAnalysed) {
+      
+    }
+    
+    const confirmNewBlockAndUnits = _ => {
+      if (!newBlockAnalysed) {
       return setErrornewBlockAnalysedMessage('Por favor, digite o nome do bloco')
     }
     setLoadingAddingSmartBloco(true)
@@ -154,6 +145,14 @@ const UnitAdd = _ => {
     })    
   }
 
+  if (loading) {
+    return (
+      <Body breadcrumb={breadcrumb}>
+        <Spinner color="primary" />
+      </Body>
+    )
+  }
+  
   return (
     <Body breadcrumb={breadcrumb}>
       <div className='row'>
@@ -168,7 +167,7 @@ const UnitAdd = _ => {
                 readOnly={readOnlyBlocoInput}
                 value={bloco}
                 onChange={(ev) => setBloco(ev.target.value)}
-              />
+                />
             </div>
             <div className="form-group">
               <label>Unidade:</label>
@@ -258,7 +257,7 @@ const UnitAdd = _ => {
               aptsAnalysed ? aptsAnalysed.join(', ') : null
             }
           </div>
-          <small className='font-weight-light'>Mesmo confirmando, você ainda poderá fazer alterações.</small>
+          <small className='font-weight-light'>Obs: Mesmo confirmando, você ainda poderá fazer alterações.</small>
         </div>
         <button className="btn btn-primary col-12 my-2" onClick={(ev) => confirmAptAnalysed(ev)}>Confirmar</button>
         <button className="btn btn-danger col-12" onClick={() => setModalSuccessAptAnalyse(false)}>Cancelar</button>

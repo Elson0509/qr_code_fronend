@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import Body from '../../../layout/Body';
+import React, { useState, useEffect } from 'react'
+import Body from '../../../layout/Body'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
-import IconButtons from '../../../components/Buttons/IconButtons';
-import ConfirmModal from '../../../components/Modals/ConfirmModal';
+import IconButtons from '../../../components/Buttons/IconButtons'
+import ConfirmModal from '../../../components/Modals/ConfirmModal'
 import ImageCloud from '../../../components/ImageCloud'
+import ImageModal from '../../../components/Modals/ImageModal'
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import {
   Card, CardBody, CardHeader,
 } from 'reactstrap';
-import ReplyModal from '../../../components/Modals/ReplyModal';
+import ReplyModal from '../../../components/Modals/ReplyModal'
 
 const EventList = () => {
   const [events, setEvents] = useState([])
@@ -22,6 +23,7 @@ const EventList = () => {
   const [modal, setModal] = useState(false)
   const [modalReply, setModalReply] = useState(false)
   const [message, setMessage] = useState('')
+  const [isModalPhotoActive, setIsModalPhotoActive] = useState(false)
 
   const breadcrumb = [
     {
@@ -98,6 +100,13 @@ const EventList = () => {
       })
   }
 
+  const onClickPhotoHandler = item => {
+    if (!item.photo_id)
+      return
+    setSelectedEvent(item)
+    setIsModalPhotoActive(true)
+  }
+
   if (loading) {
     return (
       <Body breadcrumb={breadcrumb}>
@@ -124,7 +133,7 @@ const EventList = () => {
                   </CardHeader>
                   <CardBody>
                     <div style={{ border: '1px solid #ddd', paddingBottom: '10px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px', cursor: 'pointer' }} onClick={()=>onClickPhotoHandler(el)}>
                         <ImageCloud isEvent id={el.photo_id} height={150} />
                       </div>
                       <div className='p-2'>
@@ -162,6 +171,13 @@ const EventList = () => {
         setReply={setReplyMessage}
         replyHandler={() => sendHandler()}
       />
+      {isModalPhotoActive &&
+        <ImageModal
+          modal={isModalPhotoActive}
+          toggle={() => setIsModalPhotoActive(false)}
+          id={selectedEvent.photo_id}
+        />
+      }
     </Body>
   );
 };

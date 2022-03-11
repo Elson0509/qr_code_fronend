@@ -76,8 +76,6 @@ const GuardList = () => {
     )
   }
 
-  console.log(guards)
-
   return (
     <Body breadcrumb={breadcrumb}>
       <div className='row'>
