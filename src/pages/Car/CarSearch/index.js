@@ -10,6 +10,7 @@ import PicModal from '../../../components/Modals/PicModal';
 import CropImageModal from '../../../components/Modals/CropImageModal';
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons';
 import ActionButtons from '../../../components/Buttons/ActionButtons';
+import ImageShowCase from '../../../components/ImageShowCase';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import classes from './CarSearch.module.css'
@@ -22,7 +23,7 @@ const CarSearch = () => {
   const [cars, setCars] = useState([])
   const [checked, setChecked] = useState(false)
   const [is_registered_vehicle, setIs_registered_vehicle] = useState(false)
-  const [image, setImage] = useState('')
+  const [images, setImages] = useState([])
   const [comment, setComment] = useState('')
   const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
@@ -32,6 +33,12 @@ const CarSearch = () => {
   const [modalCrop, setModalCrop] = useState(false)
   const [takePic, setTakePic] = useState(false)
   const [pathImgToCrop, setPathImgToCrop] = useState('')
+
+  const addImageToList = blobImage => {
+    if (images.length < 5) {
+      setImages(prev => [...prev, blobImage])
+    }
+  }
 
   const breadcrumb = [
     {
@@ -74,22 +81,30 @@ const CarSearch = () => {
     return filteredData
   }
 
+  const removeImgHandler = ind => {
+    const tempImages = [...images]
+    tempImages.splice(ind, 1)
+    setImages(tempImages)
+  }
+
   const uploadImg = newId => {
-    if (image !== '') {
-      //resizing and uploading
-      Utils.resizeFile(image).then(data => {
-        api.post(`upload`, {
-          base64Image: data,
-          fileName: newId,
-          type: 'overnight'
+    if (images.length && images.length <= 5) {
+      images.forEach(image =>
+        //resizing and uploading
+        Utils.resizeFile(image).then(data => {
+          api.post(`upload`, {
+            base64Image: data,
+            fileName: newId,
+            type: 'overnight'
+          })
+            .then(res => {
+              console.log('success', res.data)
+            })
+            .catch(err => {
+              console.log('error', err.response)
+            })
         })
-          .then(res => {
-            console.log('success', res.data)
-          })
-          .catch(err => {
-            console.log('error', err.response)
-          })
-      })
+      )
     }
   }
 
@@ -142,7 +157,7 @@ const CarSearch = () => {
     setComment('')
     setSearchInput('')
     setChecked(false)
-    setImage('')
+    setImages([])
   }
 
   if (loading) {
@@ -215,17 +230,25 @@ const CarSearch = () => {
                   </span>
                 </p>
               </div>
-              {!!image &&
+              {/* {!!image &&
                 <div className={classes.ImgUserTookPic}>
                   <img src={URL.createObjectURL(image)} alt='pic user' height={150} />
                 </div>
-              }
-              {!image &&
+              } */}
+              {images.length < 5 &&
                 <ImportPhotoButtons
-                  setImgPath={(img) => setImage(img)}
                   paperClipImageHandler={(path) => paperClipImageHandler(path)}
                   setErrorMessage={setErrorAddResidentMessage}
                   cameraClick={() => takePicHandler()} />
+              }
+              {
+                images.length ?
+                  <ImageShowCase
+                    images={images}
+                    removeImgHandler={removeImgHandler}
+                  />
+                  :
+                  null
               }
               {!!errorAddResidentMessage &&
                 <div className="alert alert-danger text-center mt-2 text-center" role="alert">
@@ -252,7 +275,7 @@ const CarSearch = () => {
         takePic && <PicModal
           modal={modalPic}
           toggle={() => toggleModalPic()}
-          setImgPath={(img) => setImage(img)}
+          setImgPath={(img) => addImageToList(img)}
           confirmTakePick={confirmTakePick}
           takePic={takePic}
         />
@@ -263,7 +286,7 @@ const CarSearch = () => {
           modal={modalCrop}
           closeModalCropHandler={closeModalCropHandler}
           pathImgToCrop={pathImgToCrop}
-          setImgPath={(img) => setImage(img)}
+          setImgPath={(img) => addImageToList(img)}
           setModalCrop={setModalCrop}
         />
       }

@@ -5,7 +5,7 @@ import ImageCloud from '../../ImageCloud';
 const ImageModal = (props) => { 
     return (
         <Modal isOpen={props.modal} toggle={props.toggle} className='text-center'>
-            <ModalHeader toggle={props.toggle}>QR Code</ModalHeader>
+            <ModalHeader toggle={props.toggle}>Imagem</ModalHeader>
             <ModalBody>
                <ImageCloud id={props.id} height={450}/>
             </ModalBody>

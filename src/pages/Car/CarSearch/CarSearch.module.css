@@ -22,3 +22,13 @@
     text-align: center;
     padding: 20px;
 }
+
+.ImageInGallery{
+    max-width: 100%;
+    height: auto;
+    border: 1px solid black;
+}
+
+.Gallery{
+    border: 1px solid #ccc;
+}

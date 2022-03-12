@@ -1,0 +1,25 @@
+.Gallery{
+    border: 1px solid #ccc;
+    padding-bottom: 20px;
+}
+
+.ImageInGallery{
+    max-width: 100%;
+    height: auto;
+    border: 1px solid black;
+}
+
+.Img{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.RemoveIcon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

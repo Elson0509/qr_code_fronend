@@ -1,0 +1,9 @@
+.Img{
+    height: 200px;
+    width: auto !important;
+}
+
+.Carousel{
+    width: 100%;
+    background-color: black;
+}

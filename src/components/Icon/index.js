@@ -45,6 +45,8 @@ import {
     faShoppingBag, //shopping-bag
     faDollarSign, //dollar-sign
     faQuestion, //question
+    faTimesCircle, //times-circle
+    
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -90,6 +92,7 @@ library.add(
     faShoppingBag,
     faDollarSign,
     faQuestion,
+    faTimesCircle,
 );
 
 const Icon = (props) => {

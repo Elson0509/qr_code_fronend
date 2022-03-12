@@ -5,9 +5,9 @@ import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import IconButtons from '../../../components/Buttons/IconButtons';
 import ConfirmModal from '../../../components/Modals/ConfirmModal';
-import ImageCloud from '../../../components/ImageCloud'
 import ImageModal from '../../../components/Modals/ImageModal';
 import { Spinner } from 'reactstrap';
+import CarouselImages from '../../../components/CarouselImages';
 import { toast } from 'react-toastify';
 import {
     Card, CardBody, CardHeader,
@@ -21,6 +21,7 @@ const CarList = () => {
     const [modalReply, setModalReply] = useState(false)
     const [message, setMessage] = useState('')
     const [selectedOvernight, setSelectedOvernight] = useState(null)
+    const [selectedImageId, setSelectedImageId] = useState(null)
     const [isModalPhotoActive, setIsModalPhotoActive] = useState(false)
     const [replyMessage, setReplyMessage] = useState('')
     const [subject, setSubject] = useState('')
@@ -43,6 +44,7 @@ const CarList = () => {
     const fetchOvernights = _ => {
       api.get(`overnight`)
       .then(resp=>{
+        console.log(resp.data.overnights)
         setOvernights(resp.data.overnights)
       })
       .catch(err=>{
@@ -75,10 +77,8 @@ const CarList = () => {
         })
     }
 
-    const onClickPhotoHandler = item => {
-      if(!item.photo_id)
-        return
-      setSelectedOvernight(item)
+    const imgClickHandler = imgPhotoId => {
+      setSelectedImageId(imgPhotoId)
       setIsModalPhotoActive(true)
     }
 
@@ -132,9 +132,12 @@ const CarList = () => {
                     />
                   </CardHeader>
                   <CardBody>
-                    <div style={{border: '1px solid #ddd', paddingBottom: '10px'}}>
-                      <div style={{display: 'flex', justifyContent:'center', paddingTop: '15px', cursor: 'pointer'}} onClick={()=>onClickPhotoHandler(el)} >
-                        <ImageCloud id={el.photo_id} isEvent height={150}/>
+                    <div style={{border: '1px solid #ddd', paddingBottom: '10px'}} className='col-12'>
+                      <div style={{display: 'flex', justifyContent:'center', paddingTop: '15px', cursor: 'pointer'}} className='col-12'>
+                        <CarouselImages
+                          images={el.OvernightImages}
+                          clickHandler={imgClickHandler}
+                        />
                       </div>
                       <div className='p-2'>
                         {!!el.created_at && <p className='pt-2 m-0'><span className='enfase'>Data:</span> {Utils.printDateAndHour(new Date(el.created_at))}</p>}
@@ -176,7 +179,7 @@ const CarList = () => {
           <ImageModal
             modal={isModalPhotoActive}
             toggle={()=>setIsModalPhotoActive(false)}
-            id={selectedOvernight.photo_id}
+            id={selectedImageId}
           />
         }
       </Body>
