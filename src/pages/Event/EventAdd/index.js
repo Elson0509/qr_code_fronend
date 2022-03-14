@@ -54,13 +54,14 @@ const EventAdd = () => {
 
   const uploadImg = newId => {
     if (images.length && images.length <= 5) {
-      images.forEach(image =>
+      images.forEach((image, index) =>
         //resizing and uploading
         Utils.resizeFile(image).then(data => {
           api.post(`upload`, {
             base64Image: data,
             fileName: newId,
-            type: 'occurrence'
+            type: 'occurrence',
+            index
           })
             .then(res => {
               console.log('success', res.data)

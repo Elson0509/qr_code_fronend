@@ -318,7 +318,7 @@ const ResidentAdd = (props) => {
                 </div>
               }
               <ActionButtons
-                textButton1='Confirmar'
+                textButton1='Incluir morador'
                 textButton2='Cancelar'
                 action1={() => addResidentHandler()}
                 action2={() => cancelAddResidentHandler()}
@@ -387,7 +387,7 @@ const ResidentAdd = (props) => {
                 </div>
               }
               <ActionButtons
-                textButton1='Confirmar'
+                textButton1='Incluir veículo'
                 textButton2='Cancelar'
                 action1={() => addVehicleHandler()}
                 action2={() => cancelVehicleHandler()}
@@ -412,7 +412,7 @@ const ResidentAdd = (props) => {
       }
       {!!selectedBloco && !!selectedUnit && !isAddingVehicle && !isAddingResident && (
         <ActionButtons
-          textButton1='Cadastrar'
+          textButton1='Cadastrar moradores'
           textButton2='Cancelar'
           action1={() => confirmHandler()}
           action2={() => props.history.push('/dashboard')}

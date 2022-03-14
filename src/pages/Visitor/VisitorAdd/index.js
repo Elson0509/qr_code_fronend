@@ -338,7 +338,7 @@ const VisitorAdd = (props) => {
                 </div>
               }
               <ActionButtons
-                textButton1='Confirmar'
+                textButton1='Incluir visitante'
                 textButton2='Cancelar'
                 action1={() => addResidentHandler()}
                 action2={() => cancelAddResidentHandler()}
@@ -398,7 +398,7 @@ const VisitorAdd = (props) => {
                 </div>
               }
               <ActionButtons
-                textButton1='Confirmar'
+                textButton1='Incluir período'
                 textButton2='Cancelar'
                 action1={() => selectDatesHandler()}
                 action2={() => setIsSelectingDate(false)}
@@ -454,7 +454,7 @@ const VisitorAdd = (props) => {
                 </div>
               }
               <ActionButtons
-                textButton1='Confirmar'
+                textButton1='Incluir veículo'
                 textButton2='Cancelar'
                 action1={() => addVehicleHandler()}
                 action2={() => cancelVehicleHandler()}
@@ -480,7 +480,7 @@ const VisitorAdd = (props) => {
       {!!selectedBloco && !!selectedUnit && !isAddingVehicle && !isAddingResident && !isSelectingDate && (
         <ActionButtons
           errorMessage={errorMessage}
-          textButton1='Cadastrar'
+          textButton1='Cadastrar visitantes'
           textButton2='Cancelar'
           action1={() => confirmHandler()}
           action2={() => props.history.push('/dashboard')}

@@ -348,7 +348,7 @@ const ThirdAdd = (props) => {
                       </div>
                     }
                     <ActionButtons
-                      textButton1='Confirmar'
+                      textButton1='Incluir Terceirizado'
                       textButton2='Cancelar'
                       action1={()=>addResidentHandler()}
                       action2={()=>cancelAddResidentHandler()}
@@ -408,7 +408,7 @@ const ThirdAdd = (props) => {
                       </div>
                     }
                     <ActionButtons
-                      textButton1='Confirmar'
+                      textButton1='Incluir período'
                       textButton2='Cancelar'
                       action1={()=>selectDatesHandler()}
                       action2={()=>setIsSelectingDate(false)}
@@ -464,7 +464,7 @@ const ThirdAdd = (props) => {
                       </div>
                     }
                     <ActionButtons
-                      textButton1='Confirmar'
+                      textButton1='Incluir veículo'
                       textButton2='Cancelar'
                       action1={()=>addVehicleHandler()}
                       action2={()=>cancelVehicleHandler()}
@@ -490,7 +490,7 @@ const ThirdAdd = (props) => {
             {!!selectedBloco && !!selectedUnit && !isAddingVehicle && !isAddingResident && !isSelectingDate && (
               <ActionButtons
                 errorMessage={errorMessage}
-                textButton1='Cadastrar'
+                textButton1='Cadastrar terceirizados'
                 textButton2='Cancelar'
                 action1={()=>confirmHandler()}
                 action2={()=>props.history.push('/dashboard')}

@@ -91,13 +91,14 @@ const CarSearch = () => {
 
   const uploadImg = newId => {
     if (images.length && images.length <= 5) {
-      images.forEach(image =>
+      images.forEach((image, index) =>
         //resizing and uploading
         Utils.resizeFile(image).then(data => {
           api.post(`upload`, {
             base64Image: data,
             fileName: newId,
-            type: 'overnight'
+            type: 'overnight',
+            index
           })
             .then(res => {
               console.log('success', res.data)
@@ -232,11 +233,6 @@ const CarSearch = () => {
                   </span>
                 </p>
               </div>
-              {/* {!!image &&
-                <div className={classes.ImgUserTookPic}>
-                  <img src={URL.createObjectURL(image)} alt='pic user' height={150} />
-                </div>
-              } */}
               {images.length < 5 &&
                 <ImportPhotoButtons
                   paperClipImageHandler={(path) => paperClipImageHandler(path)}
