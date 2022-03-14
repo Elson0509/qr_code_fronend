@@ -3,8 +3,6 @@
     background-size:cover;
 }
 
-@media (min-width:768px){
-    .ShowcaseImg .ShowcaseText{
-        padding:7rem
-    }
+.ShowcaseText{
+    padding:7rem;
 }

@@ -6,6 +6,7 @@ import Icons from './Icons'
 import Footer from '../Footer';
 import Nav from './Nav';
 import Showcase from './Showcase'
+import Landscape from './Landscape';
 
 const index = (props) => {
     return (
@@ -16,6 +17,7 @@ const index = (props) => {
             <Nav/>
             <Icons/>
             <Showcase/>
+            <Landscape/>
             <Footer/>
         </Fragment>
     );

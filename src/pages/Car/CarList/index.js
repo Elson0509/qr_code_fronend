@@ -44,7 +44,6 @@ const CarList = () => {
     const fetchOvernights = _ => {
       api.get(`overnight`)
       .then(resp=>{
-        console.log(resp.data.overnights)
         setOvernights(resp.data.overnights)
       })
       .catch(err=>{

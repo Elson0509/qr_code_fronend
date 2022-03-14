@@ -37,6 +37,7 @@ const CarSearch = () => {
   const addImageToList = blobImage => {
     if (images.length < 5) {
       setImages(prev => [...prev, blobImage])
+      toast.info('Imagem adicionada', Constants.TOAST_CONFIG)
     }
   }
 
@@ -85,6 +86,7 @@ const CarSearch = () => {
     const tempImages = [...images]
     tempImages.splice(ind, 1)
     setImages(tempImages)
+    toast.error('Imagem removida', Constants.TOAST_CONFIG)
   }
 
   const uploadImg = newId => {
@@ -106,7 +108,7 @@ const CarSearch = () => {
         })
       )
     }
-  }
+  }  
 
   const closeModalCropHandler = _ => {
     setPathImgToCrop('')
@@ -261,7 +263,7 @@ const CarSearch = () => {
                 </div>
               }
               <ActionButtons
-                textButton1='Confirmar'
+                textButton1='Registrar Pernoite'
                 textButton2='Cancelar'
                 action1={() => confirmHandler()}
                 action2={() => cancelHandler()}

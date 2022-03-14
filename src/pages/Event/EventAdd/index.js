@@ -7,11 +7,11 @@ import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
 import FormComment from '../../../components/Form/FormComment';
-import classes from './EventAdd.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
 import CropImageModal from '../../../components/Modals/CropImageModal';
+import ImageShowCase from '../../../components/ImageShowCase';
 
 const EventAdd = () => {
   const [loading, setLoading] = useState(false)
@@ -22,6 +22,14 @@ const EventAdd = () => {
   const [modalCrop, setModalCrop] = useState(false)
   const [takePic, setTakePic] = useState(false)
   const [pathImgToCrop, setPathImgToCrop] = useState('')
+  const [images, setImages] = useState([])
+
+  const addImageToList = blobImage => {
+    if (images.length < 5) {
+      setImages(prev => [...prev, blobImage])
+      toast.info('Imagem adicionada', Constants.TOAST_CONFIG)
+    }
+  }
 
   const paperClipImageHandler = imgPath => {
     setPathImgToCrop(imgPath)
@@ -45,21 +53,23 @@ const EventAdd = () => {
   }
 
   const uploadImg = newId => {
-    if (userBeingAdded.pic !== '') {
-      //resizing and uploading
-      Utils.resizeFile(userBeingAdded.pic).then(data => {
-        api.post(`upload`, {
-          base64Image: data,
-          fileName: newId,
-          type: 'occurrence'
+    if (images.length && images.length <= 5) {
+      images.forEach(image =>
+        //resizing and uploading
+        Utils.resizeFile(image).then(data => {
+          api.post(`upload`, {
+            base64Image: data,
+            fileName: newId,
+            type: 'occurrence'
+          })
+            .then(res => {
+              console.log('success', res.data)
+            })
+            .catch(err => {
+              console.log('error', err.response)
+            })
         })
-          .then(res => {
-            console.log('success', res.data)
-          })
-          .catch(err => {
-            console.log('error', err.response)
-          })
-      })
+      )
     }
   }
 
@@ -98,7 +108,7 @@ const EventAdd = () => {
         uploadImg(res.data.occurrenceRegistered.id)
         setErrorMessage('')
         toast.info('Cadastro realizado', Constants.TOAST_CONFIG)
-        setUserBeingAdded({ title: '', place: '', description: '', pic: '' })
+        cancelHandler()
       })
       .catch((err) => {
         toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (EA1)', Constants.TOAST_CONFIG)
@@ -121,6 +131,19 @@ const EventAdd = () => {
   const toggleModalPic = _ => {
     setModalPic(false)
     setTakePic(false)
+  }
+
+  const cancelHandler = _ => {
+    setErrorMessage('')
+    setUserBeingAdded({ title: '', place: '', description: '', pic: '' })
+    setImages([])
+  }
+
+  const removeImgHandler = ind => {
+    const tempImages = [...images]
+    tempImages.splice(ind, 1)
+    setImages(tempImages)
+    toast.error('Imagem removida', Constants.TOAST_CONFIG)
   }
 
   if (loading) {
@@ -149,7 +172,23 @@ const EventAdd = () => {
           value={userBeingAdded.description}
           changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, description: val })}
         />
-        {!!userBeingAdded.pic &&
+        {
+          images.length < 5 &&
+          <ImportPhotoButtons
+            paperClipImageHandler={(path) => paperClipImageHandler(path)}
+            setErrorMessage={setErrorAddResidentMessage}
+            cameraClick={() => takePicHandler()} />
+        }
+        {
+          images.length ?
+            <ImageShowCase
+              images={images}
+              removeImgHandler={removeImgHandler}
+            />
+            :
+            null
+        }
+        {/* {!!userBeingAdded.pic &&
           <div className={classes.ImgUserTookPic}>
             <img src={URL.createObjectURL(userBeingAdded.pic)} height={120} alt='user' />
           </div>
@@ -160,7 +199,7 @@ const EventAdd = () => {
             paperClipImageHandler={(path) => paperClipImageHandler(path)}
             setErrorMessage={setErrorAddResidentMessage}
             cameraClick={() => takePicHandler()} />
-        }
+        } */}
         {!!errorAddResidentMessage &&
           <div className="alert alert-danger text-center mt-2" role="alert">
             {errorAddResidentMessage}
@@ -172,17 +211,17 @@ const EventAdd = () => {
           </div>
         }
         <ActionButtons
-          textButton1='Confirmar'
+          textButton1='Registrar evento'
           textButton2='Cancelar'
           action1={() => addHandler()}
-          action2={() => { }}
+          action2={() => cancelHandler()}
         />
       </form>
       {
         takePic && <PicModal
           modal={modalPic}
           toggle={() => toggleModalPic()}
-          setImgPath={(img) => setUserBeingAdded({ ...userBeingAdded, pic: img })}
+          setImgPath={(img) => addImageToList(img)}
           confirmTakePick={confirmTakePick}
           takePic={takePic}
         />
@@ -193,7 +232,7 @@ const EventAdd = () => {
           modal={modalCrop}
           closeModalCropHandler={closeModalCropHandler}
           pathImgToCrop={pathImgToCrop}
-          setImgPath={(img) => setUserBeingAdded({ ...userBeingAdded, pic: img })}
+          setImgPath={(img) => addImageToList(img)}
           setModalCrop={setModalCrop}
         />
       }

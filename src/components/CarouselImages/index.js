@@ -2,7 +2,6 @@ import React from 'react';
 import classes from './CarouselImages.module.css'
 import { Carousel } from 'react-responsive-carousel';
 import * as Constants from '../../services/constants'
-import ImageModal from '../Modals/ImageModal';
 
 const CarouselImages = (props) => {
   const clickItemHandler = item => {
