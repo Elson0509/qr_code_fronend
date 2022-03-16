@@ -213,7 +213,6 @@ const ThirdEdit = (props) => {
             console.log('error', err.response)
           })
       })
-
     })
   }
 
@@ -347,7 +346,7 @@ const ThirdEdit = (props) => {
                   </div>
                 }
                 <ActionButtons
-                  textButton1='Confirmar'
+                  textButton1='Incluir Terceirizado'
                   textButton2='Cancelar'
                   action1={() => addResidentHandler()}
                   action2={() => cancelAddResidentHandler()}
@@ -407,7 +406,7 @@ const ThirdEdit = (props) => {
                   </div>
                 }
                 <ActionButtons
-                  textButton1='Confirmar'
+                  textButton1='Incluir período'
                   textButton2='Cancelar'
                   action1={() => selectDatesHandler()}
                   action2={() => setIsSelectingDate(false)}
@@ -463,7 +462,7 @@ const ThirdEdit = (props) => {
                   </div>
                 }
                 <ActionButtons
-                  textButton1='Confirmar'
+                  textButton1='Incluir veículo'
                   textButton2='Cancelar'
                   action1={() => addVehicleHandler()}
                   action2={() => cancelVehicleHandler()}
@@ -489,7 +488,7 @@ const ThirdEdit = (props) => {
         {!!selectedBloco && !!selectedUnit && !isAddingVehicle && !isAddingResident && !isSelectingDate && (
           <ActionButtons
             errorMessage={errorMessage}
-            textButton1='Cadastrar'
+            textButton1='Atualizar terceirizados'
             textButton2='Cancelar'
             action1={() => confirmHandler()}
             action2={() => props.history.push('/dashboard')}

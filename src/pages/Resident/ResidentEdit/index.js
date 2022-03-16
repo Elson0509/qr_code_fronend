@@ -272,7 +272,6 @@ const ResidentEdit = (props) => {
         <SelectButton
           icon='building'
           text='Selecionar Unidade'
-        //action={()=>setModalSelectBloco(true)}
         >
           {!!selectedBloco && !!selectedUnit && (
             <ul className="list-group">
@@ -326,7 +325,7 @@ const ResidentEdit = (props) => {
                   </div>
                 }
                 <ActionButtons
-                  textButton1='Confirmar'
+                  textButton1='Incluir morador'
                   textButton2='Cancelar'
                   action1={() => addResidentHandler()}
                   action2={() => cancelAddResidentHandler()}
@@ -394,7 +393,7 @@ const ResidentEdit = (props) => {
                   </div>
                 }
                 <ActionButtons
-                  textButton1='Confirmar'
+                  textButton1='Incluir veículo'
                   textButton2='Cancelar'
                   action1={() => addVehicleHandler()}
                   action2={() => cancelVehicleHandler()}
@@ -419,7 +418,7 @@ const ResidentEdit = (props) => {
         }
         {!!selectedBloco && !!selectedUnit && (
           <ActionButtons
-            textButton1='Atualizar'
+            textButton1='Atualizar moradores'
             textButton2='Cancelar'
             action1={() => confirmHandler()}
             action2={() => props.history.push('/dashboard')}

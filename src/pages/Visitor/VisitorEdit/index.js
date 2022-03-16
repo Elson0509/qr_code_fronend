@@ -341,7 +341,7 @@ const VisitorEdit = (props) => {
                   </div>
                 }
                 <ActionButtons
-                  textButton1='Confirmar'
+                  textButton1='Incluir visitante'
                   textButton2='Cancelar'
                   action1={() => addResidentHandler()}
                   action2={() => cancelAddResidentHandler()}
@@ -400,7 +400,7 @@ const VisitorEdit = (props) => {
                   </div>
                 }
                 <ActionButtons
-                  textButton1='Confirmar'
+                  textButton1='Incluir período'
                   textButton2='Cancelar'
                   action1={() => selectDatesHandler()}
                   action2={() => setIsSelectingDate(false)}
@@ -456,7 +456,7 @@ const VisitorEdit = (props) => {
                   </div>
                 }
                 <ActionButtons
-                  textButton1='Confirmar'
+                  textButton1='Incluir veículo'
                   textButton2='Cancelar'
                   action1={() => addVehicleHandler()}
                   action2={() => cancelVehicleHandler()}
@@ -482,7 +482,7 @@ const VisitorEdit = (props) => {
         {!!selectedBloco && !!selectedUnit && (
           <ActionButtons
             errorMessage={errorMessage}
-            textButton1='Cadastrar'
+            textButton1='Atualizar visitantes'
             textButton2='Cancelar'
             action1={() => confirmHandler()}
             action2={() => props.history.push('/dashboard')}

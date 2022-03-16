@@ -5,6 +5,7 @@ import * as Constants from '../../../services/constants'
 import api from '../../../services/api'
 import IconButtons from '../../../components/Buttons/IconButtons'
 import Plate from '../../../components/Plate'
+import ImageModal from '../../../components/Modals/ImageModal'
 import ConfirmPassModal from '../../../components/Modals/ConfirmPassModal'
 import ConfirmModal from '../../../components/Modals/ConfirmModal'
 import ImageCloud from '../../../components/ImageCloud'
@@ -23,6 +24,8 @@ const ResidentSearch = (props) => {
   const [unitSelected, setUnitSelected] = useState(null)
   const [passModal, setPassModal] = useState(false)
   const [searchInput, setSearchinput] = useState('')
+  const [imageModal, setImageModal] = useState(false)
+  const [selectedIdImage, setSelectedIdImage] = useState(0)
 
   const breadcrumb = [
     {
@@ -34,11 +37,11 @@ const ResidentSearch = (props) => {
       link: '/residents/search'
     }
   ]
-
+  
   useEffect(() => {
     fetchUsers()
   }, [])
-
+  
   const fetchUsers = _ => {
     api.get(`user/condo/${user.condo_id}/${Constants.USER_KIND["RESIDENT"]}`)
       .then(resp => {
@@ -90,6 +93,13 @@ const ResidentSearch = (props) => {
   const modalConfirmPassHandler = () => {
     setModal(false)
     setPassModal(true)
+  }
+
+  const clickImageHandler = resident => {
+    if(resident.photo_id){
+      setSelectedIdImage(resident.photo_id)
+      setImageModal(true)
+    }
   }
 
   const deleteUnitConfirmed = _ => {
@@ -181,8 +191,8 @@ const ResidentSearch = (props) => {
                     {
                       !!el.residents.length && el.residents.map((resident, ind) => (
                         <div style={{ border: '1px solid #ddd', paddingBottom: '10px' }} key={resident.id}>
-                          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px' }}>
-                            <ImageCloud id={resident.photo_id} height={150} />
+                          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px', cursor: 'pointer' }} onClick={()=>clickImageHandler(resident)}>
+                            <ImageCloud id={resident.photo_id} height={180} />
                           </div>
                           <p className='text-center p-0 m-0'>{resident.name}</p>
                           <p className='text-center p-0 m-0'>{resident.email}</p>
@@ -225,6 +235,11 @@ const ResidentSearch = (props) => {
         modal={passModal}
         toggle={() => setPassModal(false)}
         action={() => deleteUnitConfirmed()}
+      />
+      <ImageModal
+        modal={imageModal}
+        toggle={() => setImageModal(false)}
+        id={selectedIdImage}
       />
     </Body>
   );

@@ -139,14 +139,14 @@ const EventList = () => {
                   </CardHeader>
                   <CardBody>
                     <div style={{ border: '1px solid #ddd', paddingBottom: '10px' }}>
-                      {/* <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px', cursor: 'pointer' }} onClick={()=>onClickPhotoHandler(el)}>
-                        <ImageCloud isEvent id={el.photo_id} height={150} />
-                      </div> */}
                       <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px', cursor: 'pointer' }} className='col-12'>
+                      {
+                          !!el.OccurrenceImages.length &&
                         <CarouselImages
                           images={el.OccurrenceImages}
                           clickHandler={imgClickHandler}
                         />
+                      }
                       </div>
                       <div className='p-2'>
                         {!!el.title && <p className='pt-2 m-0'><span className='enfase'>Assunto:</span> {el.title}</p>}

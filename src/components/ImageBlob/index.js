@@ -10,7 +10,8 @@ const ImageBlob = (props) => {
                 src={URL.createObjectURL(source)} 
                 loading='lazy' 
                 alt='user'
-                height={props.height || '250'} 
+                height='auto'
+                width='100%'
                 onError={(err)=>{console.log(err); setSource(genericProfile)}}
             />
         :
@@ -18,7 +19,8 @@ const ImageBlob = (props) => {
                 src={genericProfile} 
                 loading='lazy' 
                 alt='user'
-                height={props.height || '250'} 
+                height='auto'
+                width='100%'
                 onError={(err)=>{console.log(err); setSource(genericProfile)}}
             />
     );

@@ -5,7 +5,8 @@ import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import Plate from '../../../components/Plate'
-import ImageCloud from '../../../components/ImageCloud';
+import ImageCloudWidth from '../../../components/ImageCloudWidth'
+import ImageModal from '../../../components/Modals/ImageModal'
 import IconButtons from '../../../components/Buttons/IconButtons';
 import ConfirmModal from '../../../components/Modals/ConfirmModal';
 import MessageModal from '../../../components/Modals/MessageModal';
@@ -35,6 +36,8 @@ const VisitorSearch = (props) => {
   const [messageErrorModal, setMessageErrorModal] = useState('')
   const [modalGeneric, setModalGeneric] = useState(false)
   const [loadingMessage, setLoadingMessage] = useState(false)
+  const [imageModal, setImageModal] = useState(false)
+  const [selectedIdImage, setSelectedIdImage] = useState(0)
 
   const breadcrumb = [
     {
@@ -248,6 +251,13 @@ const VisitorSearch = (props) => {
       })
   }
 
+  const clickImageHandler = resident => {
+    if(resident.photo_id){
+      setSelectedIdImage(resident.photo_id)
+      setImageModal(true)
+    }
+  }
+
   if (loading) {
     return (
       <Body breadcrumb={breadcrumb}>
@@ -312,8 +322,8 @@ const VisitorSearch = (props) => {
                       {
                         !!el.residents.length && el.residents.map((resident, ind) => (
                           <div key={resident.id} style={{ border: '1px solid #ddd', padding: '10px', display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                              <ImageCloud id={resident.photo_id} height={150} />
+                            <div style={{ display: 'flex', justifyContent: 'center', width:'160px', cursor: 'pointer'}} onClick={()=>clickImageHandler(resident)}>
+                              <ImageCloudWidth id={resident.photo_id} />
                             </div>
                             <div>
                               {!!resident.name && <p className='p-0 m-0'><span className='enfase'>Nome:</span> {resident.name}</p>}
@@ -433,6 +443,11 @@ const VisitorSearch = (props) => {
           info={`QR_Code Visitantes ${unitSelected.bloco_name} ${unitSelected.number}`}
         />
       }
+      <ImageModal
+        modal={imageModal}
+        toggle={() => setImageModal(false)}
+        id={selectedIdImage}
+      />
     </Body>
   );
 };

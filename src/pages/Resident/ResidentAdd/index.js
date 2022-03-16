@@ -333,11 +333,10 @@ const ResidentAdd = (props) => {
                     <div className={classes.ResidentImage}>
                       {
                         el.id === '0' ?
-                          <ImageBlob path={el.pic} height={100} />
+                          <ImageBlob path={el.pic} />
                           :
-                          <ImageCloud id={el.photo_id} height={100} />
+                          <ImageCloud id={el.photo_id}/>
                       }
-
                     </div>
                     <div>
                       <p className={classes.Text}><span className={classes.Bold}>Nome:</span> {el.name}</p>
