@@ -17,7 +17,7 @@ const Nav = () => {
                     <Link to={'/'} ><Icon icon='dollar-sign' size='lg'/> Assinatura</Link>
                 </li>
                 <li>
-                    <Link to={'/'} > <Icon icon='question' size='lg'/> FAQ</Link>
+                    <Link to={'/faq'} > <Icon icon='question' size='lg'/> FAQ</Link>
                 </li>
             </ul>
         </nav>

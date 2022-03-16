@@ -416,14 +416,15 @@ const ResidentEdit = (props) => {
           </SelectButton>
         )
         }
-        {!!selectedBloco && !!selectedUnit && (
-          <ActionButtons
-            textButton1='Atualizar moradores'
-            textButton2='Cancelar'
-            action1={() => confirmHandler()}
-            action2={() => props.history.push('/dashboard')}
-          />
-        )
+        {
+          !!selectedBloco && !!selectedUnit && (
+            <ActionButtons
+              textButton1='Atualizar moradores'
+              textButton2='Cancelar'
+              action1={() => confirmHandler()}
+              action2={() => props.history.push('/dashboard')}
+            />
+          )
         }
         {
           !!units.length &&
