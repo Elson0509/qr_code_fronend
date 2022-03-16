@@ -62,7 +62,7 @@ const Faq = () => {
       answer: 'É uma função disponível para os colaboradores e administradores. Por meio dela, é possível registrar ocorrências, incluindo o assunto, local, descrição e fotos. Enquanto o colaborar registra, o administrador poderá acessar a lista de ocorrências posteriormente.',
     },
     {
-      question: 'O que é a controle de estacionamento?',
+      question: 'O que é o controle de estacionamento?',
       answer: 'É uma função disponível para os colaboradores e administradores. Por meio dela, é possível controlar a quantidade de vagas para visitantes disponíves no condomínio. Toda vez que é registrada a entrada de um visitante ou um prestador de serviço, o sistema poderá registrar se eles utilizarão vagas de estacionamento. Há qualquer momento, o colaborador pode checar no sistema qual a quantidade de vagas livres.',
     },
     {
