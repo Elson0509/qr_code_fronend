@@ -80,13 +80,14 @@ const Faq = () => {
     <Fragment>
       <HeaderLanding />
       <Nav />
-      <section className='p-4'>
+      <section className='p-4 bg-light'>
+        <h3 className='h3 mb-4 roboto'>Perguntas frequentes</h3>
         {
           questions.map((el, index) => {
             return (
               <Card style={{ marginBottom: '1rem', textAlign: 'justify' }} key={index} className='roboto'>
-                <CardHeader onClick={toggle} data-event={index}  style={{ cursor: 'pointer', fontWeight: 'bold' }}>
-                {index+1}. {el.question}
+                <CardHeader onClick={toggle} data-event={index} style={{ cursor: 'pointer', fontWeight: 'bold' }}>
+                  {index + 1}. {el.question}
                 </CardHeader>
                 <Collapse isOpen={collapse === index}>
                   <CardBody><p>{el.answer}</p></CardBody>
