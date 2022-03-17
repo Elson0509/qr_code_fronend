@@ -31,7 +31,7 @@ const Price = () => {
                   R$ 159,90<small className="text-muted">/ mês</small>
                 </CardTitle>
                 <CardSubtitle>
-                  <CheckList text='Até 500 residentes incluído' />
+                  <CheckList text='Até 500 unidades incluído' />
                   <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button>
                 </CardSubtitle>
               </CardBody>
@@ -45,7 +45,7 @@ const Price = () => {
                   R$ 179,90<small className="text-muted">/ mês</small>
                 </CardTitle>
                 <CardSubtitle>
-                  <CheckList text='Até 1000 residentes incluído' />
+                  <CheckList text='Até 1000 unidades incluído' />
                   <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button>
                 </CardSubtitle>
               </CardBody>
@@ -59,7 +59,7 @@ const Price = () => {
                   R$ 199,90<small className="text-muted">/ mês</small>
                 </CardTitle>
                 <CardSubtitle>
-                  <CheckList text='Sem limites de residentes incluído' />
+                  <CheckList text='Sem limites de unidades incluído' />
                   <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button>
                 </CardSubtitle>
               </CardBody>

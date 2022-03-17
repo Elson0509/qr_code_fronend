@@ -86,7 +86,7 @@ const SindicoList = () => {
                   <Card outline color="info">
                     <CardHeader>
                       <IconButtons
-                          action1={()=>{console.log(el)}}
+                          //action1={()=>{console.log(el)}}
                           action2={()=>{delSindicoModal(el)}}
                       />
                     </CardHeader>

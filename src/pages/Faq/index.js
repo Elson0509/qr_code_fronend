@@ -69,6 +69,10 @@ const Faq = () => {
       question: 'Onde são armazenadas as informações?',
       answer: 'As dados são armazenados de forma segura em nuvem, com acesso restrito aos usuários da plataforma. Assim, você não precisa comprar nenhum equipamento especial para armazenar informações em seu condomínio. Tudo o que você precisa é de computador ou celular com acesso a internet.',
     },
+    {
+      question: 'Quanto custa? O valor é referente ao condomínio?',
+      answer: 'A tabela de custos pode ser acessada na aba "Assinatura" acima, com valores a partir de R$159,90. O valor refere-se a uma parcela mensal para o condomínio inteiro.',
+    },
   ]
 
   const toggle = e => {
