@@ -112,7 +112,7 @@ const EventAdd = () => {
         cancelHandler()
       })
       .catch((err) => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (EA1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (EA1)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)

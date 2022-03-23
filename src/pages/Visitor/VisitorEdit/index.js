@@ -82,7 +82,7 @@ const VisitorEdit = (props) => {
         setUnits(res.data)
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -252,11 +252,11 @@ const VisitorEdit = (props) => {
             setFinished(true)
           })
           .catch(err2 => {
-            toast.error(err2.response.data.message || 'Um erro ocorreu. Tente mais tarde. (VE2)', Constants.TOAST_CONFIG)
+            Utils.toastError(err2.response.data.message || 'Um erro ocorreu. Tente mais tarde. (VE2)', Constants.TOAST_CONFIG)
           })
       })
       .catch(err => {
-        toast.error(err.response.data.message || 'Um erro ocorreu. Tente mais tarde. (VE3)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response.data.message || 'Um erro ocorreu. Tente mais tarde. (VE3)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)

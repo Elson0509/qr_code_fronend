@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Body from '../../../layout/Body';
 import * as Constants from '../../../services/constants'
+import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import IconButtons from '../../../components/Buttons/IconButtons';
 import ConfirmModal from '../../../components/Modals/ConfirmModal';
@@ -39,7 +40,7 @@ const SindicoList = () => {
         setSindicos(resp.data)
       })
       .catch(err=>{
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (SL1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (SL1)', Constants.TOAST_CONFIG)
       })
       .finally(()=>{
         setLoading(false)
@@ -61,7 +62,7 @@ const SindicoList = () => {
           fetchUsers()
         })
         .catch((err)=>{
-          toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (SL2)', Constants.TOAST_CONFIG)
+          Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (SL2)', Constants.TOAST_CONFIG)
         })
         .finally(()=>{
           setLoading(false)

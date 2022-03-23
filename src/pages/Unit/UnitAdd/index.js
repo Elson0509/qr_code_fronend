@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Body from '../../../layout/Body';
 import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
+import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import Icon from '../../../components/Icon';
 import { Spinner } from 'reactstrap';
@@ -51,7 +52,7 @@ const UnitAdd = _ => {
         setModalSelectBloco(true)
       })
       .catch((err) => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UA1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UA1)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -116,7 +117,7 @@ const UnitAdd = _ => {
       toast.info(res.data.message, Constants.TOAST_CONFIG)
     })
     .catch((err) => {
-      toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UA2)', Constants.TOAST_CONFIG)
+      Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UA2)', Constants.TOAST_CONFIG)
     })
     .finally(() => {
         setLoading(false)

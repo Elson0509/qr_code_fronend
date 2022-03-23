@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Body from '../../../layout/Body';
 import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
+import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import Icon from '../../../components/Icon';
 import ConfirmModal from '../../../components/Modals/ConfirmModal';
@@ -45,7 +46,7 @@ const UnitList = (props) => {
         })
         .catch(err=> {
             console.log(err)
-            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UL1)')
+            Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UL1)')
         })
         .finally(()=>{
             setLoading(false)
@@ -100,7 +101,7 @@ const UnitList = (props) => {
             listUnits()
           })
           .catch((err)=> {
-            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UL2)', Constants.TOAST_CONFIG)
+            Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UL2)', Constants.TOAST_CONFIG)
           })
           .finally(()=>{
             setLoading(false)
@@ -123,7 +124,7 @@ const UnitList = (props) => {
           toast.info(resp.data.message, Constants.TOAST_CONFIG)
         })
         .catch((err)=> {
-          toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UL3)', Constants.TOAST_CONFIG)
+          Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UL3)', Constants.TOAST_CONFIG)
         })
         .finally(()=>{
           setLoading(false)

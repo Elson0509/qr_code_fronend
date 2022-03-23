@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Body from '../../../layout/Body';
 import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
+import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import IconButtons from '../../../components/Buttons/IconButtons'
 import Plate from '../../../components/Plate'
@@ -48,7 +49,7 @@ const ResidentSearch = (props) => {
         setUnits(resp.data)
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RL1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RL1)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -115,7 +116,7 @@ const ResidentSearch = (props) => {
         fetchUsers()
       })
       .catch((err) => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RL2)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RL2)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)

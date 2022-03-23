@@ -47,7 +47,7 @@ const EventList = () => {
         setEvents(resp.data.occurences)
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (EL1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (EL1)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -69,7 +69,7 @@ const EventList = () => {
         fetchEvents()
       })
       .catch((err) => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (EL2)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (EL2)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -94,7 +94,7 @@ const EventList = () => {
         toast.info(resp.data.message, Constants.TOAST_CONFIG)
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CL3)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CL3)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)

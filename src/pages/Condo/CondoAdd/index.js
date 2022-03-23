@@ -1,6 +1,7 @@
 import React, { useState} from 'react';
 import Body from '../../../layout/Body';
 import * as Constants from '../../../services/constants'
+import * as Utils from '../../../services/util'
 import api from '../../../services/api'
 import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
@@ -53,7 +54,7 @@ const CondoAdd = (props) => {
         setCondoBeingAdded({id: "0", name: '', address: '', city: '', state: '', slots: ''})
       })
       .catch((err)=> {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoA1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoA1)', Constants.TOAST_CONFIG)
       })
       .finally(()=>{
         setLoading(false)

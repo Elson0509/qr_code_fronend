@@ -1,4 +1,5 @@
 import Resizer from 'react-image-file-resizer'
+import { toast } from 'react-toastify';
 
 export const resizeFile = (file) =>
   new Promise((resolve) => {
@@ -236,4 +237,12 @@ const aptNumberAnalyseOnlyNumbers = (first, last) => {
         }
     }
     return apts
+}
+
+export const toastError = (err, messageError) => {
+    if(err.message === 'timeout'){
+        toast.error('Pedido abortado devido a problema de rede.')
+    }else{
+        toast.error(messageError)
+    }
 }

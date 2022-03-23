@@ -82,7 +82,7 @@ const ThirdEdit = (props) => {
         setUnits(res.data)
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TE1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TE1)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -252,11 +252,11 @@ const ThirdEdit = (props) => {
             setFinished(true)
           })
           .catch(err2 => {
-            toast.error(err2.response.data.message || 'Um erro ocorreu. Tente mais tarde. (TE2)', Constants.TOAST_CONFIG)
+            Utils.toastError(err2, err2.response.data.message || 'Um erro ocorreu. Tente mais tarde. (TE2)', Constants.TOAST_CONFIG)
           })
       })
       .catch(err => {
-        toast.error(err.response.data.message || 'Um erro ocorreu. Tente mais tarde. (TE3)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response.data.message || 'Um erro ocorreu. Tente mais tarde. (TE3)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)

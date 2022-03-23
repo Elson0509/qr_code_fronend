@@ -63,7 +63,7 @@ const ResidentAdd = (props) => {
         setModalSelectBloco(true)
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -153,13 +153,13 @@ const ResidentAdd = (props) => {
             setVehicles(res2.data)
           })
           .catch(err2 => {
-            toast.error(err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA2)', Constants.TOAST_CONFIG)
+            Utils.toastError(err2, err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA2)', Constants.TOAST_CONFIG)
             setSelectedUnit(null)
             setSelectedBloco(null)
           })
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA3)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA3)', Constants.TOAST_CONFIG)
         setSelectedUnit(null)
         setSelectedBloco(null)
       })
@@ -224,11 +224,11 @@ const ResidentAdd = (props) => {
             setModalSelectBloco(null)
           })
           .catch(err2 => {
-            toast.error(err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA4)', Constants.TOAST_CONFIG)
+            Utils.toastError(err2, err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA4)', Constants.TOAST_CONFIG)
           })
       })
       .catch((err) => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA5)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA5)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)

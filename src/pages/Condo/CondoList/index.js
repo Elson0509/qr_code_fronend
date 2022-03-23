@@ -39,7 +39,7 @@ const CondoList = (props) => {
         setCondos(resp.data)
       })
       .catch(err=>{
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoL1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoL1)', Constants.TOAST_CONFIG)
       })
       .finally(()=>{
         setLoading(false)
@@ -60,7 +60,7 @@ const CondoList = (props) => {
           fetchCondos()
         })
         .catch((err)=>{
-          toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoL2)', Constants.TOAST_CONFIG)
+          Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoL2)', Constants.TOAST_CONFIG)
         })
         .finally(()=>{
           setLoading(false)

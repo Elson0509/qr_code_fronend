@@ -42,7 +42,7 @@ const MessageList = (props) => {
         setMessages(resp.data.messages)
       })
       .catch(err=>{
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (ML1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (ML1)', Constants.TOAST_CONFIG)
       })
       .finally(()=>{
         setLoading(false)
@@ -63,7 +63,7 @@ const MessageList = (props) => {
           fetchMessages()
         })
         .catch((err)=>{
-          toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (ML2)', Constants.TOAST_CONFIG)
+          Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (ML2)', Constants.TOAST_CONFIG)
         })
         .finally(()=>{
           setLoading(false)

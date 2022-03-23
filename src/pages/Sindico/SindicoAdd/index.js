@@ -54,7 +54,7 @@ const SindicoAdd = (props) => {
           setUserBeingAdded({...userBeingAdded, condo_id: resp.data[0].id})
       })
       .catch(err=>{
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (SA1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (SA1)', Constants.TOAST_CONFIG)
       })
       .finally(()=>{
         setLoading(false)
@@ -116,7 +116,7 @@ const SindicoAdd = (props) => {
         setUserBeingAdded({...userBeingAdded, id: "0", name: '', identification: '', email: '', pic: ''})
       })
       .catch((err)=> {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (GA1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (GA1)', Constants.TOAST_CONFIG)
       })
       .finally(()=>{
         setLoading(false)

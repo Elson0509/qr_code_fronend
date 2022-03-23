@@ -115,7 +115,7 @@ const MyQrCode = () => {
             setModalExit(true)
         })
         .catch(err=>{
-            toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (SC3)', Constants.TOAST_CONFIG)
+            Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (SC3)', Constants.TOAST_CONFIG)
             setLoading(false)
         })  
     }

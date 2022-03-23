@@ -47,7 +47,7 @@ const CarList = () => {
         setOvernights(resp.data.overnights)
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CL1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CL1)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -69,7 +69,7 @@ const CarList = () => {
         fetchOvernights()
       })
       .catch((err) => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CL2)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CL2)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -99,7 +99,7 @@ const CarList = () => {
         toast.info(resp.data.message, Constants.TOAST_CONFIG)
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CL3)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CL3)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)

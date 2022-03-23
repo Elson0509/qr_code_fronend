@@ -66,7 +66,7 @@ const ThirdSearch = (props) => {
         setUnits(resp.data)
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TL1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TL1)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -92,7 +92,7 @@ const ThirdSearch = (props) => {
         fetchUsers()
       })
       .catch((err) => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TL2)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TL2)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -173,7 +173,7 @@ const ThirdSearch = (props) => {
       .catch(err => {
         setLoading(false)
         setEntranceExitModal(false)
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (VS3)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (VS3)', Constants.TOAST_CONFIG)
       })
   }
 
@@ -202,7 +202,7 @@ const ThirdSearch = (props) => {
       .catch(err => {
         setLoading(false)
         setEntranceExitModal(false)
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (VS2)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (VS2)', Constants.TOAST_CONFIG)
       })
   }
 

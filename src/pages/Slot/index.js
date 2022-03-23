@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Body from '../../layout/Body';
 import * as Constants from '../../services/constants'
+import * as Utils from '../../services/util'
 import SelectButton from '../../components/Buttons/SelectButton'
 import api from '../../services/api'
 import { Spinner } from 'reactstrap';
@@ -36,7 +37,7 @@ const Slot = () => {
       setTotalSlots(resp.data.totalslots)
     })
     .catch(err=>{
-      toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (S1)', Constants.TOAST_CONFIG)
+      Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (S1)', Constants.TOAST_CONFIG)
     })
     .finally(()=>{
       setLoading(false)
@@ -56,7 +57,7 @@ const Slot = () => {
         toast.info('Vaga liberada.', Constants.TOAST_CONFIG)
       })
       .catch(err=>{
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (S2)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (S2)', Constants.TOAST_CONFIG)
       })
       .finally(()=>{
         setLoading(false)
@@ -77,7 +78,7 @@ const Slot = () => {
         toast.info('Vaga preenchida.', Constants.TOAST_CONFIG)
       })
       .catch(err=>{
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (S3)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (S3)', Constants.TOAST_CONFIG)
       })
       .finally(()=>{
         setLoading(false)

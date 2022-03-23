@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL_PREFIX+process.env.REACT_APP_API_URL+process.env.REACT_APP_API_SERVER_URL
+    baseURL: process.env.REACT_APP_API_URL_PREFIX+process.env.REACT_APP_API_URL+process.env.REACT_APP_API_SERVER_URL,
+    timeout: 5000,
+    timeoutErrorMessage: 'timeout'
 })
 
 export default api

@@ -62,7 +62,7 @@ const CarSearch = () => {
         setCars(resp.data)
       })
       .catch(err => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CS1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CS1)', Constants.TOAST_CONFIG)
       })
       .finally(() => {
         setLoading(false)
@@ -151,7 +151,7 @@ const CarSearch = () => {
         toast.info('Informação registrada.', Constants.TOAST_CONFIG)
       })
       .catch((err) => {
-        toast.error(err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CS1)', Constants.TOAST_CONFIG)
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CS1)', Constants.TOAST_CONFIG)
       })
   }
 
