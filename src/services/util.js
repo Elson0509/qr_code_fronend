@@ -246,3 +246,28 @@ export const toastError = (err, messageError) => {
         toast.error(messageError)
     }
 }
+
+export const checkInternetConnection = (setLoading) => {
+    return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+            toast.error('Não há conexão com a internet.')
+            if(setLoading)
+                setLoading(false)
+            reject(false)
+        }, 2000)
+        fetch('https://www.google.com/', {
+            method: 'HEAD',
+            timeout: 3000,
+            mode: 'no-cors'
+        }).then(() => {
+            clearTimeout(timeout)
+            resolve(true)
+        }).catch(() => {
+            clearTimeout(timeout)
+            toast.error('Não há conexão com a internet.')
+            if(setLoading)
+                setLoading(false)
+            reject(false)
+        })
+    })
+}

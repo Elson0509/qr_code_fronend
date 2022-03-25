@@ -34,7 +34,11 @@ const GuardList = () => {
     fetchUsers()
   }, [])
 
-  const fetchUsers = _ => {
+  const fetchUsers = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     api.get(`user/kind/${Constants.USER_KIND["GUARD"]}`)
       .then(resp => {
         setGuards(resp.data)
@@ -47,7 +51,11 @@ const GuardList = () => {
       })
   }
 
-  const delGuardModal = user => {
+  const delGuardModal = async user => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setGuardSelected(user)
     setMessage(`Excluir guarda ${user.name}?`)
     setModal(true)

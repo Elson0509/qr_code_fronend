@@ -56,7 +56,11 @@ const CarSearch = () => {
     fetchUsers()
   }, [])
 
-  const fetchUsers = _ => {
+  const fetchUsers = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     api.get(`vehicle/condo/${user.condo_id}`)
       .then(resp => {
         setCars(resp.data)
@@ -82,7 +86,11 @@ const CarSearch = () => {
     return filteredData
   }
 
-  const removeImgHandler = ind => {
+  const removeImgHandler = async ind => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     const tempImages = [...images]
     tempImages.splice(ind, 1)
     setImages(tempImages)
@@ -116,7 +124,11 @@ const CarSearch = () => {
     setModalCrop('')
   }
 
-  const takePicHandler = _ => {
+  const takePicHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setTakePic(true)
     setModalPic(true)
   }
@@ -131,15 +143,23 @@ const CarSearch = () => {
     setTakePic(false)
   }
 
-  const paperClipImageHandler = imgPath => {
+  const paperClipImageHandler = async imgPath => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setPathImgToCrop(imgPath)
     setModalCrop(true)
   }
 
-  const confirmHandler = _ => {
+  const confirmHandler = async _ => {
     // if (!image) {
     //   return setErrorMessage('É necessário inserir uma imagem.')
     // }
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setErrorMessage('')
     api.post('overnight', {
       description: comment,

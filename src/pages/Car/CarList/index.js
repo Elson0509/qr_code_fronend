@@ -41,7 +41,11 @@ const CarList = () => {
     fetchOvernights()
   }, [])
 
-  const fetchOvernights = _ => {
+  const fetchOvernights = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     api.get(`overnight`)
       .then(resp => {
         setOvernights(resp.data.overnights)
@@ -54,7 +58,11 @@ const CarList = () => {
       })
   }
 
-  const delOvernight = on => {
+  const delOvernight = async on => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setMessage(`Excluir este reporte de pernoite?`)
     setSelectedOvernight(on)
     setModal(true)
@@ -81,14 +89,22 @@ const CarList = () => {
     setIsModalPhotoActive(true)
   }
 
-  const replyHandler = item => {
+  const replyHandler = async item => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setSelectedOvernight(item)
     setModalReply(true)
     setSubject('')
     setReplyMessage('')
   }
 
-  const sendHandler = _ => {
+  const sendHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     api.post(`message/`, {
       messageBody: replyMessage,
       subject,

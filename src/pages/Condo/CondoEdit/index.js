@@ -29,7 +29,11 @@ const CondoEdit = (props) => {
       }
   ]
 
-  const addHandler = _ => {
+  const addHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if(!condoBeingAdded.name){
       return setErrorMessage('Nome não pode estar vazio.')
     }

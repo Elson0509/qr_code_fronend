@@ -60,7 +60,11 @@ const ThirdSearch = (props) => {
     fetchUsers()
   }, [])
 
-  const fetchUsers = _ => {
+  const fetchUsers = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     api.get(`user/condo/${user.condo_id}/${Constants.USER_KIND["THIRD"]}`)
       .then(resp => {
         setUnits(resp.data)
@@ -73,7 +77,11 @@ const ThirdSearch = (props) => {
       })
   }
 
-  const delUnitModal = unit => {
+  const delUnitModal = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setUnitSelected(unit)
     setMessage(`Excluir terceirizados e veículos do Bloco ${unit.bloco_name} unidade ${unit.number}?`)
     setModal(true)
@@ -99,7 +107,11 @@ const ThirdSearch = (props) => {
       })
   }
 
-  const modalHandler = unit => {
+  const modalHandler = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setUnitSelected(unit)
     setQrCodeModal(true)
   }
@@ -121,7 +133,11 @@ const ThirdSearch = (props) => {
     )
   }
 
-  const carIconHandler = unit => {
+  const carIconHandler = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setUnitSelected(unit)
     //valid user?
     if (!(new Date(unit.residents[0].final_date) >= beginOfDay && new Date(unit.residents[0].initial_date) <= beginOfDay)) {
@@ -158,7 +174,11 @@ const ThirdSearch = (props) => {
     return unitsInfo
   }
 
-  const exitHandler = _ => {
+  const exitHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setMessageInfoModal('')
     setMessageErrorModal('')
     setLoading(true)
@@ -177,7 +197,11 @@ const ThirdSearch = (props) => {
       })
   }
 
-  const entranceHandler = _ => {
+  const entranceHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setMessageInfoModal('')
     setMessageErrorModal('')
     setLoading(true)
@@ -253,12 +277,15 @@ const ThirdSearch = (props) => {
       })
   }
 
-  const clickImageHandler = resident => {
+  const clickImageHandler = async resident => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (resident.photo_id) {
       setSelectedIdImage(resident.photo_id)
       setImageModal(true)
     }
-
   }
 
   if (loading) {

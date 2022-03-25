@@ -41,6 +41,10 @@ const ResidentAdd = (props) => {
   const [pathImgToCrop, setPathImgToCrop] = useState('')
 
   const paperClipImageHandler = async imgPath => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setPathImgToCrop(imgPath)
     setModalCrop(true)
   }
@@ -75,19 +79,31 @@ const ResidentAdd = (props) => {
     setModalCrop('')
   }
 
-  const removeResident = index => {
+  const removeResident = async index => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     let residentsCopy = [...residents]
     residentsCopy.splice(index, 1)
     setResidents(residentsCopy)
   }
 
-  const removeVehicle = index => {
+  const removeVehicle = async index => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     const vehiclesCopy = [...vehicles]
     vehiclesCopy.splice(index, 1)
     setVehicles(vehiclesCopy)
   }
 
-  const addResidentHandler = _ => {
+  const addResidentHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (!userBeingAdded.name) {
       return setErrorAddResidentMessage('Nome não pode estar vazio.')
     }
@@ -108,7 +124,11 @@ const ResidentAdd = (props) => {
     setUserBeingAdded({ id: '0', name: '', identification: '', email: '', pic: '' })
   }
 
-  const addVehicleHandler = _ => {
+  const addVehicleHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (!vehicleBeingAdded.maker) {
       return setErrorAddVehicleMessage('Fabricante não pode estar vazio.')
     }
@@ -141,7 +161,11 @@ const ResidentAdd = (props) => {
     setModalSelectUnit(true)
   }
 
-  const selectUnitHandler = unit => {
+  const selectUnitHandler = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setSelectedUnit(unit)
     setModalSelectUnit(false)
     setLoading(true)
@@ -203,7 +227,11 @@ const ResidentAdd = (props) => {
     })
   }
 
-  const confirmHandler = _ => {
+  const confirmHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setLoading(true)
     api.post('vehicle/unit', {
       unit_id: selectedUnit.id,
@@ -235,7 +263,11 @@ const ResidentAdd = (props) => {
       })
   }
 
-  const takePicHandler = _ => {
+  const takePicHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setTakePic(true)
     setModalPic(true)
   }
@@ -245,7 +277,11 @@ const ResidentAdd = (props) => {
     setModalPic(false)
   }
 
-  const toggleModalPic = _ => {
+  const toggleModalPic = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setModalPic(false)
     setTakePic(false)
   }

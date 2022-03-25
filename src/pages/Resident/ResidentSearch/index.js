@@ -43,7 +43,11 @@ const ResidentSearch = (props) => {
     fetchUsers()
   }, [])
   
-  const fetchUsers = _ => {
+  const fetchUsers = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     api.get(`user/condo/${user.condo_id}/${Constants.USER_KIND["RESIDENT"]}`)
       .then(resp => {
         setUnits(resp.data)
@@ -82,7 +86,11 @@ const ResidentSearch = (props) => {
     return unitsInfo
   }
 
-  const delUnitModal = unit => {
+  const delUnitModal = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (!unit.residents.length && !unit.vehicles.length) {
       return toast.info('Unidade sem moradores para apagar.', Constants.TOAST_CONFIG)
     }

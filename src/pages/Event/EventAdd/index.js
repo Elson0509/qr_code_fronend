@@ -24,14 +24,22 @@ const EventAdd = () => {
   const [pathImgToCrop, setPathImgToCrop] = useState('')
   const [images, setImages] = useState([])
 
-  const addImageToList = blobImage => {
+  const addImageToList = async blobImage => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (images.length < 5) {
       setImages(prev => [...prev, blobImage])
       toast.info('Imagem adicionada', Constants.TOAST_CONFIG)
     }
   }
 
-  const paperClipImageHandler = imgPath => {
+  const paperClipImageHandler = async imgPath => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setPathImgToCrop(imgPath)
     setModalCrop(true)
   }
@@ -74,7 +82,11 @@ const EventAdd = () => {
     }
   }
 
-  const addHandler = _ => {
+  const addHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (!userBeingAdded.title) {
       return setErrorMessage('Título não pode estar vazio.')
     }
@@ -119,7 +131,11 @@ const EventAdd = () => {
       })
   }
 
-  const takePicHandler = _ => {
+  const takePicHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setTakePic(true)
     setModalPic(true)
   }

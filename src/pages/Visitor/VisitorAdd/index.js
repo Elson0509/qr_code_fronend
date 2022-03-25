@@ -54,11 +54,6 @@ const VisitorAdd = (props) => {
   const [unitIdModalQRCode, setUnitIdModalQRCode] = useState('')
   const [infoModalQRCode, setInfoModalQRCode] = useState('')
 
-  const paperClipImageHandler = imgPath => {
-    setPathImgToCrop(imgPath)
-    setModalCrop(true)
-  }
-
   const breadcrumb = [
     {
       name: 'Painel Principal',
@@ -70,6 +65,15 @@ const VisitorAdd = (props) => {
     }
   ]
 
+  const paperClipImageHandler = async imgPath => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
+    setPathImgToCrop(imgPath)
+    setModalCrop(true)
+  }
+  
   useEffect(() => {
     api.get(`condo/${user.condo_id}`)
       .then(res => {
@@ -89,19 +93,31 @@ const VisitorAdd = (props) => {
     setModalCrop('')
   }
 
-  const removeResident = index => {
+  const removeResident = async index => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     let residentsCopy = [...residents]
     residentsCopy.splice(index, 1)
     setResidents(residentsCopy)
   }
 
-  const removeVehicle = index => {
+  const removeVehicle = async index => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     const vehiclesCopy = [...vehicles]
     vehiclesCopy.splice(index, 1)
     setVehicles(vehiclesCopy)
   }
 
-  const addResidentHandler = _ => {
+  const addResidentHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (!userBeingAdded.name) {
       return setErrorAddResidentMessage('Nome não pode estar vazio.')
     }
@@ -145,7 +161,11 @@ const VisitorAdd = (props) => {
     setUserBeingAdded({ id: '0', name: '', identification: '', pic: '' })
   }
 
-  const addVehicleHandler = _ => {
+  const addVehicleHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (!vehicleBeingAdded.maker) {
       return setErrorAddVehicleMessage('Fabricante não pode estar vazio.')
     }
@@ -218,7 +238,11 @@ const VisitorAdd = (props) => {
     })
   }
 
-  const confirmHandler = _ => {
+  const confirmHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     //checking if there is date selected and at least one visitor
     if (!selectedDateInit || !selectedDateEnd) {
       return setErrorMessage('É preciso selecionar um prazo.')
@@ -261,7 +285,11 @@ const VisitorAdd = (props) => {
       })
   }
 
-  const takePicHandler = _ => {
+  const takePicHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setTakePic(true)
     setModalPic(true)
   }

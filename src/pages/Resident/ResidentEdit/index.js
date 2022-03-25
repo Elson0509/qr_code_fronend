@@ -46,11 +46,7 @@ const ResidentEdit = (props) => {
   const [pathImgToCrop, setPathImgToCrop] = useState('')
   const [finished, setFinished] = useState(false)
 
-  const paperClipImageHandler = imgPath => {
-    setPathImgToCrop(imgPath)
-    setModalCrop(true)
-  }
-
+  
   const breadcrumb = [
     {
       name: 'Painel Principal',
@@ -61,12 +57,21 @@ const ResidentEdit = (props) => {
       link: '/residents/edit'
     }
   ]
+  
+  const paperClipImageHandler = async imgPath => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
+    setPathImgToCrop(imgPath)
+    setModalCrop(true)
+  }
 
   useEffect(() => {
     api.get(`condo/${user.condo_id}`)
-      .then(res => {
-        setUnits(res.data)
-        setModalSelectBloco(false)
+    .then(res => {
+      setUnits(res.data)
+      setModalSelectBloco(false)
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
@@ -93,7 +98,11 @@ const ResidentEdit = (props) => {
     setVehicles(vehiclesCopy)
   }
 
-  const addResidentHandler = _ => {
+  const addResidentHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (!userBeingAdded.name) {
       return setErrorAddResidentMessage('Nome não pode estar vazio.')
     }
@@ -114,7 +123,11 @@ const ResidentEdit = (props) => {
     setUserBeingAdded({ id: '0', name: '', identification: '', email: '', pic: '' })
   }
 
-  const addVehicleHandler = _ => {
+  const addVehicleHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (!vehicleBeingAdded.maker) {
       return setErrorAddVehicleMessage('Fabricante não pode estar vazio.')
     }
@@ -209,7 +222,11 @@ const ResidentEdit = (props) => {
     })
   }
 
-  const confirmHandler = _ => {
+  const confirmHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setLoading(true)
     api.post('vehicle/unit', {
       unit_id: selectedUnit.id,
@@ -242,7 +259,11 @@ const ResidentEdit = (props) => {
       })
   }
 
-  const takePicHandler = _ => {
+  const takePicHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setTakePic(true)
     setModalPic(true)
   }

@@ -73,7 +73,11 @@ const VisitorSearch = (props) => {
       })
   }
 
-  const delUnitModal = unit => {
+  const delUnitModal = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setUnitSelected(unit)
     setMessage(`Excluir visitantes e veículos do Bloco ${unit.bloco_name} unidade ${unit.number}?`)
     setModal(true)
@@ -99,12 +103,20 @@ const VisitorSearch = (props) => {
       })
   }
 
-  const modalHandler = unit => {
+  const modalHandler = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setUnitSelected(unit)
     setQrCodeModal(true)
   }
 
-  const editUnit = unit => {
+  const editUnit = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     props.history.push('/visitors/edit',
       {
         selectedBloco: {
@@ -121,7 +133,11 @@ const VisitorSearch = (props) => {
     )
   }
 
-  const carIconHandler = unit => {
+  const carIconHandler = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setUnitSelected(unit)
     //valid user?
     if (!(new Date(unit.residents[0].final_date) >= beginOfDay && new Date(unit.residents[0].initial_date) <= beginOfDay)) {
@@ -156,7 +172,11 @@ const VisitorSearch = (props) => {
     return unitsInfo
   }
 
-  const exitHandler = _ => {
+  const exitHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setMessageInfoModal('')
     setMessageErrorModal('')
     setLoading(true)
@@ -175,7 +195,11 @@ const VisitorSearch = (props) => {
       })
   }
 
-  const entranceHandler = _ => {
+  const entranceHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setMessageInfoModal('')
     setMessageErrorModal('')
     setLoading(true)
@@ -251,8 +275,12 @@ const VisitorSearch = (props) => {
       })
   }
 
-  const clickImageHandler = resident => {
-    if(resident.photo_id){
+  const clickImageHandler = async resident => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
+    if (resident.photo_id) {
       setSelectedIdImage(resident.photo_id)
       setImageModal(true)
     }
@@ -322,7 +350,7 @@ const VisitorSearch = (props) => {
                       {
                         !!el.residents.length && el.residents.map((resident, ind) => (
                           <div key={resident.id} style={{ border: '1px solid #ddd', padding: '10px', display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'center', width:'160px', cursor: 'pointer'}} onClick={()=>clickImageHandler(resident)}>
+                            <div style={{ display: 'flex', justifyContent: 'center', width: '160px', cursor: 'pointer' }} onClick={() => clickImageHandler(resident)}>
                               <ImageCloudWidth id={resident.photo_id} />
                             </div>
                             <div>

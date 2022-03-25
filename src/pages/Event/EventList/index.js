@@ -41,7 +41,11 @@ const EventList = () => {
     fetchEvents()
   }, [])
 
-  const fetchEvents = _ => {
+  const fetchEvents = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     api.get(`occurrence`)
       .then(resp => {
         setEvents(resp.data.occurences)
@@ -54,7 +58,11 @@ const EventList = () => {
       })
   }
 
-  const delEvent = on => {
+  const delEvent = async on => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setMessage(`Confirma exclusão desta ocorrência?`)
     setSelectedEvent(on)
     setModal(true)
@@ -76,14 +84,22 @@ const EventList = () => {
       })
   }
 
-  const replyHandler = item => {
+  const replyHandler = async item => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setSelectedEvent(item)
     setModalReply(true)
     setSubject('Re: ' + item.title)
     setReplyMessage('')
   }
 
-  const sendHandler = _ => {
+  const sendHandler = async _ => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     api.post(`message`, {
       messageBody: replyMessage,
       subject,
@@ -108,7 +124,11 @@ const EventList = () => {
   //   setIsModalPhotoActive(true)
   // }
 
-  const imgClickHandler = imgPhotoId => {
+  const imgClickHandler = async imgPhotoId => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setSelectedImageId(imgPhotoId)
     setIsModalPhotoActive(true)
   }

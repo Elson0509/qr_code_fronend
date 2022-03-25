@@ -95,8 +95,12 @@ const UnitAdd = _ => {
     setModalNewBlockAnalysed(true)
   }
   
-  const confirmAddHandler = ev => {
+  const confirmAddHandler = async ev => {
     ev.preventDefault()
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     if (!bloco) {
       return setErrorMessage('Bloco não pode estar vazio.')
     }
