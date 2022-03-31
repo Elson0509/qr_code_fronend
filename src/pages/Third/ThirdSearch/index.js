@@ -361,6 +361,7 @@ const ThirdSearch = (props) => {
                               {!!resident.initial_date && <p className='p-0 m-0'><span className='enfase'>Início:</span> {Utils.printDate(new Date(resident.initial_date))}</p>}
                               {!!resident.final_date && <p className='p-0 m-0'><span className='enfase'>Fim:</span> {Utils.printDate(new Date(resident.final_date))}</p>}
                               {!!resident.company && <p className='p-0 m-0'><span className='enfase'>Empresa:</span> {resident.company}</p>}
+                              {!!resident.User?.name && <p className='p-0 m-0'><span className='enfase'>Autorizado por:</span> {resident.User.name}</p>}
                               {
                                 new Date(resident.final_date) >= beginOfDay && new Date(resident.initial_date) <= beginOfDay ?
                                   <p className='p-0 m-0'><span className='enfase'>Status:</span> Válido</p>

@@ -8,6 +8,7 @@ import Image from '../../../components/Image'
 import ImageBlob from '../../../components/ImageBlob'
 import BlocoModal from '../../../components/Modals/BlocoModal'
 import UnitModal from '../../../components/Modals/UnitModal'
+import ResidentModal from '../../../components/Modals/ResidentModal';
 import Icon from '../../../components/Icon'
 import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
@@ -39,8 +40,10 @@ const VisitorAdd = (props) => {
   const [modalCrop, setModalCrop] = useState(false)
   const [modalSelectBloco, setModalSelectBloco] = useState(false)
   const [modalSelectUnit, setModalSelectUnit] = useState(false)
+  const [modalSelectResident, setModalSelectResident] = useState(false)
   const [selectedBloco, setSelectedBloco] = useState(null)
   const [selectedUnit, setSelectedUnit] = useState(null)
+  const [selectedResident, setSelectedResident] = useState(null)
   const [isAddingResident, setIsAddingResident] = useState(false)
   const [isAddingVehicle, setIsAddingVehicle] = useState(false)
   const [takePic, setTakePic] = useState(false)
@@ -53,6 +56,7 @@ const VisitorAdd = (props) => {
   const [showModalQRCode, setShowModalQRCode] = useState(false)
   const [unitIdModalQRCode, setUnitIdModalQRCode] = useState('')
   const [infoModalQRCode, setInfoModalQRCode] = useState('')
+  const [isNoUnits, setIsNoUnits] = useState(false)
 
   const breadcrumb = [
     {
@@ -65,19 +69,13 @@ const VisitorAdd = (props) => {
     }
   ]
 
-  const paperClipImageHandler = async imgPath => {
-    const isConnected = await Utils.checkInternetConnection(setLoading)
-    if (!isConnected) {
-      return
-    }
-    setPathImgToCrop(imgPath)
-    setModalCrop(true)
-  }
-  
   useEffect(() => {
     api.get(`condo/${user.condo_id}`)
       .then(res => {
         setUnits(res.data)
+        if (res.data.length === 0) {
+          return setIsNoUnits(true)
+        }
         setModalSelectBloco(true)
       })
       .catch(err => {
@@ -87,6 +85,15 @@ const VisitorAdd = (props) => {
         setLoading(false)
       })
   }, [])
+
+  const paperClipImageHandler = async imgPath => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
+    setPathImgToCrop(imgPath)
+    setModalCrop(true)
+  }
 
   const closeModalCropHandler = _ => {
     setPathImgToCrop('')
@@ -201,6 +208,12 @@ const VisitorAdd = (props) => {
   const selectUnitHandler = unit => {
     setSelectedUnit(unit)
     setModalSelectUnit(false)
+    setModalSelectResident(true)
+  }
+
+  const selectResidentHandler = res => {
+    setSelectedResident(res)
+    setModalSelectResident(false)
   }
 
   const clearUnit = _ => {
@@ -259,6 +272,7 @@ const VisitorAdd = (props) => {
       bloco_id: selectedBloco.id,
       selectedDateInit,
       selectedDateEnd,
+      user_permission: selectedResident.id,
       unit_kind_id: Constants.USER_KIND.VISITOR,
       user_id_last_modify: user.id,
     })
@@ -312,6 +326,16 @@ const VisitorAdd = (props) => {
     )
   }
 
+  if (isNoUnits) {
+    return (
+      <Body breadcrumb={breadcrumb}>
+        <div className="alert alert-danger text-center" role="alert">
+          Não há unidades ou residentes cadastrados.
+        </div>
+      </Body>
+    )
+  }
+
   return (
     <Body breadcrumb={breadcrumb}>
       {/*units*/}
@@ -320,10 +344,13 @@ const VisitorAdd = (props) => {
         text='Selecionar Unidade'
         action={() => setModalSelectBloco(true)}
       >
-        {!!selectedBloco && !!selectedUnit && (
+        {!!selectedBloco && !!selectedUnit && !!selectedResident && (
           <ul className="list-group">
             <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start">
-              <span>Bloco {selectedBloco.name} unidade {selectedUnit.number}</span>
+              <span>
+                <p>Bloco {selectedBloco.name} unidade {selectedUnit.number}</p>
+                <p>Autorizado por: {selectedResident.name}</p>
+              </span>
               <span className={classes.CloseIcon} onClick={() => clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span>
             </li>
           </ul>
@@ -522,6 +549,7 @@ const VisitorAdd = (props) => {
           modal={modalSelectBloco}
           toggle={setModalSelectBloco}
           action={(el) => { selectBlocoHandler(el) }}
+          text='Mostrando apenas blocos com residentes'
         />
       }
       {
@@ -531,6 +559,16 @@ const VisitorAdd = (props) => {
           modal={modalSelectUnit}
           toggle={setModalSelectUnit}
           action={(el) => { selectUnitHandler(el) }}
+          text='Mostrando apenas unidades com residentes'
+        />
+      }
+      {
+        !!selectedUnit &&
+        <ResidentModal
+          users={selectedUnit.Users}
+          modal={modalSelectResident}
+          toggle={setModalSelectResident}
+          action={(el) => { selectResidentHandler(el) }}
         />
       }
       {

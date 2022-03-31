@@ -64,6 +64,7 @@ const VisitorSearch = (props) => {
     api.get(`user/condo/${user.condo_id}/${Constants.USER_KIND["VISITOR"]}`)
       .then(resp => {
         setUnits(resp.data)
+        console.log(resp.data)
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (VL1)', Constants.TOAST_CONFIG)
@@ -358,6 +359,7 @@ const VisitorSearch = (props) => {
                               {!!resident.identification && <p className='p-0 m-0'><span className='enfase'>Id:</span> {resident.identification}</p>}
                               {!!resident.initial_date && <p className='p-0 m-0'><span className='enfase'>Início:</span> {Utils.printDate(new Date(resident.initial_date))}</p>}
                               {!!resident.final_date && <p className='p-0 m-0'><span className='enfase'>Fim:</span> {Utils.printDate(new Date(resident.final_date))}</p>}
+                              {!!resident.User?.name && <p className='p-0 m-0'><span className='enfase'>Autorizado por:</span> {resident.User.name}</p>}
                               {
                                 new Date(resident.final_date) >= beginOfDay ?
                                   <p className='p-0 m-0'><span className='enfase'>Status:</span> Válido</p>

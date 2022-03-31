@@ -46,6 +46,7 @@ const VisitorEdit = (props) => {
   const [modalSelectUnit, setModalSelectUnit] = useState(false)
   const [selectedBloco, setSelectedBloco] = useState(props.location.state?.selectedBloco)
   const [selectedUnit, setSelectedUnit] = useState(props.location.state?.selectedUnit)
+  const [selectedResident, setSelectedResident] = useState(props.location.state.residents[0].User)
   const [isAddingResident, setIsAddingResident] = useState(false)
   const [isAddingVehicle, setIsAddingVehicle] = useState(false)
   const [takePic, setTakePic] = useState(false)
@@ -60,7 +61,7 @@ const VisitorEdit = (props) => {
   const [infoModalQRCode] = useState('')
   const [finished, setFinished] = useState(false)
 
-  
+
   const breadcrumb = [
     {
       name: 'Painel Principal',
@@ -71,7 +72,7 @@ const VisitorEdit = (props) => {
       link: '/visitors/edit'
     }
   ]
-  
+
   const paperClipImageHandler = async imgPath => {
     const isConnected = await Utils.checkInternetConnection(setLoading)
     if (!isConnected) {
@@ -259,6 +260,7 @@ const VisitorEdit = (props) => {
       unit_kind_id: Constants.USER_KIND.VISITOR,
       user_id_last_modify: user.id,
       condo_id: user.condo_id,
+      user_permission: selectedResident
     })
       .then(res => {
         uploadImgs(res.data.addedResidents)
@@ -321,14 +323,17 @@ const VisitorEdit = (props) => {
         {/*units*/}
         <SelectButton
           icon='building'
-          text='Selecionar Unidade'
+          text='Unidade selecionada'
         //action={()=>setModalSelectBloco(true)}
         >
           {!!selectedBloco && !!selectedUnit && (
             <ul className="list-group">
               <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start">
-                <span>Bloco {selectedBloco.name} unidade {selectedUnit.number}</span>
-                <span className={classes.CloseIcon} onClick={() => clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span>
+                <span>
+                  <p>Bloco {selectedBloco.name} unidade {selectedUnit.number}</p>
+                  <p>Autorizado por: {selectedResident.name}</p>
+                </span>
+                {/* <span className={classes.CloseIcon} onClick={() => clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span> */}
               </li>
             </ul>
           )}

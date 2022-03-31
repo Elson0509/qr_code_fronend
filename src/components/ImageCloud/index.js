@@ -4,6 +4,7 @@ import genericEvent from '../../Images/generic-event.png'
 import * as Constants from '../../services/constants'
 
 const ImageCloud = (props) => {
+    console.log(Constants.PREFIX_IMG_GOOGLE_CLOUD + props.id)
     if (props.id) {
         return <img
             src={Constants.PREFIX_IMG_GOOGLE_CLOUD + props.id}

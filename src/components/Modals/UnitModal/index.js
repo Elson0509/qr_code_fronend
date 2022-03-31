@@ -13,6 +13,7 @@ const UnitModal = (props) => {
                         </button>
                     </div>
                 )}
+                {props.text && <p className='text-center' style={{fontWeight: 200}}>{props.text}</p>}
             </ModalBody>
       </Modal>
     );

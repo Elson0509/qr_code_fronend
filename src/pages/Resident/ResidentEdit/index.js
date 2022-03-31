@@ -68,7 +68,7 @@ const ResidentEdit = (props) => {
   }
 
   useEffect(() => {
-    api.get(`condo/${user.condo_id}`)
+    api.get(`condo/all/${user.condo_id}`)
     .then(res => {
       setUnits(res.data)
       setModalSelectBloco(false)

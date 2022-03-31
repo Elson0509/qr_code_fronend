@@ -6,6 +6,7 @@ import QrReader from 'react-qr-reader'
 import api from '../../services/api'
 import Plate from '../../components/Plate';
 import Image from '../../components/Image';
+import ImageCloud from '../../components/ImageCloud';
 import classes from './scan.module.css'
 import { Spinner } from 'reactstrap';
 import ConfirmModal from '../../components/Modals/ConfirmModal';
@@ -58,6 +59,7 @@ const MyQrCode = () => {
         .then(res => {
           setErrorMessage('')
           const found = res.data.userFound || res.data.unitFound
+          console.log({ found })
           setDataFetched(found)
           setReading(res.data.read)
           setIsScanning(false)
@@ -206,22 +208,26 @@ const MyQrCode = () => {
           <div>
             <h3 className='h3 text-center'>{userType}</h3>
             <div className={classes.UserDataDiv}>
-              <div><Image id={dataFetched.id} /></div>
-              <div className={classes.UserInfoDiv}>
-                <p style={{ marginTop: 8, fontSize: 18, fontWeight: 'bold' }}>{dataFetched.name}</p>
-                {!!dataFetched.Unit?.Bloco?.name && <p style={{ marginTop: 4, fontSize: 18 }}>{`Bloco ${dataFetched.Unit.Bloco.name}`} - {`Unidade ${dataFetched.Unit.number}`}</p>}
-                {!dataFetched.Unit?.Vehicles.length && <p style={{ textDecorationLine: 'underline', fontSize: 15, textAlign: 'center' }}>Não há veículos cadastrados.</p>}
-                <div className={classes.VehiclesDiv}>
-                  {!!dataFetched.Unit?.Vehicles.length && <p style={{ fontSize: 15 }}>Veículos cadastrados:</p>}
-                  {!!dataFetched.Unit?.Vehicles.length &&
-                    dataFetched.Unit?.Vehicles.map((el, ind) => {
-                      return (
-                        <div key={ind}>
-                          <p style={{ fontSize: 15, fontWeight: 'bold', marginBottom: 5 }}>{`${el.maker} ${el.model} ${el.color}`}</p>
-                          <Plate plate={el.plate} />
-                        </div>
-                      )
-                    })}
+              <div className='row'>
+                <div className='col-4'>
+                  <ImageCloud id={dataFetched.photo_id} />
+                </div>
+                <div className='col-8'>
+                  <p style={{ marginTop: 8, fontSize: 18, fontWeight: 'bold' }}>{dataFetched.name}</p>
+                  {!!dataFetched.Unit?.Bloco?.name && <p style={{ marginTop: 4, fontSize: 18 }}>{`Bloco ${dataFetched.Unit.Bloco.name}`} - {`Unidade ${dataFetched.Unit.number}`}</p>}
+                  {!dataFetched.Unit?.Vehicles.length && <p style={{ textDecorationLine: 'underline', fontSize: 15, textAlign: 'center' }}>Não há veículos cadastrados.</p>}
+                  <div className={classes.VehiclesDiv}>
+                    {!!dataFetched.Unit?.Vehicles.length && <p style={{ fontSize: 15 }}>Veículos cadastrados:</p>}
+                    {!!dataFetched.Unit?.Vehicles.length &&
+                      dataFetched.Unit?.Vehicles.map((el, ind) => {
+                        return (
+                          <div key={ind}>
+                            <p style={{ fontSize: 15, fontWeight: 'bold', marginBottom: 5 }}>{`${el.maker} ${el.model} ${el.color}`}</p>
+                            <Plate plate={el.plate} />
+                          </div>
+                        )
+                      })}
+                  </div>
                 </div>
               </div>
             </div>
@@ -232,16 +238,19 @@ const MyQrCode = () => {
           <div>
             <h3 className='h3 text-center'>{userType}</h3>
             <h6 className='h6 text-center'>Autorizado por Bloco {dataFetched.Bloco.name} - Unidade {dataFetched.number}</h6>
-            {!!dataFetched.Users[0]?.final_date && <h6 className='h6 text-center'>Autorizado até {Utils.printDate(new Date(dataFetched.Users[0].final_date))}</h6>}
+            {!!dataFetched.Users[0]?.User && <h6 className='h6 text-center'>Autorizado por {dataFetched.Users[0]?.User.name}</h6>}
+            {!!dataFetched.Users[0]?.final_date && <h6 className='h6 text-center'>Até {Utils.printDate(new Date(dataFetched.Users[0].final_date))}</h6>}
             {
               dataFetched.Users.map((el, ind) => {
                 return (
                   <div className={classes.UserDataDiv} key={ind}>
-                    <div><Image id={el.id} /></div>
-                    <div className={classes.UserInfoDiv}>
-                      {!!el.name && <p style={{ marginTop: 4, fontSize: 18, fontWeight: 'bold' }}>{el.name}</p>}
-                      {!!el.company && <p style={{ marginTop: 4, fontSize: 18 }}>Empresa: {el.company}</p>}
-                      {!!el.identification && <p style={{ marginTop: 4, fontSize: 18 }}>{`Id: ${el.identification}`}</p>}
+                    <div className='row'>
+                      <div className='col-4'><ImageCloud id={el.photo_id} /></div>
+                      <div className='col-8'>
+                        {!!el.name && <p style={{ marginTop: 4, fontSize: 18, fontWeight: 'bold' }}>{el.name}</p>}
+                        {!!el.company && <p style={{ marginTop: 4, fontSize: 18 }}>Empresa: {el.company}</p>}
+                        {!!el.identification && <p style={{ marginTop: 4, fontSize: 18 }}>{`Id: ${el.identification}`}</p>}
+                      </div>
                     </div>
                   </div>
                 )
