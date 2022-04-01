@@ -44,7 +44,7 @@ const UnitList = (props) => {
       return
     }
     setLoading(true)
-    api.get(`condo/${user.condo_id}`)
+    api.get(`condo/all/${user.condo_id}`)
       .then(resp => {
         setDataFetched(resp.data)
       })
