@@ -27,7 +27,7 @@ const Faq = () => {
     },
     {
       question: 'Como eu, administrador do condomínio, posso ter acesso ao sistema?',
-      answer: 'Você entra em contato conosco e, após a contratação so serviço, os administradores do condomínio terão acesso ao sistema por meio de um login próprio.',
+      answer: 'Você entra em contato conosco e, após a contratação do serviço, os administradores do condomínio terão acesso ao sistema por meio de um login próprio.',
     },
     {
       question: 'Posso registrar múltiplos administradores?',
@@ -89,7 +89,7 @@ const Faq = () => {
         {
           questions.map((el, index) => {
             return (
-              <Card style={{ marginBottom: '1rem', textAlign: 'justify' }} key={index} className='roboto'>
+              <Card style={{ marginBottom: '1rem' }} key={index} className='roboto'>
                 <CardHeader onClick={toggle} data-event={index} style={{ cursor: 'pointer', fontWeight: 'bold' }}>
                   {index + 1}. {el.question}
                 </CardHeader>

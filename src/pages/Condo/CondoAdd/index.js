@@ -54,6 +54,7 @@ const CondoAdd = (props) => {
     })
       .then((res) => {
         setErrorMessage('')
+        props.history.push('/condo/list')
         toast.info('Cadastro realizado', Constants.TOAST_CONFIG)
         setCondoBeingAdded({ id: "0", name: '', address: '', city: '', state: '', slots: '' })
       })
