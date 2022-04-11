@@ -271,3 +271,7 @@ export const checkInternetConnection = (setLoading) => {
         })
     })
 }
+
+export const removeAccent = text => {
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+}

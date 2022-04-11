@@ -164,12 +164,13 @@ const VisitorSearch = (props) => {
 
     if (searchInput) {
       unitsInfo = unitsInfo.filter(el => {
-        return el.residents.some(res => res.name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1) ||
-          el.vehicles.some(vei => vei.plate.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1) ||
-          el.bloco_name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-          el.number.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1
+        return el.residents.some(res => Utils.removeAccent(res.name.toLowerCase()).indexOf(Utils.removeAccent(searchInput.toLowerCase())) !== -1) ||
+          el.vehicles.some(vei => Utils.removeAccent(vei.plate.toLowerCase()).indexOf(Utils.removeAccent(searchInput.toLowerCase())) !== -1) ||
+          // el.bloco_name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+          Utils.removeAccent(el.number.toLowerCase()).indexOf(Utils.removeAccent(searchInput.toLowerCase())) !== -1
       })
     }
+
     return unitsInfo
   }
 
@@ -302,7 +303,7 @@ const VisitorSearch = (props) => {
           <form>
             <div className="form-group">
               <label>Pesquisar</label>
-              <input type="email" className="form-control" placeholder="Nome, placa, bloco ou número" value={searchInput} onChange={(ev) => setSearchinput(ev.target.value)} />
+              <input type="email" className="form-control" placeholder="Nome, placa ou número" value={searchInput} onChange={(ev) => setSearchinput(ev.target.value)} />
             </div>
           </form>
           {

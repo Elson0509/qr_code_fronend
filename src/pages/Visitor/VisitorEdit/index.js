@@ -260,7 +260,7 @@ const VisitorEdit = (props) => {
       unit_kind_id: Constants.USER_KIND.VISITOR,
       user_id_last_modify: user.id,
       condo_id: user.condo_id,
-      user_permission: selectedResident
+      user_permission: selectedResident.id
     })
       .then(res => {
         uploadImgs(res.data.addedResidents)

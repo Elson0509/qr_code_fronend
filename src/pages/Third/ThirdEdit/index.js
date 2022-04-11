@@ -260,7 +260,7 @@ const ThirdEdit = (props) => {
       unit_kind_id: Constants.USER_KIND.THIRD,
       user_id_last_modify: user.id,
       condo_id: user.condo_id,
-      user_permission: selectedResident
+      user_permission: selectedResident.id
     })
       .then(res => {
         uploadImgs(res.data.addedResidents)
@@ -519,15 +519,16 @@ const ThirdEdit = (props) => {
           </SelectButton>
         )
         }
-        {!!selectedBloco && !!selectedUnit && !isAddingVehicle && !isAddingResident && !isSelectingDate && (
-          <ActionButtons
-            errorMessage={errorMessage}
-            textButton1='Atualizar terceirizados'
-            textButton2='Cancelar'
-            action1={() => confirmHandler()}
-            action2={() => props.history.push('/dashboard')}
-          />
-        )
+        {
+          !!selectedBloco && !!selectedUnit && !isAddingVehicle && !isAddingResident && !isSelectingDate && (
+            <ActionButtons
+              errorMessage={errorMessage}
+              textButton1='Atualizar terceirizados'
+              textButton2='Cancelar'
+              action1={() => confirmHandler()}
+              action2={() => props.history.push('/dashboard')}
+            />
+          )
         }
         {
           !!units.length &&
