@@ -116,7 +116,11 @@ const ThirdSearch = (props) => {
     setQrCodeModal(true)
   }
 
-  const editUnit = unit => {
+  const editUnit = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     props.history.push('/thirds/edit',
       {
         selectedBloco: {
@@ -327,12 +331,13 @@ const ThirdSearch = (props) => {
                       <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                       <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
                       {
-                        user.user_kind === Constants.USER_KIND['SUPERINTENDENT'] &&
-                        <IconButtons
-                          action1={() => editUnit(el)}
-                          action2={() => delUnitModal(el)}
-                          action3={() => modalHandler(el)}
-                        />
+                        user.user_kind === Constants.USER_KIND['SUPERINTENDENT'] || user.user_kind === Constants.USER_KIND['RESIDENT'] ? (
+                          <IconButtons
+                            action1={() => editUnit(el)}
+                            action2={() => delUnitModal(el)}
+                            action3={() => modalHandler(el)}
+                          />
+                        ) : null
                       }
                       {
                         user.user_kind === Constants.USER_KIND['GUARD'] &&

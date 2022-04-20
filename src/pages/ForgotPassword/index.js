@@ -14,13 +14,13 @@ const ForgotPassword = (props) => {
 
     const submitHandler = ev => {
         ev.preventDefault()
-        if(!validateEmail(email)){
+        if (!validateEmail(email)) {
             return setErrorMessage('Email em formato não válido.')
         }
-        if(password.trim().length<MIN_PASSWORD_SIZE){
+        if (password.trim().length < MIN_PASSWORD_SIZE) {
             return setErrorMessage(`Senha curta. Pelo menos ${MIN_PASSWORD_SIZE} caracteres.`)
         }
-        if(password.trim()!==confirmPassword.trim()){
+        if (password.trim() !== confirmPassword.trim()) {
             return setErrorMessage(`Senha e sua confirmação precisam ser iguais.`)
         }
         setErrorMessage('')
@@ -31,12 +31,12 @@ const ForgotPassword = (props) => {
             password: password.trim(),
             token: props.match.params.token
         })
-        .then(res=>{
-            setSuccessMessage(res.data.message)
-        })
-        .catch(err=>{
-            setErrorMessage(err.response?.data?.message || 'Um erro ocorreu.')
-        })
+            .then(res => {
+                setSuccessMessage(res.data.message)
+            })
+            .catch(err => {
+                setErrorMessage(err.response?.data?.message || 'Um erro ocorreu.')
+            })
 
     }
 
@@ -58,7 +58,7 @@ const ForgotPassword = (props) => {
                             <small className="form-text text-muted">Seu email cadastrado</small>
                         </div>
                         <div className="form-group mt-2">
-                            <label>Senha</label>
+                            <label>Nova senha</label>
                             <input
                                 type="password"
                                 className="form-control"
@@ -78,15 +78,21 @@ const ForgotPassword = (props) => {
 
                         <button type="submit" className="btn btn-primary col-12 mt-4" onClick={submitHandler} disabled={buttonDisabled}>{buttonText}</button>
                     </form>
-                    {errorMessage && <div className="alert alert-danger mt-4 mb-2 text-center p-1" role="alert">
-                        {errorMessage}
-                    </div>}
-                    {successMessage && <div className="alert alert-success text-center p-1 mt-2" role="alert">
-                        {successMessage}
-                    </div>}
-                    {successMessage && <div className="alert alert-info link text-center p-1" role="alert" onClick={() => props.history.push('/login')}>
-                        Clique aqui para ir para a tela de login.
-                    </div>}
+                    {
+                        errorMessage && <div className="alert alert-danger mt-4 mb-2 text-center p-1" role="alert">
+                            {errorMessage}
+                        </div>
+                    }
+                    {
+                        successMessage && <div className="alert alert-success text-center p-1 mt-2" role="alert">
+                            {successMessage}
+                        </div>
+                    }
+                    {
+                        successMessage && <div className="alert alert-info link text-center p-1" role="alert" onClick={() => props.history.push('/login')}>
+                            Clique aqui para ir para a tela de login.
+                        </div>
+                    }
                 </div>
             </div>
         </div>

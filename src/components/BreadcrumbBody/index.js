@@ -10,7 +10,7 @@ const BreadcrumbBody = (props) => {
             {
                 props.data.map((el, ind)=>{
                     return(
-                        <BreadcrumbItem key={el.name}>
+                        <BreadcrumbItem key={el.name} className={classes.BreadCrumbItem}>
                             {
                                 props.data.length===ind+1 ?
                                 el.name

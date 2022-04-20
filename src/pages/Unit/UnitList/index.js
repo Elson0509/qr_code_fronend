@@ -103,7 +103,6 @@ const UnitList = (props) => {
     setLoading(true)
     api.delete(`/unit`, {
       data: {
-        user_id_last_modify: user.id,
         bloco_id: selectedUnit.bloco_id,
         number: selectedUnit.unit_number
       }
@@ -129,8 +128,6 @@ const UnitList = (props) => {
     api.post('/unit/bloco', {
       unitSelected: selectedUnit,
       unitWillUpdate,
-      condo_id: user.condo_id,
-      user_id_last_modify: user.id
     })
       .then((resp) => {
         toast.info(resp.data.message, Constants.TOAST_CONFIG)

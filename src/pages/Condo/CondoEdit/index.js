@@ -7,6 +7,7 @@ import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
 import FormInput from '../../../components/Form/FormInput'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
+import SelectInput from '../../../components/Form/SelectInput';
 
 const CondoEdit = (props) => {
   //if there is not state in router, go to dashboard
@@ -14,8 +15,18 @@ const CondoEdit = (props) => {
     props.history.push('/dashboard')
   }
 
+  const newCondo  = {}
+  Object.keys(props.location.state.condoBeingAdded).forEach(key => {
+    if(typeof props.location.state.condoBeingAdded[key] === 'boolean'){
+      newCondo[key] = props.location.state.condoBeingAdded[key] ? '0' : '1'
+    }
+    else{
+      newCondo[key] = props.location.state.condoBeingAdded[key]
+    }
+  })
+
   const [loading, setLoading] = useState(false)
-  const [condoBeingAdded, setCondoBeingAdded] = useState(props.location.state?.condoBeingAdded)
+  const [condoBeingAdded, setCondoBeingAdded] = useState(newCondo)
   const [errorMessage, setErrorMessage] = useState('')  
 
   const breadcrumb=[
@@ -28,6 +39,8 @@ const CondoEdit = (props) => {
           link: '/condo/edit'
       }
   ]
+
+  const options = [{ name: 'Sim' }, { name: 'Não' }]
 
   const addHandler = async _ => {
     const isConnected = await Utils.checkInternetConnection(setLoading)
@@ -56,6 +69,13 @@ const CondoEdit = (props) => {
       city: condoBeingAdded.city,
       state: condoBeingAdded.state,
       slots: condoBeingAdded.slots,
+      guard_can_messages: condoBeingAdded.guard_can_messages === '0',
+      guard_can_thirds: condoBeingAdded.guard_can_thirds === '0',
+      guard_can_visitors: condoBeingAdded.guard_can_visitors === '0',
+      resident_can_messages: condoBeingAdded.resident_can_messages === '0',
+      resident_can_ocorrences: condoBeingAdded.resident_can_ocorrences === '0',
+      resident_can_thirds: condoBeingAdded.resident_can_thirds === '0',
+      resident_can_visitors: condoBeingAdded.resident_can_visitors === '0',
     })
     .then((res)=>{
       setErrorMessage('')
@@ -84,7 +104,7 @@ const CondoEdit = (props) => {
         <FormInput
           label='Nome*:'
           value={condoBeingAdded?.name}
-          changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, name: val})}
+          changeValue={(val) => Utils.testWordWithNoSpecialChars(val) && setCondoBeingAdded({...condoBeingAdded, name: val})}
         />
         <FormInput
           label='Endereço*:'
@@ -94,12 +114,12 @@ const CondoEdit = (props) => {
         <FormInput
           label='Cidade*:'
           value={condoBeingAdded?.city}
-          changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, city: val})}
+          changeValue={(val) => Utils.testWordWithNoSpecialChars(val) && setCondoBeingAdded({...condoBeingAdded, city: val})}
         />
         <FormInput
           label='Estado*:'
           value={condoBeingAdded?.state}
-          changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, state: val})}
+          changeValue={(val) => Utils.testWordWithNoSpecialChars(val) && setCondoBeingAdded({...condoBeingAdded, state: val})}
         />
         <FormInput
             label='Vagas de estacionamento*:'
@@ -107,6 +127,59 @@ const CondoEdit = (props) => {
             value={condoBeingAdded.slots}
             changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, slots: val})}
         />
+        <h4 className='mt-4 text-center'>Permissões</h4>
+        <div className='row'>
+          <div className='col'>
+            <h5>Colaboradores</h5>
+            <SelectInput
+              label='Pode enviar mensagens?'
+              value={condoBeingAdded.guard_can_messages}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, guard_can_messages: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Pode cadastrar terceirizados?'
+              value={condoBeingAdded.guard_can_thirds}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, guard_can_thirds: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Pode cadastrar visitantes?'
+              value={condoBeingAdded.guard_can_visitors}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, guard_can_visitors: val})}
+              options={options}
+            />
+          </div>
+        </div>
+        <div className='row mt-4'>
+          <div className='col'>
+            <h5>Moradores</h5>
+            <SelectInput
+              label='Pode enviar mensagens?'
+              value={condoBeingAdded.resident_can_messages}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_can_messages: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Pode cadastrar terceirizados?'
+              value={condoBeingAdded.resident_can_thirds}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_can_thirds: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Pode cadastrar visitantes?'
+              value={condoBeingAdded.resident_can_visitors}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_can_visitors: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Pode cadastrar ocorrências?'
+              value={condoBeingAdded.resident_can_ocorrences}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_can_ocorrences: val})}
+              options={options}
+            />
+          </div>
+        </div>
         {!!errorMessage && 
           <div className="alert alert-danger text-center mt-2" role="alert">
             {errorMessage}

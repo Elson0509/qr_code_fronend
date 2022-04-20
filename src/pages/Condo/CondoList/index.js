@@ -9,7 +9,7 @@ import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import {
   Card, CardBody,
-  CardHeader,
+  CardHeader, CardFooter
 } from 'reactstrap';
 
 const CondoList = (props) => {
@@ -41,6 +41,7 @@ const CondoList = (props) => {
     api.get(`condo`)
       .then(resp => {
         setCondos(resp.data)
+        console.log(resp.data)
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoL1)', Constants.TOAST_CONFIG)
@@ -76,15 +77,25 @@ const CondoList = (props) => {
   }
 
   const editHandler = condo => {
+
     props.history.push('/condo/edit',
       {
         condoBeingAdded: {
-          id: condo.id,
-          name: condo.name,
           address: condo.address,
           city: condo.city,
+          freeslots: condo.freeslots,
+          guard_can_messages: condo.guard_can_messages,
+          guard_can_thirds: condo.guard_can_thirds,
+          guard_can_visitors: condo.guard_can_visitors,
+          id: condo.id,
+          name: condo.name,
+          photo_id: condo.photo_id,
+          resident_can_messages: condo.resident_can_messages,
+          resident_can_ocorrences: condo.resident_can_ocorrences,
+          resident_can_thirds: condo.resident_can_thirds,
+          resident_can_visitors: condo.resident_can_visitors,
+          slots: condo.slots,
           state: condo.state,
-          slots: condo.slots
         },
       }
     )
@@ -118,6 +129,18 @@ const CondoList = (props) => {
                     <p className='p-0 m-0'><span className='enfase'> Vagas de estacionamento: </span>{el.slots}</p>
                     {!!el.createdAt && <p className='p-0 m-0'><span className='enfase'> Ativo desde </span> {Utils.printDate(new Date(el.createdAt))}</p>}
                   </CardBody>
+                  <CardFooter>
+                    <p className='p-0 m-0 text-center'><span className='enfase'>Colaboradores</span></p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem ver mensagens?</span> {el.guard_can_messages ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem cadastrar terceirizados?</span> {el.guard_can_thirds ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem cadastrar visitantes?</span> {el.guard_can_visitors ? ' Sim' : ' Não'}</p>
+                    <hr />
+                    <p className='p-0 m-0 text-center'><span className='enfase'>Residentes</span></p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem ver mensagens?</span> {el.resident_can_messages ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem cadastrar terceirizados?</span> {el.resident_can_thirds ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem cadastrar visitantes?</span> {el.resident_can_visitors ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem registrar ocorrências?</span> {el.resident_can_ocorrences ? ' Sim' : ' Não'}</p>
+                  </CardFooter>
                 </Card>
               </div>
             ))

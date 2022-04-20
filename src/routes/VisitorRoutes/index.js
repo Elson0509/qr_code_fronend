@@ -1,10 +1,11 @@
-import {lazy} from 'react';
+import { lazy } from 'react';
 import * as Constants from '../../services/constants'
+import * as Utils from '../../services/util'
 
 //import pages
-const VisitorAddLazy = lazy(()=> import ('../../pages/Visitor/VisitorAdd'))
-const VisitorEditLazy = lazy(()=> import ('../../pages/Visitor/VisitorEdit'))
-const VisitorSearchLazy = lazy(()=> import ('../../pages/Visitor/VisitorSearch'))
+const VisitorAddLazy = lazy(() => import('../../pages/Visitor/VisitorAdd'))
+const VisitorEditLazy = lazy(() => import('../../pages/Visitor/VisitorEdit'))
+const VisitorSearchLazy = lazy(() => import('../../pages/Visitor/VisitorSearch'))
 
 const VisitorListRoute = {
     key: 'visitorList',
@@ -22,22 +23,28 @@ const VisitorEditRoute = {
     component: VisitorEditLazy
 }
 
-const ResidentRoutes = userKind => {
+const ResidentRoutes = user => {
     const routes = []
-    switch(userKind){
-        case(Constants.USER_KIND['RESIDENT']):
+    switch (user.user_kind) {
+        case (Constants.USER_KIND['RESIDENT']):
+            if (Utils.canAddVisitors(user)) {
+                routes.push(VisitorAddRoute, VisitorListRoute, VisitorEditRoute)
+            }
             break
-        case(Constants.USER_KIND['GUARD']):
-            routes.push(VisitorListRoute, VisitorAddRoute)
+        case (Constants.USER_KIND['GUARD']):
+            routes.push(VisitorListRoute)
+            if (Utils.canAddVisitors(user)) {
+                routes.push(VisitorAddRoute)
+            }
             break
-        case(Constants.USER_KIND['SUPERINTENDENT']):
+        case (Constants.USER_KIND['SUPERINTENDENT']):
             routes.push(VisitorListRoute, VisitorAddRoute, VisitorEditRoute)
             break
-        case(Constants.USER_KIND['VISITOR']):
+        case (Constants.USER_KIND['VISITOR']):
             break
-        case(Constants.USER_KIND['THIRD']):
+        case (Constants.USER_KIND['THIRD']):
             break
-        case(Constants.USER_KIND['ADM']):
+        case (Constants.USER_KIND['ADM']):
             break
         default:
             break

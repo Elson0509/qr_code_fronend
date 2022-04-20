@@ -22,9 +22,9 @@ const CondoEditRoute = {
     component: CondoEditLazy
 }
 
-const CondoRoutes = userKind => {
+const CondoRoutes = user => {
     const routes = []
-    switch(userKind){
+    switch(user.user_kind){
         case(Constants.USER_KIND['RESIDENT']):
             break
         case(Constants.USER_KIND['GUARD']):

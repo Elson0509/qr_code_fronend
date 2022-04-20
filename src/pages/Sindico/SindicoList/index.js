@@ -107,6 +107,7 @@ const SindicoList = () => {
                       </div>
                       <div className='p-2'>
                         {!!el.Condo.name && <p className='p-0 m-0'><span className='enfase'>Condomínio:</span> {el.Condo.name}</p>}
+                        {!!el.phone && <p className='p-0 m-0'><span className='enfase'>Telefone:</span> {el.phone}</p>}
                         {!!el.email && <p className='p-0 m-0'><span className='enfase'>Email:</span> {el.email}</p>}
                         {!!el.identification && <p className='p-0 m-0'><span className='enfase'>Id:</span> {el.identification}</p>}
                       </div>

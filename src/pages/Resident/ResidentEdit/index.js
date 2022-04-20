@@ -298,7 +298,7 @@ const ResidentEdit = (props) => {
             <ul className="list-group">
               <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start">
                 <span>Bloco {selectedBloco.name} unidade {selectedUnit.number}</span>
-                <span className={classes.CloseIcon} onClick={() => clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span>
+                {/* <span className={classes.CloseIcon} onClick={() => clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span> */}
               </li>
             </ul>
           )}
@@ -315,7 +315,7 @@ const ResidentEdit = (props) => {
                 <FormInput
                   label='Nome*:'
                   value={userBeingAdded.name}
-                  changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, name: val })}
+                  changeValue={(val) => Utils.testWordWithNoSpecialChars(val) &&  setUserBeingAdded({ ...userBeingAdded, name: val })}
                 />
                 <FormInput
                   label='Identidade:'

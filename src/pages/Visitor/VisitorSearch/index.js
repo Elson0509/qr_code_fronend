@@ -64,7 +64,6 @@ const VisitorSearch = (props) => {
     api.get(`user/condo/${user.condo_id}/${Constants.USER_KIND["VISITOR"]}`)
       .then(resp => {
         setUnits(resp.data)
-        console.log(resp.data)
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (VL1)', Constants.TOAST_CONFIG)
@@ -327,12 +326,13 @@ const VisitorSearch = (props) => {
                       <CardTitle tag="h4" className='text-center'>Bloco {el.bloco_name}</CardTitle>
                       <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.number}</CardSubtitle>
                       {
-                        user.user_kind === Constants.USER_KIND['SUPERINTENDENT'] &&
+                        user.user_kind === Constants.USER_KIND['SUPERINTENDENT'] || user.user_kind === Constants.USER_KIND['RESIDENT'] ? (
                         <IconButtons
                           action1={() => editUnit(el)}
                           action2={() => delUnitModal(el)}
                           action3={() => modalHandler(el)}
                         />
+                        ) : null
                       }
                       {
                         user.user_kind === Constants.USER_KIND['GUARD'] &&

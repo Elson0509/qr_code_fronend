@@ -142,7 +142,7 @@ const GuardAdd = (props) => {
         <FormInput
           label='Nome*:'
           value={userBeingAdded.name}
-          changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, name: val })}
+          changeValue={(val) => Utils.testWordWithNoSpecialChars(val) && setUserBeingAdded({ ...userBeingAdded, name: val })}
         />
         <FormInput
           label='Documento*:'

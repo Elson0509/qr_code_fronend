@@ -51,8 +51,8 @@ const ConfirmModal = (props) => {
                         }
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={()=>confirmHandler()}>{'Confirmar'}</Button>
                         <Button color="secondary" onClick={props.toggle}>{'Cancelar'}</Button>
+                        <Button color="primary" onClick={()=>confirmHandler()}>{'Confirmar'}</Button>
                     </ModalFooter>
                 </Fragment>)
             }

@@ -31,17 +31,17 @@ const AppRoutes = () => {
                 <Route exact path='/dashboard' component={DashboardLazy}/>
                 <Route exact path='/scan' component={ScanLazy}/>
                 <Route exact path='/myqrcode' component={MyQrCodeLazy}/>
-                { CarRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
-                { CondoRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
-                { EventRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
-                { GuardRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
+                { CarRoutes(user).map(el=> <Route exact {...el}/>) }
+                { CondoRoutes(user).map(el=> <Route exact {...el}/>) }
+                { EventRoutes(user).map(el=> <Route exact {...el}/>) }
+                { GuardRoutes(user).map(el=> <Route exact {...el}/>) }
                 { MessageRoutes.map(el=> <Route exact {...el}/>) }
-                { ResidentRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
-                { SindicoRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
-                { SlotRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
-                { ThirdRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
-                { UnitRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
-                { VisitorRoutes(user.user_kind).map(el=> <Route exact {...el}/>) }
+                { ResidentRoutes(user).map(el=> <Route exact {...el}/>) }
+                { SindicoRoutes(user).map(el=> <Route exact {...el}/>) }
+                { SlotRoutes(user).map(el=> <Route exact {...el}/>) }
+                { ThirdRoutes(user).map(el=> <Route exact {...el}/>) }
+                { UnitRoutes(user).map(el=> <Route exact {...el}/>) }
+                { VisitorRoutes(user).map(el=> <Route exact {...el}/>) }
                 <Route exact path="/login">
                     <Redirect to="/dashboard" />
                 </Route>

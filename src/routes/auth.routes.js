@@ -10,6 +10,7 @@ const FaqLazy = lazy(()=> import('../pages/Faq'))
 const LandingLazy = lazy(() => import('../pages/Landing'))
 const PriceLazy = lazy(() => import('../pages/Price'))
 const ServicesLazy = lazy(() => import('../pages/Services'))
+const ForgotLazy = lazy(() => import('../pages/ForgotPassword'))
 
 const AuthRoutes = () => (
     <Suspense fallback={<LoadingSuspense />}>
@@ -17,6 +18,7 @@ const AuthRoutes = () => (
             <Route exact path='/' component={LandingLazy} />
             <Route exact path='/welcome/:token' component={ActivateLazy} />
             <Route exact path='/faq' component={FaqLazy} />
+            <Route exact path='/forgot/:token' component={ForgotLazy} />
             <Route exact path='/services' component={ServicesLazy} />
             <Route exact path='/price' component={PriceLazy} />
             <Route exact path="/*">

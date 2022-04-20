@@ -169,8 +169,8 @@ const EventList = () => {
                       }
                       </div>
                       <div className='p-2'>
-                        {!!el.title && <p className='pt-2 m-0'><span className='enfase'>Assunto:</span> {el.title}</p>}
-                        {!!el.created_at && <p className='pt-2 m-0'><span className='enfase'>Data:</span> {Utils.printDateAndHour(new Date(el.created_at))}</p>}
+                        {!!el.OccurrenceType?.type && <p className='pt-2 m-0'><span className='enfase'>Assunto:</span> {el.OccurrenceType.type}</p>}
+                        {!!el.created_at && <p className='pt-2 m-0'><span className='enfase'>Data:</span> {new Date(el.created_at).toLocaleString()}</p>}
                         {!!el.place && <p className='pt-2 m-0'><span className='enfase'>Local:</span> {el.place}</p>}
                         {!!el.userRegistering.name && <p className='pt-2 m-0'><span className='enfase'>Quem registrou:</span> {el.userRegistering.name} ({Constants.USER_KIND_NAME[el.userRegistering.user_kind_id]})</p>}
                         {!!el.description && <p className='pt-2 m-0'><span className='enfase'>Descrição:</span> {el.description}</p>}

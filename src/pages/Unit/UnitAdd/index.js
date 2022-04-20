@@ -45,7 +45,7 @@ const UnitAdd = _ => {
   ]
 
   useEffect(() => {
-    api.get(`/bloco/condo/${user.condo_id}`)
+    api.get(`/bloco/condo`)
       .then(res => {
         const newBloco = [{ id: "0", name: 'Novo Bloco' }]
         setBlocosApi(newBloco.concat(res.data))
@@ -113,7 +113,6 @@ const UnitAdd = _ => {
       bloco_id: selectedBloco.id,
       bloco_name: bloco,
       unit_kind_id: 1,
-      user_id_last_modify: user.id,
       condo_id: user.condo_id,
     })
     .then((res) => {

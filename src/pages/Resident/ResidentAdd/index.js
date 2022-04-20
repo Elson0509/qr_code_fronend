@@ -236,7 +236,6 @@ const ResidentAdd = (props) => {
     api.post('vehicle/unit', {
       unit_id: selectedUnit.id,
       vehicles,
-      user_id_last_modify: user.id
     })
       .then((res) => {
         api.post('user/resident/unit', {
@@ -323,7 +322,7 @@ const ResidentAdd = (props) => {
               <FormInput
                 label='Nome*:'
                 value={userBeingAdded.name}
-                changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, name: val })}
+                changeValue={(val) => Utils.testWordWithNoSpecialChars(val) && setUserBeingAdded({ ...userBeingAdded, name: val })}
               />
               <FormInput
                 label='Identidade:'

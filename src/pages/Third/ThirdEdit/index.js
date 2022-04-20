@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import Body from '../../../layout/Body';
 import { useAuth } from '../../../contexts/auth'
 import * as Constants from '../../../services/constants'
@@ -31,7 +31,7 @@ const ThirdEdit = (props) => {
 
   const { user } = useAuth()
   const [units, setUnits] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [residents, setResidents] = useState(props.location.state?.residents)
   const [vehicles, setVehicles] = useState(props.location.state?.vehicles)
   const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
@@ -81,19 +81,6 @@ const ThirdEdit = (props) => {
     setPathImgToCrop(imgPath)
     setModalCrop(true)
   }
-
-  useEffect(() => {
-    api.get(`condo/${user.condo_id}`)
-      .then(res => {
-        setUnits(res.data)
-      })
-      .catch(err => {
-        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TE1)', Constants.TOAST_CONFIG)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [])
 
   const closeModalCropHandler = _ => {
     setPathImgToCrop('')
@@ -204,11 +191,6 @@ const ThirdEdit = (props) => {
     setModalSelectUnit(false)
   }
 
-  const clearUnit = _ => {
-    setSelectedBloco(null)
-    setSelectedUnit(null)
-  }
-
   const uploadImgs = newResidents => {
     const residentsPics = []
     newResidents.forEach(nr => {
@@ -258,16 +240,13 @@ const ThirdEdit = (props) => {
       selectedDateInit,
       selectedDateEnd,
       unit_kind_id: Constants.USER_KIND.THIRD,
-      user_id_last_modify: user.id,
-      condo_id: user.condo_id,
-      user_permission: selectedResident.id
+      user_permission: user.user_kind === Constants.USER_KIND['RESIDENT'] ? user.id : selectedResident.id
     })
       .then(res => {
         uploadImgs(res.data.addedResidents)
         api.post('vehicle/unit', {
           unit_id: selectedUnit.id,
           vehicles,
-          user_id_last_modify: user.id,
         })
           .then(res2 => {
             toast.info(res2.data.message, Constants.TOAST_CONFIG)
@@ -321,23 +300,27 @@ const ThirdEdit = (props) => {
     <Body breadcrumb={breadcrumb}>
       {!finished && <Fragment>
         {/*units*/}
-        <SelectButton
-          icon='building'
-          text='Selecionar Unidade'
-        //action={()=>setModalSelectBloco(true)}
-        >
-          {!!selectedBloco && !!selectedUnit && (
-            <ul className="list-group">
-              <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start">
-                <span>
-                  <p>Bloco {selectedBloco.name} unidade {selectedUnit.number}</p>
-                  <p>Autorizado por: {selectedResident.name}</p>
-                </span>
-                {/* <span className={classes.CloseIcon} onClick={() => clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span> */}
-              </li>
-            </ul>
-          )}
-        </SelectButton>
+        {
+          user.user_kind !== Constants.USER_KIND['RESIDENT'] ?
+          <SelectButton
+            icon='building'
+            text='Selecionar Unidade'
+          //action={()=>setModalSelectBloco(true)}
+          >
+            {!!selectedBloco && !!selectedUnit && (
+              <ul className="list-group">
+                <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start">
+                  <span>
+                    <p>Bloco {selectedBloco.name} unidade {selectedUnit.number}</p>
+                    <p>Autorizado por: {selectedResident.name}</p>
+                  </span>
+                  {/* <span className={classes.CloseIcon} onClick={() => clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span> */}
+                </li>
+              </ul>
+            )}
+          </SelectButton>
+          : null
+        }
         {/*residents*/}
         {!!selectedBloco && !!selectedUnit && (
           <SelectButton
@@ -350,7 +333,7 @@ const ThirdEdit = (props) => {
                 <FormInput
                   label='Nome*:'
                   value={userBeingAdded.name}
-                  changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, name: val })}
+                  changeValue={(val) => Utils.testWordWithNoSpecialChars(val) && setUserBeingAdded({ ...userBeingAdded, name: val })}
                 />
                 <FormInput
                   label='Identidade:'

@@ -106,8 +106,8 @@ const MessageList = (props) => {
               <div className='col-12 pb-3' key={el.id}>
                 <Card color="light">
                   <CardBody>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onClick={() => viewMessageHandler(el)}>
-                      <div style={{ cursor: 'pointer', width: '100%' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ cursor: 'pointer', width: '100%' }} onClick={() => viewMessageHandler(el)}>
                         <p style={{ fontSize: 15, margin: 0, fontWeight: !el.is_read ? 'bold' : 'normal' }}>{el.subject} ({Utils.printDateAndHour(new Date(el.created_at))})</p>
                       </div>
                       <span onClick={() => delMessage(el)} className={`mx-4`} style={{ cursor: 'pointer' }}>

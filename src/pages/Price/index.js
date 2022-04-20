@@ -5,7 +5,6 @@ import Nav from '../../layout/Landing/Nav';
 import Landscape from '../../layout/Landing/Landscape';
 import { CardGroup, Card, CardBody, CardTitle, Jumbotron, CardHeader, CardSubtitle } from 'reactstrap'
 import ModalEmail from '../../components/Modals/ModalEmail';
-import Icon from '../../components/Icon';
 import CheckList from './CheckList';
 
 const Price = () => {

@@ -5,7 +5,6 @@ import * as Utils from '../../services/util'
 import QrReader from 'react-qr-reader'
 import api from '../../services/api'
 import Plate from '../../components/Plate';
-import Image from '../../components/Image';
 import ImageCloud from '../../components/ImageCloud';
 import classes from './scan.module.css'
 import { Spinner } from 'reactstrap';
@@ -59,7 +58,7 @@ const MyQrCode = () => {
         .then(res => {
           setErrorMessage('')
           const found = res.data.userFound || res.data.unitFound
-          console.log({ found })
+          //console.log({ found })
           setDataFetched(found)
           setReading(res.data.read)
           setIsScanning(false)

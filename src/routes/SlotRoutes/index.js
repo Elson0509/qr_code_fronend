@@ -10,9 +10,9 @@ const SlotRoute = {
     component: SlotLazy
 }
 
-const SlotRoutes = userKind => {
+const SlotRoutes = user => {
     const routes = []
-    switch(userKind){
+    switch(user.user_kind){
         case(Constants.USER_KIND['RESIDENT']):
             break
         case(Constants.USER_KIND['GUARD']):

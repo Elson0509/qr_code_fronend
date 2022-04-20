@@ -17,9 +17,9 @@ const SindicoAddRoute = {
 }
 
 
-const SindicoRoutes = userKind => {
+const SindicoRoutes = user => {
     const routes = []
-    switch(userKind){
+    switch(user.user_kind){
         case(Constants.USER_KIND['RESIDENT']):
             break
         case(Constants.USER_KIND['GUARD']):

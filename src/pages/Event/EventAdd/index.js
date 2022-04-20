@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Body from '../../../layout/Body';
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
@@ -12,9 +12,11 @@ import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
 import CropImageModal from '../../../components/Modals/CropImageModal';
 import ImageShowCase from '../../../components/ImageShowCase';
+import { useAuth } from '../../../contexts/auth'
 
 const EventAdd = () => {
-  const [loading, setLoading] = useState(false)
+  const { user } = useAuth()
+  const [loading, setLoading] = useState(true)
   const [userBeingAdded, setUserBeingAdded] = useState({ title: '', place: '', description: '', pic: '' })
   const [errorMessage, setErrorMessage] = useState('')
   const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
@@ -23,6 +25,35 @@ const EventAdd = () => {
   const [takePic, setTakePic] = useState(false)
   const [pathImgToCrop, setPathImgToCrop] = useState('')
   const [images, setImages] = useState([])
+  const [titles, setTitles] = useState([])
+  const [selectedTitle, setSelectedTitle] = useState('')
+
+  useEffect(() => {
+    api.get('occurrencetype')
+      .then(res => {
+        console.log(res.data)
+        setTitles(res.data)
+        setSelectedTitle(res.data[0].id)
+      })
+      .catch(err => {
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde.')
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+
+  }, [])
+
+  const breadcrumb = [
+    {
+      name: 'Painel Principal',
+      link: '/'
+    },
+    {
+      name: 'Adicionar Ocorrência',
+      link: '/guards/add'
+    }
+  ]
 
   const addImageToList = async blobImage => {
     const isConnected = await Utils.checkInternetConnection(setLoading)
@@ -43,17 +74,6 @@ const EventAdd = () => {
     setPathImgToCrop(imgPath)
     setModalCrop(true)
   }
-
-  const breadcrumb = [
-    {
-      name: 'Painel Principal',
-      link: '/'
-    },
-    {
-      name: 'Adicionar Ocorrência',
-      link: '/guards/add'
-    }
-  ]
 
   const closeModalCropHandler = _ => {
     setPathImgToCrop('')
@@ -87,18 +107,11 @@ const EventAdd = () => {
     if (!isConnected) {
       return
     }
-    if (!userBeingAdded.title) {
-      return setErrorMessage('Título não pode estar vazio.')
-    }
     if (!userBeingAdded.place) {
       return setErrorMessage('Local não pode estar vazio.')
     }
     if (!userBeingAdded.description) {
       return setErrorMessage('Descrição não pode estar vazio.')
-    }
-    const MIN_TITLE_CHARACTERS = 5
-    if (userBeingAdded.title.length <= MIN_TITLE_CHARACTERS) {
-      return setErrorMessage(`Título muito curto. Pelo menos ${MIN_TITLE_CHARACTERS} caracteres.`)
     }
     const MIN_PLACE_CHARACTERS = 3
     if (userBeingAdded.place.length <= MIN_PLACE_CHARACTERS) {
@@ -113,9 +126,9 @@ const EventAdd = () => {
     // }
     setLoading(true)
     api.post('occurrence', {
-      title: userBeingAdded.title,
       place: userBeingAdded.place,
       description: userBeingAdded.description,
+      occurrence_type_id: selectedTitle,
     })
       .then((res) => {
         uploadImg(res.data.occurrenceRegistered.id)
@@ -154,6 +167,7 @@ const EventAdd = () => {
     setErrorMessage('')
     setUserBeingAdded({ title: '', place: '', description: '', pic: '' })
     setImages([])
+    setSelectedTitle(titles[0].id)
   }
 
   const removeImgHandler = ind => {
@@ -174,11 +188,16 @@ const EventAdd = () => {
   return (
     <Body breadcrumb={breadcrumb}>
       <form className='pb-4'>
-        <FormInput
-          label='Título*:'
-          value={userBeingAdded.title}
-          changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, title: val })}
-        />
+        <div className="form-group mt-2">
+          <label>Título*:</label>
+          <select className="form-control" value={selectedTitle} onChange={(ev) => setSelectedTitle(ev.target.value)}>
+            {
+              titles.map(el => (
+                <option key={el.id} value={el.id}>{el.type}</option>
+              ))
+            }
+          </select>
+        </div>
         <FormInput
           label='Local*:'
           value={userBeingAdded.place}
@@ -194,7 +213,8 @@ const EventAdd = () => {
           <ImportPhotoButtons
             paperClipImageHandler={(path) => paperClipImageHandler(path)}
             setErrorMessage={setErrorAddResidentMessage}
-            cameraClick={() => takePicHandler()} />
+            cameraClick={() => takePicHandler()}
+            noAttach={user.user_kind === Constants.USER_KIND.GUARD} />
         }
         {
           images.length ?

@@ -28,7 +28,7 @@ const ThirdAdd = (props) => {
 
   const { user } = useAuth()
   const [units, setUnits] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [residents, setResidents] = useState([])
   const [vehicles, setVehicles] = useState([])
   const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
@@ -42,8 +42,8 @@ const ThirdAdd = (props) => {
   const [modalSelectBloco, setModalSelectBloco] = useState(false)
   const [modalSelectUnit, setModalSelectUnit] = useState(false)
   const [modalSelectResident, setModalSelectResident] = useState(false)
-  const [selectedBloco, setSelectedBloco] = useState(null)
-  const [selectedUnit, setSelectedUnit] = useState(null)
+  const [selectedBloco, setSelectedBloco] = useState(user.user_kind === Constants.USER_KIND['RESIDENT'] ? {} : null)
+  const [selectedUnit, setSelectedUnit] = useState(user.user_kind === Constants.USER_KIND['RESIDENT'] ? {} : null)
   const [selectedResident, setSelectedResident] = useState(null)
   const [isAddingResident, setIsAddingResident] = useState(false)
   const [isAddingVehicle, setIsAddingVehicle] = useState(false)
@@ -80,20 +80,23 @@ const ThirdAdd = (props) => {
   }
 
   useEffect(() => {
-    api.get(`condo/${user.condo_id}`)
-      .then(res => {
-        setUnits(res.data)
-        if (res.data.length === 0) {
-          return setIsNoUnits(true)
-        }
-        setModalSelectBloco(true)
-      })
-      .catch(err => {
-        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TA1)', Constants.TOAST_CONFIG)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    if (user.user_kind !== Constants.USER_KIND['RESIDENT']) {
+      setLoading(true)
+      api.get(`condo/${user.condo_id}`)
+        .then(res => {
+          setUnits(res.data)
+          if (res.data.length === 0) {
+            return setIsNoUnits(true)
+          }
+          setModalSelectBloco(true)
+        })
+        .catch(err => {
+          Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (TA1)', Constants.TOAST_CONFIG)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    }
   }, [])
 
   const closeModalCropHandler = _ => {
@@ -271,14 +274,13 @@ const ThirdAdd = (props) => {
     //storing unit for kind Third
     api.post(`user/person/unit`, {
       residents,
-      number: selectedUnit.number,
+      number: user.user_kind === Constants.USER_KIND['RESIDENT'] ? user.number : selectedUnit.number,
       vehicles,
-      bloco_id: selectedBloco.id,
+      bloco_id: user.user_kind === Constants.USER_KIND['RESIDENT'] ? user.bloco_id : selectedBloco.id,
       selectedDateInit,
       selectedDateEnd,
-      user_permission: selectedResident.id,
-      unit_kind_id: Constants.USER_KIND.THIRD,
-      user_id_last_modify: user.id,
+      user_permission: user.user_kind === Constants.USER_KIND['RESIDENT'] ? user.id : selectedResident.id,
+      unit_kind_id: Constants.USER_KIND.THIRD
     })
       .then(res => {
         uploadImgs(res.data.personsAdded)
@@ -343,23 +345,28 @@ const ThirdAdd = (props) => {
   return (
     <Body breadcrumb={breadcrumb}>
       {/*units*/}
-      <SelectButton
-        icon='building'
-        text='Selecionar Unidade'
-        action={() => setModalSelectBloco(true)}
-      >
-        {!!selectedBloco && !!selectedUnit && !!selectedResident && (
-          <ul className="list-group">
-            <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start">
-              <span>
-                <p>Bloco {selectedBloco.name} unidade {selectedUnit.number}</p>
-                <p>Autorizado por: {selectedResident.name}</p>
-              </span>
-              <span className={classes.CloseIcon} onClick={() => clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span>
-            </li>
-          </ul>
-        )}
-      </SelectButton>
+      {
+        user.user_kind !== Constants.USER_KIND['RESIDENT'] ?
+          <SelectButton
+            icon='building'
+            text='Selecionar Unidade'
+            action={() => setModalSelectBloco(true)}
+          >
+            {!!selectedBloco && !!selectedUnit && !!selectedResident && (
+              <ul className="list-group">
+                <li className="list-group-item bg-primary bg-opacity-25 d-flex justify-content-between align-items-start">
+                  <span>
+                    <p>Bloco {selectedBloco.name} unidade {selectedUnit.number}</p>
+                    <p>Autorizado por: {selectedResident.name}</p>
+                  </span>
+                  <span className={classes.CloseIcon} onClick={() => clearUnit()}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span>
+                </li>
+              </ul>
+            )}
+          </SelectButton>
+          :
+          null
+      }
       {/*residents*/}
       {!!selectedBloco && !!selectedUnit && (
         <SelectButton
@@ -372,7 +379,7 @@ const ThirdAdd = (props) => {
               <FormInput
                 label='Nome*:'
                 value={userBeingAdded.name}
-                changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, name: val })}
+                changeValue={(val) => Utils.testWordWithNoSpecialChars(val) && setUserBeingAdded({ ...userBeingAdded, name: val })}
               />
               <FormInput
                 label='Documento*:'

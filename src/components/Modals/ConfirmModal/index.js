@@ -9,8 +9,8 @@ const ConfirmModal = (props) => {
                 {props.message}
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={props.action1}>{props.button1 || 'Confirmar'}</Button>
                 <Button color="secondary" onClick={props.action2 || props.toggle}>{props.button2 || 'Cancelar'}</Button>
+                <Button color="primary" onClick={props.action1}>{props.button1 || 'Confirmar'}</Button>
             </ModalFooter>
       </Modal>
     );

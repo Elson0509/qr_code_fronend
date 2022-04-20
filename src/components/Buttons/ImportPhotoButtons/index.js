@@ -23,9 +23,11 @@ const ImportPhotoButtons = (props) => {
       </div>
       <div className={classes.DivButtons}>
         <input id="file" style={{ display: 'none' }} type="file" accept="image/jpeg" onChange={(ev) => { paperClipHandler(ev) }} />
-        <label className={classes.Button} htmlFor='file'>
-          <Icon icon='paperclip' size='2x' color='white' />
-        </label>
+        {
+          props.noAttach ? null : <label className={classes.Button} htmlFor='file'>
+            <Icon icon='paperclip' size='2x' color='white' />
+          </label>
+        }
         <div className={classes.Button} onClick={props.cameraClick}>
           <Icon icon='camera' size='2x' color='white' />
         </div>

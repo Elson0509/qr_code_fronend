@@ -204,7 +204,7 @@ const ResidentSearch = (props) => {
                             <ImageCloud id={resident.photo_id} height={180} />
                           </div>
                           <p className='text-center p-0 m-0'>{resident.name}</p>
-                          <p className='text-center p-0 m-0'>{resident.email}</p>
+                          {/* <p className='text-center p-0 m-0'>{resident.email}</p> */}
                         </div>
                       ))
                     }

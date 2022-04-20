@@ -17,9 +17,9 @@ const CarSearchRoute = {
     component: CarSearchLazy
 }
 
-const CarRoutes = userKind => {
+const CarRoutes = user => {
     const routes = []
-    switch(userKind){
+    switch(user.user_kind){
         case(Constants.USER_KIND['RESIDENT']):
             break
         case(Constants.USER_KIND['GUARD']):

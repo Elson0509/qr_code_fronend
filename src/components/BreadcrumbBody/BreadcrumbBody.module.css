@@ -3,3 +3,8 @@
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
+.BreadCrumbItem{
+    font-weight: 400;
+    font-size: x-large;
+}

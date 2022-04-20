@@ -1,13 +1,14 @@
-import React, { Fragment, useState } from 'react';
-import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { useAuth } from '../../contexts/auth';
+import React, { Fragment, useState } from 'react'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap'
+import { useAuth } from '../../contexts/auth'
 import Header from '../../layout/Header'
 import * as Constants from '../../services/constants'
-import Icon from '../../components/Icon';
+import * as Utils from '../../services/util'
+import Icon from '../../components/Icon'
 import classes from './dashboard.module.css'
-import Greeting from '../../components/Greeting';
+import Greeting from '../../components/Greeting'
 import { Link } from 'react-router-dom'
-import Footer from '../../layout/Footer';
+import Footer from '../../layout/Footer'
 
 const Dashboard = () => {
   const { user } = useAuth()
@@ -44,8 +45,10 @@ const Dashboard = () => {
     menuOptionsUnits: { menuName: "Unidades", icon: 'building', key: 'building', url: 'Units', code: 'Units', submenuOptions, toggle: setModalUnits, modal: modalUnits },
     menuOptionsResidents: { menuName: "Moradores", icon: 'house-user', key: 'resident', url: 'Residents', code: 'Residents', submenuOptions: subMenuOptionsResidents, toggle: setModalResidents, modal: modalResidents },
     menuOptionsResidentsToGuard: { menuName: "Moradores", icon: 'house-user', key: 'residentGuard', url: 'Residents/list', code: 'Residents' },
-    menuOptionsVisitor: { menuName: "Visitantes", icon: 'user-friends', key: 'visitor', url: 'Visitors', code: 'Visitors', submenuOptions, toggle: setModalVisitors, modal: modalVisitors },
-    menuOptionsService: { menuName: "Terceirizados", icon: 'people-carry', key: 'service', url: 'Thirds', code: 'Thirds', submenuOptions, toggle: setModalThirds, modal: modalThirds },
+    menuOptionsVisitorWithAdd: { menuName: "Visitantes", icon: 'user-friends', key: 'visitor', url: 'Visitors', code: 'Visitors', submenuOptions, toggle: setModalVisitors, modal: modalVisitors },
+    menuOptionsVisitorNoAdd: { menuName: "Visitantes", icon: 'user-friends', key: 'visitor', url: 'Visitors/list', code: 'Visitors' },
+    menuOptionsServiceWithAdd: { menuName: "Terceirizados", icon: 'people-carry', key: 'service', url: 'Thirds', code: 'Thirds', submenuOptions, toggle: setModalThirds, modal: modalThirds },
+    menuOptionsServiceNoAdd: { menuName: "Terceirizados", icon: 'people-carry', key: 'service', url: 'Thirds/list', code: 'Thirds' },
     menuOptionsGuard: { menuName: "Colaboradores", icon: 'user-shield', key: 'guard', url: 'Guards', code: 'Guards', submenuOptions, toggle: setModalGuard, modal: modalGuard },
     menuOptionsCarSuperIntendent: { menuName: "Pernoite", icon: 'car', key: 'car', url: 'Car', code: 'Cars', submenuOptions: menuOptionsCars, toggle: setModalCar, modal: modalCar },
     menuOptionsCarGuard: { menuName: "Pernoite", icon: 'car', key: 'car', url: 'Car/Search', code: 'Cars' },
@@ -60,9 +63,9 @@ const Dashboard = () => {
   }
 
   const profiles = []
-  profiles[Constants.USER_KIND['RESIDENT']] = [menu.menuOptionsQRCode, menu.menuOptionsEventResident, /*menu.menuOptionsSurvey*/]
-  profiles[Constants.USER_KIND['GUARD']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsResidentsToGuard, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsCarGuard, menu.menuOptionsEventGuard, menu.menuOptionsSlot]
-  profiles[Constants.USER_KIND['SUPERINTENDENT']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsUnits, menu.menuOptionsResidents, menu.menuOptionsVisitor, menu.menuOptionsService, menu.menuOptionsGuard, menu.menuOptionsCarSuperIntendent, menu.menuOptionsEventSuperintendent, menu.menuOptionsSlot]
+  profiles[Constants.USER_KIND['RESIDENT']] = [menu.menuOptionsQRCode, Utils.canAddOcorrences(user) ? menu.menuOptionsEventResident : null,  Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : null, Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : null]
+  profiles[Constants.USER_KIND['GUARD']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsResidentsToGuard, Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : menu.menuOptionsVisitorNoAdd, Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : menu.menuOptionsServiceNoAdd, menu.menuOptionsCarGuard, menu.menuOptionsEventGuard, menu.menuOptionsSlot]
+  profiles[Constants.USER_KIND['SUPERINTENDENT']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsUnits, menu.menuOptionsResidents, menu.menuOptionsVisitorWithAdd, menu.menuOptionsServiceWithAdd, menu.menuOptionsGuard, menu.menuOptionsCarSuperIntendent, menu.menuOptionsEventSuperintendent, menu.menuOptionsSlot]
   profiles[Constants.USER_KIND['ADM']] = [menu.menuOptionsCondo, menu.menuOptionsSindico]
 
   const getArrayOptionsWithSubmenu = _ => {
@@ -94,6 +97,7 @@ const Dashboard = () => {
         <div className={`container ${classes.Dashboard}`}>
           <div className={`row row-cols-2 row-cols-md-4 row-cols-lg-4 g-3 g-md-3 g-lg-5 mt-2 text-center ${profiles[user.user_kind].length <= 3 && 'justify-content-center'}`}>
             {profiles[user.user_kind].map(el => {
+              if(!el) return null
               if (el.submenuOptions) {
                 return (
                   <div key={el.key} onClick={() => el.toggle(prev => !prev)}>

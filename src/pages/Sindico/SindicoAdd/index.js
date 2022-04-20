@@ -18,7 +18,7 @@ const SindicoAdd = (props) => {
   const { user } = useAuth()
   const [condos, setCondos] = useState([])
   const [loading, setLoading] = useState(true)
-  const [userBeingAdded, setUserBeingAdded] = useState({ id: "0", name: '', identification: '', email: '', condoIndex: 0, pic: '' })
+  const [userBeingAdded, setUserBeingAdded] = useState({ id: "0", name: '', identification: '', email: '', condoIndex: 0, pic: '', phone: '' })
   const [errorMessage, setErrorMessage] = useState('')
   const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
   const [modalPic, setModalPic] = useState(false)
@@ -101,11 +101,17 @@ const SindicoAdd = (props) => {
     if (!userBeingAdded.email) {
       return setErrorMessage('Email não pode estar vazio.')
     }
+    if (!userBeingAdded.phone) {
+      return setErrorMessage('Telefone não pode estar vazio.')
+    }
     if (!userBeingAdded.condo_id) {
       return setErrorMessage('Selecione um condomínio.')
     }
     if (!Utils.validateEmail(userBeingAdded.email)) {
       return setErrorMessage('Email não válido.')
+    }
+    if (!Utils.phone_validation(userBeingAdded.phone)) {
+      return setErrorMessage('Telefone não válido.')
     }
 
     setLoading(true)
@@ -114,6 +120,7 @@ const SindicoAdd = (props) => {
       condo_id: condos[userBeingAdded.condoIndex].id,
       user_kind_id: Constants.USER_KIND["SUPERINTENDENT"],
       identification: userBeingAdded.identification,
+      phone: userBeingAdded.phone,
       email: userBeingAdded.email,
       user_id_last_modify: user.id,
     })
@@ -122,7 +129,7 @@ const SindicoAdd = (props) => {
         setErrorMessage('')
         setErrorAddResidentMessage('')
         toast.info('Cadastro realizado', Constants.TOAST_CONFIG)
-        setUserBeingAdded({ ...userBeingAdded, id: "0", name: '', identification: '', email: '', pic: '' })
+        setUserBeingAdded({ ...userBeingAdded, id: "0", name: '', identification: '', email: '', pic: '', phone: '' })
       })
       .catch((err) => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (GA1)', Constants.TOAST_CONFIG)
@@ -166,7 +173,7 @@ const SindicoAdd = (props) => {
           <FormInput
             label='Nome*:'
             value={userBeingAdded.name}
-            changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, name: val })}
+            changeValue={(val) => Utils.testWordWithNoSpecialChars(val) && setUserBeingAdded({ ...userBeingAdded, name: val })}
           />
           <FormInput
             label='Identidade:'
@@ -178,6 +185,13 @@ const SindicoAdd = (props) => {
             value={userBeingAdded.email}
             type='email'
             changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, email: val })}
+          />
+          <FormInput
+            label='Telefone*:'
+            value={userBeingAdded.phone}
+            type='text'
+            placeholder='(XX) 90000-0000'
+            changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, phone: val })}
           />
           <SelectInput
             label='Condomínio*:'
