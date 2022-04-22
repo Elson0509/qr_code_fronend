@@ -72,6 +72,9 @@ const GuardAdd = (props) => {
     if (!userBeingAdded.name) {
       return setErrorMessage('Nome não pode estar vazio.')
     }
+    if (userBeingAdded.name.length < Constants.MIN_NAME_SIZE) {
+      return setErrorMessage(`Nome deve ter no mínimo ${Constants.MIN_NAME_SIZE} caracteres.`)
+    }
     if (!userBeingAdded.identification) {
       return setErrorMessage('Documento não pode estar vazio.')
     }

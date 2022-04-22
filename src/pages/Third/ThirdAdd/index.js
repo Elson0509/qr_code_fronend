@@ -132,6 +132,9 @@ const ThirdAdd = (props) => {
     if (!userBeingAdded.name) {
       return setErrorAddResidentMessage('Nome não pode estar vazio.')
     }
+    if (userBeingAdded.name.length < Constants.MIN_NAME_SIZE) {
+      return setErrorAddResidentMessage(`Nome deve ter no mínimo ${Constants.MIN_NAME_SIZE} caracteres.`)
+    }
     if (!userBeingAdded.identification) {
       return setErrorAddResidentMessage('Documento não pode estar vazio.')
     }
