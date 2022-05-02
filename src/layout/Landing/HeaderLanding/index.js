@@ -28,8 +28,9 @@ const HeaderLanding = () => {
     ev.preventDefault();
     if (!Utils.validateEmail(email))
       return setErrorMessage('Email não válido')
-    if (password.length < Constants.MIN_PASSWORD_SIZE)
-      return setErrorMessage('Senha muito curta')
+    if (!Utils.testStrongPassword(password.trim())) {
+      return setErrorMessage('Senha inválida.')
+    }
     setErrorMessage('')
     setErrorLoginMessage('')
     signIn(email, password)
@@ -69,7 +70,8 @@ const HeaderLanding = () => {
       <video autoPlay muted loop className={classes.Video} poster="/imgs/condo.jpg">
         <source
           //src="/imgs/welcome2.mp4"
-          src="https://drive.google.com/uc?id=1YfjzTrldXpmar7C00jM6JMwkJ8PmSWJA&export=download"
+          //src="https://drive.google.com/uc?id=1YfjzTrldXpmar7C00jM6JMwkJ8PmSWJA&export=download"
+          src="https://drive.google.com/uc?id=1gUExscpzAeV84akyGgHpC8tDFyBUhwi1&export=download"
           type="video/mp4"
         />
       </video>

@@ -16,6 +16,7 @@ import SlotRoutes from './SlotRoutes';
 import ThirdRoutes from './ThirdRoutes';
 import UnitRoutes from './UnitRoutes';
 import VisitorRoutes from './VisitorRoutes'
+import UserRoutes from './UserRoutes'
 
 //lazy components
 const ScanLazy = lazy(()=> import ('../pages/Scan'))
@@ -42,6 +43,7 @@ const AppRoutes = () => {
                 { ThirdRoutes(user).map(el=> <Route exact {...el}/>) }
                 { UnitRoutes(user).map(el=> <Route exact {...el}/>) }
                 { VisitorRoutes(user).map(el=> <Route exact {...el}/>) }
+                { UserRoutes(user).map(el=> <Route exact {...el}/>) }
                 <Route exact path="/login">
                     <Redirect to="/dashboard" />
                 </Route>

@@ -10,6 +10,7 @@ const FormInput = (props) => {
                 placeholder={props.placeholder} 
                 value={props.value} 
                 onChange={(ev)=>props.changeValue(ev.target.value)}
+                disabled={props.disabled}
             />
         </div>
     );

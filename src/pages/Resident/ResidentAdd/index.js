@@ -65,6 +65,7 @@ const ResidentAdd = (props) => {
       .then(res => {
         setUnits(res.data)
         setModalSelectBloco(true)
+        console.log(res.data)
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
@@ -110,10 +111,10 @@ const ResidentAdd = (props) => {
     if (userBeingAdded.name.length < Constants.MIN_NAME_SIZE) {
       return setErrorAddResidentMessage(`Nome deve ter no mínimo ${Constants.MIN_NAME_SIZE} caracteres.`)
     }
-    if (!userBeingAdded.email) {
-      return setErrorAddResidentMessage('Email não pode estar vazio.')
-    }
-    if (!Utils.validateEmail(userBeingAdded.email)) {
+    // if (!userBeingAdded.email) {
+    //   return setErrorAddResidentMessage('Email não pode estar vazio.')
+    // }
+    if (userBeingAdded.email && !Utils.validateEmail(userBeingAdded.email)) {
       return setErrorAddResidentMessage('Email não é válido.')
     }
     setResidents(prev => [...prev, userBeingAdded])
@@ -333,7 +334,7 @@ const ResidentAdd = (props) => {
                 changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, identification: val })}
               />
               <FormInput
-                label='Email*:'
+                label='Email:'
                 value={userBeingAdded.email}
                 type='email'
                 changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, email: val })}

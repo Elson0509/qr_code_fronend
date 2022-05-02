@@ -1,0 +1,36 @@
+.CloseIcon{
+    cursor: pointer;
+    color: red;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
+.ResidentBox{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.ResidentImage{
+    border: 2px solid white;
+}
+
+.Text{
+    margin: 0;
+}
+
+.Bold{
+    font-weight: bold;
+}
+
+.ImgUserTookPic{
+    text-align: center;
+    padding: 20px;
+}
+
+.PreviewImage{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}

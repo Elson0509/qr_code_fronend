@@ -340,3 +340,8 @@ export const testWordWithNoSpecialChars = sentence => {
     if (!sentence) return true
     return /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/.test(sentence)
 }
+
+export const testStrongPassword = sentence => {
+    if (!sentence) return false
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(sentence)
+}

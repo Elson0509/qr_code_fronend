@@ -2,8 +2,8 @@ import React, {useState, Fragment} from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import FormInput from '../../Form/FormInput'
 import api from '../../../services/api';
-import {MIN_PASSWORD_SIZE} from '../../../services/constants'
 import { Spinner } from 'reactstrap';
+import { testStrongPassword } from '../../../services/util'
 
 const ConfirmModal = (props) => {
     const [password, setPassword] = useState('')
@@ -11,8 +11,8 @@ const ConfirmModal = (props) => {
     const [loading, setLoading] = useState(false)
 
     const confirmHandler = _ => {
-        if(password.length < MIN_PASSWORD_SIZE){
-            return setErrorMessage(`Senha muito curta. Pelo menos ${MIN_PASSWORD_SIZE} caracteres.`)
+        if(!testStrongPassword (password)){
+            return setErrorMessage(`Senha incorreta.`)
         }
         setLoading(true)
         api.post(`user/confirmpass`,{password})

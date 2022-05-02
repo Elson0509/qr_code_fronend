@@ -27,6 +27,8 @@ const ResidentSearch = (props) => {
   const [searchInput, setSearchinput] = useState('')
   const [imageModal, setImageModal] = useState(false)
   const [selectedIdImage, setSelectedIdImage] = useState(0)
+  const [modalConfirmDeleteUser, setModalConfirmDeleteUser] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null)
 
   const breadcrumb = [
     {
@@ -38,16 +40,17 @@ const ResidentSearch = (props) => {
       link: '/residents/search'
     }
   ]
-  
+
   useEffect(() => {
     fetchUsers()
   }, [])
-  
+
   const fetchUsers = async _ => {
     const isConnected = await Utils.checkInternetConnection(setLoading)
     if (!isConnected) {
       return
     }
+    setLoading(true)
     api.get(`user/condo/${user.condo_id}/${Constants.USER_KIND["RESIDENT"]}`)
       .then(resp => {
         setUnits(resp.data)
@@ -105,7 +108,7 @@ const ResidentSearch = (props) => {
   }
 
   const clickImageHandler = resident => {
-    if(resident.photo_id){
+    if (resident.photo_id) {
       setSelectedIdImage(resident.photo_id)
       setImageModal(true)
     }
@@ -128,6 +131,34 @@ const ResidentSearch = (props) => {
       })
       .finally(() => {
         setLoading(false)
+      })
+  }
+
+  const editUserHandler = resident => {
+    console.log(resident)
+    props.history.push('/resident/edit',
+      {
+        resident
+      }
+    )
+  }
+
+  const delUserModal = resident => {
+    console.log(resident)
+    setSelectedUser(resident)
+    setModalConfirmDeleteUser(true)
+  }
+
+  const confirmDeleteUserHandler = _ => {
+    console.log(selectedUser)
+    api.delete(`user/${selectedUser.id}`)
+      .then(res => {
+        toast.info(res.data?.message || 'Usuário apagado.', Constants.TOAST_CONFIG)
+        setModalConfirmDeleteUser(false)
+        fetchUsers()
+      })
+      .catch((err) => {
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (DU3)')
       })
   }
 
@@ -198,10 +229,21 @@ const ResidentSearch = (props) => {
                       )
                     }
                     {
-                      !!el.residents.length && el.residents.map((resident, ind) => (
+                      !!el.residents.length && el.residents.map((resident) => (
                         <div style={{ border: '1px solid #ddd', paddingBottom: '10px' }} key={resident.id}>
-                          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px', cursor: 'pointer' }} onClick={()=>clickImageHandler(resident)}>
+                          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px', cursor: 'pointer' }} onClick={() => clickImageHandler(resident)}>
                             <ImageCloud id={resident.photo_id} height={180} />
+                          </div>
+                          <div style={{background: '#eaeaea'}}>
+                            {
+                              user.user_kind === Constants.USER_KIND['SUPERINTENDENT'] &&
+                              <IconButtons
+                                icon1='user-edit'
+                                icon2='user-times'
+                                action1={() => editUserHandler(resident)}
+                                action2={() => delUserModal(resident)}
+                              />
+                            }
                           </div>
                           <p className='text-center p-0 m-0'>{resident.name}</p>
                           {/* <p className='text-center p-0 m-0'>{resident.email}</p> */}
@@ -239,6 +281,13 @@ const ResidentSearch = (props) => {
         toggle={() => setModal(false)}
         title='Apagar moradores'
         action1={() => modalConfirmPassHandler()}
+      />
+      <ConfirmModal
+        message='Confirma a exclusão deste morador?'
+        modal={modalConfirmDeleteUser}
+        toggle={() => setModalConfirmDeleteUser(false)}
+        title='Apagar morador'
+        action1={() => confirmDeleteUserHandler()}
       />
       <ConfirmPassModal
         modal={passModal}

@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import api from '../../services/api';
-import { validateEmail } from '../../services/util'
-import { MIN_PASSWORD_SIZE } from '../../services/constants'
+import { validateEmail, testStrongPassword } from '../../services/util'
 import classes from './Activate.module.css'
 import PrivacyModal from '../../components/Modals/PrivacyModal'
-import TermsModal from '../../components/Modals/TermsModal';
+import TermsModal from '../../components/Modals/TermsModal'
 
 const Activate = (props) => {
   const [password, setPassword] = useState('')
@@ -23,8 +22,11 @@ const Activate = (props) => {
     if (!validateEmail(email)) {
       return setErrorMessage('Email em formato não válido.')
     }
-    if (password.trim().length < MIN_PASSWORD_SIZE) {
-      return setErrorMessage(`Senha curta. Pelo menos ${MIN_PASSWORD_SIZE} caracteres.`)
+    if(!password.trim()){
+      return setErrorMessage('Você precisa digitar a senha.')
+    }
+    if(!testStrongPassword(password.trim())) {
+      return setErrorMessage('Senha deve conter no mínimo 8 caracteres, 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial.')
     }
     if (password.trim() !== confirmPassword.trim()) {
       return setErrorMessage(`Senha e sua confirmação precisam ser iguais.`)

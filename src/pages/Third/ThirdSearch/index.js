@@ -38,6 +38,8 @@ const ThirdSearch = (props) => {
   const [loadingMessage, setLoadingMessage] = useState(false)
   const [imageModal, setImageModal] = useState(false)
   const [selectedIdImage, setSelectedIdImage] = useState(0)
+  const [modalConfirmDeleteUser, setModalConfirmDeleteUser] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null)
 
   const breadcrumb = [
     {
@@ -292,6 +294,34 @@ const ThirdSearch = (props) => {
     }
   }
 
+  const editUserHandler = resident => {
+    console.log(resident)
+    props.history.push('/third/edit',
+      {
+        resident
+      }
+    )
+  }
+
+  const delUserModal = resident => {
+    console.log(resident)
+    setSelectedUser(resident)
+    setModalConfirmDeleteUser(true)
+  }
+
+  const confirmDeleteUserHandler = _ => {
+    console.log(selectedUser)
+    api.delete(`user/${selectedUser.id}`)
+      .then(res => {
+        toast.info(res.data?.message || 'Usuário apagado.', Constants.TOAST_CONFIG)
+        setModalConfirmDeleteUser(false)
+        fetchUsers()
+      })
+      .catch((err) => {
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (DU3)')
+      })
+  }
+
   if (loading) {
     return (
       <Body breadcrumb={breadcrumb}>
@@ -355,26 +385,43 @@ const ThirdSearch = (props) => {
                         )
                       }
                       {
-                        !!el.residents.length && el.residents.map((resident, ind) => (
-                          <div key={resident.id} style={{ border: '1px solid #ddd', padding: '10px', display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'center', width: '160px', cursor: 'pointer' }} onClick={() => clickImageHandler(resident)}>
-                              <ImageCloudWidth id={resident.photo_id} />
-                            </div>
-                            <div>
-                              {!!resident.name && <p className='p-0 m-0'><span className='enfase'>Nome:</span> {resident.name}</p>}
-                              {!!resident.identification && <p className='p-0 m-0'><span className='enfase'>Id:</span> {resident.identification}</p>}
-                              {!!resident.initial_date && <p className='p-0 m-0'><span className='enfase'>Início:</span> {Utils.printDate(new Date(resident.initial_date))}</p>}
-                              {!!resident.final_date && <p className='p-0 m-0'><span className='enfase'>Fim:</span> {Utils.printDate(new Date(resident.final_date))}</p>}
-                              {!!resident.company && <p className='p-0 m-0'><span className='enfase'>Empresa:</span> {resident.company}</p>}
-                              {!!resident.User?.name && <p className='p-0 m-0'><span className='enfase'>Autorizado por:</span> {resident.User.name}</p>}
-                              {
-                                new Date(resident.final_date) >= beginOfDay && new Date(resident.initial_date) <= beginOfDay ?
-                                  <p className='p-0 m-0'><span className='enfase'>Status:</span> Válido</p>
-                                  :
-                                  <p style={{ fontWeight: 'bold', color: 'red' }}>Status: Expirado</p>
-                              }
+                        !!el.residents.length && el.residents.map((resident) => (
+                          <div key={resident.id} style={{ border: '2px solid #ddd' }}>
+                            <div style={{ padding: '10px', display: 'flex', flexDirection: 'row', gap: '10px' }}>
+                              <div style={{ display: 'flex', justifyContent: 'center', width: '160px', cursor: 'pointer', flexDirection: 'column' }}>
+                                <div onClick={() => clickImageHandler(resident)}>
+                                  <ImageCloudWidth id={resident.photo_id} />
+                                </div>
+                                <div>
+                                  {
+                                    user.user_kind === Constants.USER_KIND['SUPERINTENDENT'] || user.user_kind === Constants.USER_KIND['RESIDENT'] ? (
+                                      <IconButtons
+                                        icon1='user-edit'
+                                        icon2='user-times'
+                                        action1={() => editUserHandler(resident)}
+                                        action2={() => delUserModal(resident)}
+                                      />
+                                    ) : null
+                                  }
+                                </div>
+                              </div>
+                              <div>
+                                {!!resident.name && <p className='p-0 m-0'><span className='enfase'>Nome:</span> {resident.name}</p>}
+                                {!!resident.identification && <p className='p-0 m-0'><span className='enfase'>Id:</span> {resident.identification}</p>}
+                                {!!resident.initial_date && <p className='p-0 m-0'><span className='enfase'>Início:</span> {Utils.printDate(new Date(resident.initial_date))}</p>}
+                                {!!resident.final_date && <p className='p-0 m-0'><span className='enfase'>Fim:</span> {Utils.printDate(new Date(resident.final_date))}</p>}
+                                {!!resident.company && <p className='p-0 m-0'><span className='enfase'>Empresa:</span> {resident.company}</p>}
+                                {!!resident.User?.name && <p className='p-0 m-0'><span className='enfase'>Autorizado por:</span> {resident.User.name}</p>}
+                                {
+                                  new Date(resident.final_date) >= beginOfDay && new Date(resident.initial_date) <= beginOfDay ?
+                                    <p className='p-0 m-0'><span className='enfase'>Status:</span> Válido</p>
+                                    :
+                                    <p style={{ fontWeight: 'bold', color: 'red' }}>Status: Expirado</p>
+                                }
+                              </div>
                             </div>
                           </div>
+
                         ))
                       }
                     </CardBody>
@@ -419,6 +466,13 @@ const ThirdSearch = (props) => {
         button2='SAÍDA'
         action1={() => entranceHandler()}
         action2={() => exitHandler()}
+      />
+      <ConfirmModal
+        message='Confirma a exclusão deste terceirizado?'
+        modal={modalConfirmDeleteUser}
+        toggle={() => setModalConfirmDeleteUser(false)}
+        title='Apagar terceirizado'
+        action1={() => confirmDeleteUserHandler()}
       />
       <ConfirmModal
         modal={modalEntrance}

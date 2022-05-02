@@ -1,8 +1,9 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment } from 'react'
 import classes from './Footer.module.css'
 import Icon from '../../components/Icon'
-import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { useAuth } from '../../contexts/auth'
+import PrivacyModal from '../../components/Modals/PrivacyModal'
+import TermsModal from '../../components/Modals/TermsModal'
 
 import {
   faFacebook,
@@ -38,11 +39,11 @@ const Footer = () => {
                   <ul>
                     <li>Tel: (21) 97509-3237 (Pedro Tarquínio)</li>
                     <li>Tel: (21) 99776-4893 (Wander Pedreira)</li>
-                    <li>Email: <a href='mailto:contato@qrcondo.com.br'>contato@qrcondo.com.br</a></li>
+                    <li>Email: <a href='mailto:comercial@qrcondo.com.br'>comercial@qrcondo.com.br</a></li>
                   </ul>
                 </div>
                 <div className={classes.SocialmediaDiv}>
-                  <ul>
+                  {/* <ul>
                     <li>
                       <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="facebook">
                         <FontAwesomeIcon icon={faFacebook} size="2x" color='#3b5998 ' />
@@ -63,7 +64,7 @@ const Footer = () => {
                         <FontAwesomeIcon icon={faLinkedin} size="2x" color='#3b5998' />
                       </a>
                     </li>
-                  </ul>
+                  </ul> */}
                 </div>
               </div>
               <div className={classes.DivChild}>
@@ -88,18 +89,8 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-      <Modal isOpen={modalTerms} toggle={() => setModalTerms(false)}>
-        <ModalHeader toggle={() => setModalTerms(false)}>Termos e condições</ModalHeader>
-        <ModalBody>
-          Termos e condições
-        </ModalBody>
-      </Modal>
-      <Modal isOpen={modalPrivacy} toggle={() => setModalPrivacy(false)}>
-        <ModalHeader toggle={() => setModalPrivacy(false)}>Política de privacidade</ModalHeader>
-        <ModalBody>
-          Política de privacidade
-        </ModalBody>
-      </Modal>
+      <PrivacyModal modal={modalPrivacy} toggle={() => setModalPrivacy(false)} />
+      <TermsModal modal={modalTerms} toggle={() => setModalTerms(false)} />
     </Fragment>
   );
 };

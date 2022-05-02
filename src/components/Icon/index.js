@@ -47,6 +47,8 @@ import {
     faQuestion, //question
     faTimesCircle, //times-circle
     faCloudDownloadAlt, //cloud-download-alt
+    faUserEdit, //user-edit
+    faUserTimes, //user-times
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -94,6 +96,8 @@ library.add(
     faQuestion,
     faTimesCircle,
     faCloudDownloadAlt,
+    faUserEdit,
+    faUserTimes,
 );
 
 const Icon = (props) => {
