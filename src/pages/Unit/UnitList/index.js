@@ -49,7 +49,6 @@ const UnitList = (props) => {
         setDataFetched(resp.data)
       })
       .catch(err => {
-        console.log(err)
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (UL1)')
       })
       .finally(() => {

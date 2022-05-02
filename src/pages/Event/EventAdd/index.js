@@ -31,7 +31,6 @@ const EventAdd = () => {
   useEffect(() => {
     api.get('occurrencetype')
       .then(res => {
-        console.log(res.data)
         setTitles(res.data)
         setSelectedTitle(res.data[0].id)
       })

@@ -28,8 +28,6 @@ const EditVisitor = (props) => {
   const [pathImgToCrop, setPathImgToCrop] = useState('')
   const [pic, setPic] = useState(false)
 
-  console.log(props.location.state.resident)
-
   const breadcrumb = [
     {
       name: 'Painel Principal',

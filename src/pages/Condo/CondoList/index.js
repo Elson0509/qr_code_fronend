@@ -41,7 +41,6 @@ const CondoList = (props) => {
     api.get(`condo`)
       .then(resp => {
         setCondos(resp.data)
-        console.log(resp.data)
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoL1)', Constants.TOAST_CONFIG)

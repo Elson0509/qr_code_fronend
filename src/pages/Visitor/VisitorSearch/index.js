@@ -290,7 +290,6 @@ const VisitorSearch = (props) => {
   }
 
   const editUserHandler = resident => {
-    console.log(resident)
     props.history.push('/visitor/edit',
       {
         resident
@@ -299,13 +298,11 @@ const VisitorSearch = (props) => {
   }
 
   const delUserModal = resident => {
-    console.log(resident)
     setSelectedUser(resident)
     setModalConfirmDeleteUser(true)
   }
 
   const confirmDeleteUserHandler = _ => {
-    console.log(selectedUser)
     api.delete(`user/${selectedUser.id}`)
       .then(res => {
         toast.info(res.data?.message || 'Usuário apagado.', Constants.TOAST_CONFIG)

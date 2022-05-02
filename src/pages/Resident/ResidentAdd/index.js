@@ -65,7 +65,6 @@ const ResidentAdd = (props) => {
       .then(res => {
         setUnits(res.data)
         setModalSelectBloco(true)
-        console.log(res.data)
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)

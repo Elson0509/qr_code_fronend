@@ -30,8 +30,6 @@ const EditUser = (props) => {
   const [disabled] = useState(!!props.location.state.resident.email)
   const [pic, setPic] = useState(false)
 
-  console.log(props.location.state.resident)
-
   const breadcrumb = [
     {
       name: 'Painel Principal',

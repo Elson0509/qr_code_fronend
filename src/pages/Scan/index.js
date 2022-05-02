@@ -58,7 +58,6 @@ const MyQrCode = () => {
         .then(res => {
           setErrorMessage('')
           const found = res.data.userFound || res.data.unitFound
-          //console.log({ found })
           setDataFetched(found)
           setReading(res.data.read)
           setIsScanning(false)
