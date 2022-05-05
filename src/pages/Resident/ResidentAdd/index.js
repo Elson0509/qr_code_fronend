@@ -204,7 +204,7 @@ const ResidentAdd = (props) => {
     const residentsPics = []
     newResidents.forEach(nr => {
       residents.forEach(re => {
-        if (nr.email === re.email &&
+        if ((nr.email === re.email || (!nr.email && !re.email)) &&
           nr.name === re.name &&
           nr.identification === re.identification &&
           re.pic !== "")

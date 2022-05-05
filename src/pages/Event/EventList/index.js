@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Body from '../../../layout/Body'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
+import { useAuth } from '../../../contexts/auth'
 import api from '../../../services/api'
 import IconButtons from '../../../components/Buttons/IconButtons'
 import ConfirmModal from '../../../components/Modals/ConfirmModal'
@@ -15,6 +16,7 @@ import {
 import ReplyModal from '../../../components/Modals/ReplyModal'
 
 const EventList = () => {
+  const { user } = useAuth()
   const [events, setEvents] = useState([])
   const [selectedEvent, setSelectedEvent] = useState(null)
   const [replyMessage, setReplyMessage] = useState('')
@@ -152,7 +154,7 @@ const EventList = () => {
                   <CardHeader>
                     <IconButtons
                       action2={() => { delEvent(el) }}
-                      action3={() => { replyHandler(el) }}
+                      action3={Utils.canShowMessage(user) ? () => { replyHandler(el) } : null}
                       icon3='reply'
                       color3='#2336F9'
                     />

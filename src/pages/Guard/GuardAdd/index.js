@@ -35,7 +35,7 @@ const GuardAdd = (props) => {
       link: '/'
     },
     {
-      name: 'Adicionar Guarda',
+      name: 'Adicionar Colaborador',
       link: '/guards/add'
     }
   ]
