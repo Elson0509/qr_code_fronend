@@ -74,8 +74,8 @@ const Footer = () => {
                 </a>
               </div>
               <div className={`${classes.DivChild} ${classes.GPlayDiv}`}>
-                <a href="https://play.google.com/store" target="_blank" rel="noopener noreferrer" aria-label="google play store">
-                  <img src={gplayImg} alt='google play app' width='100%' height='auto' />
+                <a href="https://play.google.com/store/apps/details?id=com.qrcondo.qrcondo" target="_blank" rel="noopener noreferrer" aria-label="google play store">
+                  <img src={gplayImg} alt='google play app qrcondo' width='100%' height='auto' />
                 </a>
               </div>
             </div>
