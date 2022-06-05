@@ -3,7 +3,7 @@ import HeaderLanding from '../../layout/Landing/HeaderLanding';
 import Footer from '../../layout/Footer';
 import Nav from '../../layout/Landing/Nav';
 import Landscape from '../../layout/Landing/Landscape';
-import { CardGroup, Card, CardBody, CardTitle, Jumbotron, CardHeader, CardSubtitle } from 'reactstrap'
+import { CardGroup, Card, CardBody, CardTitle, Jumbotron, CardHeader, CardSubtitle, CardText } from 'reactstrap'
 import ModalEmail from '../../components/Modals/ModalEmail';
 import CheckList from './CheckList';
 
@@ -15,7 +15,7 @@ const Price = () => {
       <HeaderLanding />
       <Nav />
       <section className='p-4 bg-light'>
-        <div className="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <div className="px-3 pt-md-3 pb-md-4 mx-auto text-center">
           <h1 className="display-4">Investimento</h1>
           <p className="lead">Contratação de solução moderna para controle de acesso de condomínios com login individual de administradores, colaboradores e residentes.</p>
         </div>
@@ -27,11 +27,11 @@ const Price = () => {
               </CardHeader>
               <CardBody>
                 <CardTitle tag="h1">
-                  R$ 159,90<small className="text-muted">/ mês</small>
+                  {/* R$ 159,90<small className="text-muted">/ mês</small> */}
                 </CardTitle>
                 <CardSubtitle>
                   <CheckList text='Até 500 unidades incluído' />
-                  <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button>
+                  {/* <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button> */}
                 </CardSubtitle>
               </CardBody>
             </Card>
@@ -41,11 +41,11 @@ const Price = () => {
               </CardHeader>
               <CardBody>
                 <CardTitle tag="h1">
-                  R$ 179,90<small className="text-muted">/ mês</small>
+                  {/* R$ 179,90<small className="text-muted">/ mês</small> */}
                 </CardTitle>
                 <CardSubtitle>
                   <CheckList text='Até 1000 unidades incluído' />
-                  <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button>
+                  {/* <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button> */}
                 </CardSubtitle>
               </CardBody>
             </Card>
@@ -55,15 +55,29 @@ const Price = () => {
               </CardHeader>
               <CardBody>
                 <CardTitle tag="h1">
-                  R$ 199,90<small className="text-muted">/ mês</small>
+                  {/* R$ 199,90<small className="text-muted">/ mês</small> */}
                 </CardTitle>
                 <CardSubtitle>
                   <CheckList text='Sem limites de unidades incluído' />
-                  <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button>
+                  {/* <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button> */}
                 </CardSubtitle>
               </CardBody>
             </Card>
           </CardGroup>
+        </div>
+        <div className='row text-center my-4'>
+          <Card
+            body
+            inverse
+            style={{
+              backgroundColor: '#333',
+              borderColor: '#333'
+            }}>
+            <CardTitle tag="h2">
+              Entre em contato e surpreenda-se com o preço acessível para você e seu condomínio!
+            </CardTitle>
+            <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary col-5 my-2 p-2">Contato</button>
+          </Card>
         </div>
         <div className='row text-center my-4'>
           <Jumbotron>

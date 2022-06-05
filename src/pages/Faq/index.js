@@ -69,10 +69,10 @@ const Faq = () => {
       question: 'Onde são armazenadas as informações?',
       answer: 'As dados são armazenados de forma segura em nuvem, com acesso restrito aos usuários da plataforma. Assim, você não precisa comprar nenhum equipamento especial para armazenar informações em seu condomínio. Tudo o que você precisa é de computador ou celular com acesso a internet.',
     },
-    {
-      question: 'Quanto custa? O valor é referente ao condomínio?',
-      answer: 'A tabela de custos pode ser acessada na aba "Assinatura" acima, com valores a partir de R$159,90. O valor refere-se a uma parcela mensal para o condomínio inteiro.',
-    },
+    // {
+    //   question: 'Quanto custa? O valor é referente ao condomínio?',
+    //   answer: 'A tabela de custos pode ser acessada na aba "Assinatura" acima, com valores a partir de R$159,90. O valor refere-se a uma parcela mensal para o condomínio inteiro.',
+    // },
   ]
 
   const toggle = e => {
@@ -90,7 +90,8 @@ const Faq = () => {
           questions.map((el, index) => {
             return (
               <Card style={{ marginBottom: '1rem' }} key={index} className='roboto'>
-                <CardHeader onClick={toggle} data-event={index} style={{ cursor: 'pointer', fontWeight: 'bold' }}>
+                <CardHeader onClick={toggle} data-event={index} inverse style={{ cursor: 'pointer', fontWeight: 'bold',
+                  backgroundColor: '#eee', borderColor: '#eee'}}>
                   {index + 1}. {el.question}
                 </CardHeader>
                 <Collapse isOpen={collapse === index}>

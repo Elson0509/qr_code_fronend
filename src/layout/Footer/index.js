@@ -43,28 +43,28 @@ const Footer = () => {
                   </ul>
                 </div>
                 <div className={classes.SocialmediaDiv}>
-                  {/* <ul>
+                  <ul>
                     <li>
-                      <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="facebook">
+                      <a href="https://www.facebook.com/profile.php?id=100053685274776" target="_blank" rel="noopener noreferrer" aria-label="facebook">
                         <FontAwesomeIcon icon={faFacebook} size="2x" color='#3b5998 ' />
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="instagram">
+                      <a href="https://www.instagram.com/tarquinioepedreira/" target="_blank" rel="noopener noreferrer" aria-label="instagram">
                         <FontAwesomeIcon icon={faInstagram} size="2x" color='#DD2A7B' />
                       </a>
                     </li>
-                    <li>
+                    {/* <li>
                       <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="youtube">
                         <FontAwesomeIcon icon={faYoutube} size="2x" color='#c4302b' />
                       </a>
-                    </li>
+                    </li> */}
                     <li>
-                      <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="linkedin">
+                      <a href="https://www.linkedin.com/company/tarqu%C3%ADnio-pedreira-consultoria-e-treinamento-em-seguran%C3%A7a/" target="_blank" rel="noopener noreferrer" aria-label="linkedin">
                         <FontAwesomeIcon icon={faLinkedin} size="2x" color='#3b5998' />
                       </a>
                     </li>
-                  </ul> */}
+                  </ul>
                 </div>
               </div>
               <div className={classes.DivChild}>
