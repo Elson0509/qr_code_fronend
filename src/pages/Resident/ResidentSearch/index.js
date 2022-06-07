@@ -258,7 +258,7 @@ const ResidentSearch = (props) => {
                     {
                       !!el.vehicles.length && el.vehicles.map((vehicle, ind) => (
                         <div style={{ borderBottom: ind === el.vehicles.length - 1 ? 'none' : '1px solid #ddd', paddingBottom: '10px' }} key={vehicle.id}>
-                          <p className='text-center'>{vehicle.maker} {vehicle.modle} {vehicle.color}</p>
+                          <p className='text-center'>{vehicle.maker} {vehicle.model} {vehicle.color}</p>
                           <div style={{ display: 'flex', justifyContent: 'center' }}>
                             <Plate plate={vehicle.plate} />
                           </div>
