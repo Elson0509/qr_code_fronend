@@ -1,0 +1,11 @@
+.TitleDiv{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ButtonIcon{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

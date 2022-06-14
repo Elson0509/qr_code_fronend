@@ -49,6 +49,9 @@ import {
     faCloudDownloadAlt, //cloud-download-alt
     faUserEdit, //user-edit
     faUserTimes, //user-times
+    faPeopleArrowsLeftRight, //people-arrows-left-right
+    faFilter, //filter
+    faTableList, //table-list
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -98,6 +101,9 @@ library.add(
     faCloudDownloadAlt,
     faUserEdit,
     faUserTimes,
+    faPeopleArrowsLeftRight,
+    faFilter,
+    faTableList,
 );
 
 const Icon = (props) => {

@@ -25,6 +25,7 @@ const MyQrCode = () => {
   const [messageInfoModal, setMessageInfoModal] = useState('')
   const [messageErrorModal, setMessageErrorModal] = useState('')
   const [disableButtons, setDisableButtons] = useState(false)
+  const [access, setAccess] = useState(null)
 
   const breadcrumb = [
     {
@@ -60,6 +61,7 @@ const MyQrCode = () => {
           const found = res.data.userFound || res.data.unitFound
           setDataFetched(found)
           setReading(res.data.read)
+          setAccess(res.data.newAccess)
           setIsScanning(false)
           if (found.user_kind_id === Constants.USER_KIND['RESIDENT']) {
             setUserType('Residente')
@@ -84,7 +86,6 @@ const MyQrCode = () => {
         .finally(() => {
           setLoading(false)
         })
-
     }
   }
 
@@ -115,7 +116,7 @@ const MyQrCode = () => {
 
   const exitHandler = _ => {
     setLoading(true)
-    api.put(`reading/${reading.id}`)
+    api.put(`access/${access.id}`)
       .then(resp => {
         setDisableButtons(true)
         setLoading(false)

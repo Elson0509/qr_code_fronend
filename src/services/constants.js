@@ -17,6 +17,8 @@ export const borderTextInputWidth = 3
 
 export const closeButtonCollor = '#EA3333'
 
+export const ACCESS_PER_PAGE = 100
+
 //scan qr code
 export const QR_CODE_PREFIX = 'epw:'
 export const TYPE_DATA_QRCODE = 256
@@ -61,6 +63,7 @@ export const backgroundColors = {
     "Thirds":'#FF7F7F',
     "Units":'#DEB887',
     "Visitors":'#9E8EEA',
+    "Access": '#8E7B6C',
 }
 
 export const backgroundLightColors = {
@@ -76,6 +79,7 @@ export const backgroundLightColors = {
     "Thirds":'#FFBFBF',
     "Units":'#FFEBCD',
     "Visitors":'#CFBFFF',
+    "Access": '#DEBF8F',
 }
 
 export const backgroundDarkColors = {
@@ -92,4 +96,5 @@ export const backgroundDarkColors = {
     "Thirds":'#CC5C5C',
     "Units":'#CD853F',
     "Visitors":'#7C6CC8',
+    "Access": '#874C2F',
 }

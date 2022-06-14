@@ -365,7 +365,8 @@ const VisitorSearch = (props) => {
                         user.user_kind === Constants.USER_KIND['GUARD'] &&
                         <IconButtons
                           action1={() => carIconHandler(el)}
-                          icon1='car-side'
+                          icon1='people-arrows-left-right'
+                          size='2x'
                         />
                       }
                     </CardHeader>

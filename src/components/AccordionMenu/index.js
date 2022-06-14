@@ -57,12 +57,13 @@ const AccordionMenu = () => {
     menuOptionsCondo: { menuName: "Condomínios", icon: 'city', key: 'condo', url: 'Condo', code: 'Residents', submenuOptions, toggle: setModalCondo, modal: modalCondo },
     menuOptionsSindico: { menuName: "Administradores", icon: 'users-cog', key: 'sindico', url: 'Sindico', code: 'Visitors', submenuOptions, toggle: setModalSindico, modal: modalSindico },
     menuOptionsSlot: { menuName: "Estacionamento", icon: 'car-side', key: 'slot', url: 'Slot', code: 'Slot' },
+    menuOptionsAccess: { menuName: "Acessos", icon: 'people-arrows-left-right', key: 'access', url: 'access', code: 'Access' },
   }
 
   const profiles = []
   profiles[Constants.USER_KIND['RESIDENT']] = [menu.menuOptionsQRCode, Utils.canAddOcorrences(user) ? menu.menuOptionsEventResident : null,  Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : null, Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : null]
   profiles[Constants.USER_KIND['GUARD']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsResidentsToGuard, Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : menu.menuOptionsVisitorNoAdd, Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : menu.menuOptionsServiceNoAdd, menu.menuOptionsCarGuard, menu.menuOptionsEventGuard, menu.menuOptionsSlot]
-  profiles[Constants.USER_KIND['SUPERINTENDENT']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsUnits, menu.menuOptionsResidents, menu.menuOptionsVisitorWithAdd, menu.menuOptionsServiceWithAdd, menu.menuOptionsGuard, menu.menuOptionsCarSuperIntendent, menu.menuOptionsEventSuperintendent, menu.menuOptionsSlot]
+  profiles[Constants.USER_KIND['SUPERINTENDENT']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsUnits, menu.menuOptionsResidents, menu.menuOptionsVisitorWithAdd, menu.menuOptionsServiceWithAdd, menu.menuOptionsGuard, menu.menuOptionsCarSuperIntendent, menu.menuOptionsEventSuperintendent, menu.menuOptionsSlot, menu.menuOptionsAccess]
   profiles[Constants.USER_KIND['ADM']] = [menu.menuOptionsCondo, menu.menuOptionsSindico]
 
   return (
