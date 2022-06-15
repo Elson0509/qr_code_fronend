@@ -17,8 +17,6 @@ export const borderTextInputWidth = 3
 
 export const closeButtonCollor = '#EA3333'
 
-export const ACCESS_PER_PAGE = 100
-
 //scan qr code
 export const QR_CODE_PREFIX = 'epw:'
 export const TYPE_DATA_QRCODE = 256

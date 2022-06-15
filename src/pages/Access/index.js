@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Body from '../../layout/Body'
-import * as Constants from '../../services/constants'
 import * as Utils from '../../services/util'
 import api from '../../services/api'
 import { Spinner } from 'reactstrap'
@@ -13,9 +12,6 @@ import InputDate from '../../components/Form/InputDate'
 import ActionButtons from '../../components/Buttons/ActionButtons'
 import AccessReport from '../../components/Reports/AccessReport'
 import { PDFDownloadLink } from '@react-pdf/renderer';
-
-import ReactDOM from 'react-dom';
-import { PDFViewer } from '@react-pdf/renderer';
 
 const Access = () => {
   const currentDate = new Date()
@@ -54,7 +50,7 @@ const Access = () => {
       api.get(`access/paginate/${page}`)
         .then(resp => {
           setAccesses(resp.data.rows)
-          setLastPage(Math.ceil(resp.data.count / Constants.ACCESS_PER_PAGE))
+          setLastPage(resp.data.pages)
         })
         .catch(err => {
           Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (A1)')
@@ -150,11 +146,11 @@ const Access = () => {
         }
         {
           accesses.length !== 1 &&
-          <PDFDownloadLink document={<AccessReport accesses={accesses} />} fileName="relatório.pdf">
+          <PDFDownloadLink document={<AccessReport accesses={accesses} inicialDate={inicialDate} finalDate={finalDate}/>} fileName="relatório.pdf">
             {({ blob, url, loading, error }) =>
               loading ?
                 <button type="button" className={`btn btn-danger ${classes.ButtonIcon}`} disabled>
-                  Carregando...
+                  Gerando...
                 </button> :
                 <button type="button" className={`btn btn-success ${classes.ButtonIcon}`}>
                   Download <Icon icon='table-list' size='2x' color='white' />

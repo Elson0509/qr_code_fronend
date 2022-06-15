@@ -2,6 +2,7 @@ import React from 'react';
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer'
 import { USER_KIND_NAME } from '../../../services/constants'
 import logo from '../../../Images/logo-h-min.jpg'
+import { printDate } from '../../../services/util'
 
 // Create styles
 const styles = StyleSheet.create({
@@ -26,6 +27,11 @@ const styles = StyleSheet.create({
   },
   titleHeader: {
     fontSize: 20,
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  titleSubHeader: {
+    fontSize: 15,
     textAlign: 'center',
     marginTop: 10,
   },
@@ -92,6 +98,7 @@ const index = (props) => {
           <Image source={logo} style={{ width: 200, marginTop: 20 }} />
         </View>
         <Text style={styles.titleHeader}>Relatório de Acessos</Text>
+        {!!props.inicialDate && !!props.finalDate && <Text style={styles.titleSubHeader}>Acessos entre {printDate(props.inicialDate)} e {printDate(props.finalDate)}</Text>}
         <View style={styles.table}>
           <View style={[styles.row, styles.bold, styles.header]}>
             <Text style={styles.row1}>Horário</Text>

@@ -8,7 +8,7 @@ const AccessLineInfo = (props) => {
       {
         props.access.UserAccesses.map((ac, ind)=> {
           return (
-            <div className={ind !== 0 && 'border-top'}>
+            <div className={ind !== 0 ? 'border-top' : ''} key={ac.id}>
               <p className='p-0 m-0'>{ind+1}. {ac.name}</p>
               {!!ac.identification && <p className='p-0 m-0'>ID: {ac.identification}</p>}
               {!!ac.company && <p className='p-0 m-0 mb-2'>Empresa: {ac.company}</p>}
@@ -20,14 +20,13 @@ const AccessLineInfo = (props) => {
       {
         !!props.access.VehicleAccesses?.length && props.access.VehicleAccesses.map((va, ind)=> {
           return (
-            <div className={ind !== 0 && 'border-top'}>
+            <div className={ind !== 0 ? 'border-top' : ''} key={va.index}>
               <p className='p-0 m-0'>{ind+1}.{va.maker} {va.model} {va.color}</p>
               <p className='p-0 m-0'>Placa: {va.plate}</p>
             </div>
           )
         })
       }
-      
     </span>
   }
 
