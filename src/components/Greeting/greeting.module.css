@@ -13,3 +13,10 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+.LeftSide{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}

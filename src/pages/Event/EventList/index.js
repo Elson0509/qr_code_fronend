@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Body from '../../../layout/Body'
 import * as Constants from '../../../services/constants'
 import * as Utils from '../../../services/util'
@@ -7,7 +7,7 @@ import api from '../../../services/api'
 import IconButtons from '../../../components/Buttons/IconButtons'
 import ConfirmModal from '../../../components/Modals/ConfirmModal'
 import ImageModal from '../../../components/Modals/ImageModal'
-import CarouselImages from '../../../components/CarouselImages'
+import logo from '../../../Images/logo-h-min.jpg'
 import { Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
 import Pagination from '../../../components/Pagination'
@@ -19,10 +19,12 @@ import {
 } from 'reactstrap';
 import ReplyModal from '../../../components/Modals/ReplyModal'
 import InputDate from '../../../components/Form/InputDate'
-import SelectInput from '../../../components/Form/SelectInput'
+import ReactToPrint from 'react-to-print';
 
 const EventList = () => {
   const currentDate = new Date()
+
+  const componentRef = useRef()
 
   const { user } = useAuth()
   const [events, setEvents] = useState([])
@@ -38,8 +40,6 @@ const EventList = () => {
   const [page, setPage] = useState(1)
   const [lastPage, setLastPage] = useState(1)
   const [title, setTitle] = useState('Últimas ocorrências')
-  const [inicialDate, setInicialDate] = useState('')
-  const [finalDate, setFinalDate] = useState('')
   const [errorSetDateMessage, setErrorSetDateMessage] = useState('')
   const [isFiltering, setIsFiltering] = useState(false)
   const [dateInit, setDateInit] = useState({ day: currentDate.getDate(), month: currentDate.getMonth() + 1, year: currentDate.getFullYear() })
@@ -90,17 +90,15 @@ const EventList = () => {
     }
     const dateInicial = new Date(dateInit.year, dateInit.month - 1, dateInit.day, 0, 0, 0)
     const dateFinal = new Date(dateEnd.year, dateEnd.month - 1, dateEnd.day, 23, 59, 59)
-    setInicialDate(dateInicial)
-    setFinalDate(dateFinal)
     if (dateFinal < dateInicial) {
       return setErrorSetDateMessage('Data final precisa ser posterior à data inicial')
     }
     setErrorSetDateMessage('')
     setLoading(true)
-    api.post('occurrence/filter', { 
-      selectedDateInit: dateInicial, 
-      selectedDateEnd: dateFinal, 
-      occurrence_type: selectedOccorrenceType 
+    api.post('occurrence/filter', {
+      selectedDateInit: dateInicial,
+      selectedDateEnd: dateFinal,
+      occurrence_type: selectedOccorrenceType
     })
       .then(resp => {
         setEvents(resp.data)
@@ -215,6 +213,17 @@ const EventList = () => {
           </button>
         </div>
         {
+          events.length !== 0 &&
+          <div>
+            <ReactToPrint
+              trigger={() => <button type="button" className={`btn btn-success ${classes.ButtonIcon}`}>
+                Imprimir <Icon icon='print' size='2x' color='white' />
+              </button>}
+              content={() => componentRef.current}
+            />
+          </div>
+        }
+        {
           isFiltering && (
             <form className='border border-primary my-4 p-2'>
               <h4 className='text-center'>Filtro</h4>
@@ -233,7 +242,7 @@ const EventList = () => {
                 <select className="form-control" value={selectedOccorrenceType} onChange={(ev) => setSelectedOccorrenceType(ev.target.value)}>
                   <option value={0}>Todos</option>
                   {
-                    occurrenceTypes.map((el, ind) => (
+                    occurrenceTypes.map(el => (
                       <option key={el.id} value={el.id}>{el.type}</option>
                     ))
                   }
@@ -259,45 +268,60 @@ const EventList = () => {
         }
         {
           events.length > 0 && (
-            events.map(el => (
-              <div className='col-lg-6 col-md-12 mb-4 p-2' key={el.id}>
-                <Card outline color="info">
-                  <CardHeader>
-                    <IconButtons
-                      action2={() => { delEvent(el) }}
-                      action3={Utils.canShowMessage(user) ? () => { replyHandler(el) } : null}
-                      icon3='reply'
-                      color3='#2336F9'
-                    />
-                  </CardHeader>
-                  <CardBody>
-                    <div style={{ border: '1px solid #ddd', paddingBottom: '10px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px', cursor: 'pointer' }} className='col-12'>
-                        {
-                          !!el.OccurrenceImages.length &&
-                          <CarouselImages
-                            images={el.OccurrenceImages}
-                            clickHandler={imgClickHandler}
-                          />
-                        }
-                      </div>
-                      <div className='p-2'>
-                        {!!el.OccurrenceType?.type && <p className='pt-2 m-0'><span className='enfase'>Assunto:</span> {el.OccurrenceType.type}</p>}
-                        {!!el.created_at && <p className='pt-2 m-0'><span className='enfase'>Data:</span> {new Date(el.created_at).toLocaleString()}</p>}
-                        {!!el.place && <p className='pt-2 m-0'><span className='enfase'>Local:</span> {el.place}</p>}
-                        {!!el.userRegistering.name && <p className='pt-2 m-0'><span className='enfase'>Quem registrou:</span> {el.userRegistering.name} ({Constants.USER_KIND_NAME[el.userRegistering.user_kind_id]})</p>}
-                        {!!el.description && <p className='pt-2 m-0'><span className='enfase'>Descrição:</span> {el.description}</p>}
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
+            <div ref={componentRef} className='landscape'>
+              <div className='to-print text-center my-4'>
+                <img src={logo} alt='logo' width={300} />
+                <h2 className='h2 mt-2'>{title}</h2>
               </div>
-            ))
+              {
+                events.map(el => (
+                  <div className='col-12 mb-4 p-2 break-inside' key={el.id}>
+                    <Card outline color="info">
+                      <CardHeader>
+                        <div className='no-print'>
+                          <IconButtons
+                            action2={() => { delEvent(el) }}
+                            action3={Utils.canShowMessage(user) ? () => { replyHandler(el) } : null}
+                            icon3='reply'
+                            color3='#2336F9'
+                          />
+                        </div>
+                      </CardHeader>
+                      <CardBody>
+                        <div style={{ border: '1px solid #ddd', paddingBottom: '10px' }}>
+                          <div>
+                            {
+                              !!el.OccurrenceImages.length &&
+                              <div className={classes.Images}>
+                                {
+                                  el.OccurrenceImages.map(img => (
+                                    <div key={img.photo_id} onClick={() => imgClickHandler(img.photo_id)}>
+                                      <img src={Constants.PREFIX_IMG_GOOGLE_CLOUD + img.photo_id} className={classes.Img} alt='event' />
+                                    </div>
+                                  ))
+                                }
+                              </div>
+                            }
+                          </div>
+                          <div className='p-2'>
+                            {!!el.OccurrenceType?.type && <p className='pt-2 m-0'><span className='enfase'>Assunto:</span> {el.OccurrenceType.type}</p>}
+                            {!!el.created_at && <p className='pt-2 m-0'><span className='enfase'>Data:</span> {new Date(el.created_at).toLocaleString()}</p>}
+                            {!!el.place && <p className='pt-2 m-0'><span className='enfase'>Local:</span> {el.place}</p>}
+                            {!!el.userRegistering.name && <p className='pt-2 m-0'><span className='enfase'>Quem registrou:</span> {el.userRegistering.name} ({Constants.USER_KIND_NAME[el.userRegistering.user_kind_id]})</p>}
+                            {!!el.description && <p className='pt-2 m-0'><span className='enfase'>Descrição:</span> {el.description}</p>}
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </div>
+                ))
+              }
+            </div>
           )
         }
         {
           events.length === 0 &&
-          <h2 className='text-center'>Não há eventos cadastrados.</h2>
+          <h4 className='h4'>Não há eventos cadastrados.</h4>
         }
         {
           lastPage > 1 &&

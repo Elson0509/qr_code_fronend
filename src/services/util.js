@@ -1,6 +1,7 @@
 import Resizer from 'react-image-file-resizer'
 import { toast } from 'react-toastify';
 import { USER_KIND, TOAST_CONFIG } from './constants'
+import axios from 'axios';
 
 export const resizeFile = (file) =>
   new Promise((resolve) => {
@@ -345,3 +346,4 @@ export const testStrongPassword = sentence => {
     if (!sentence) return false
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(sentence)
 }
+

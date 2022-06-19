@@ -41,6 +41,7 @@ const CondoList = (props) => {
     api.get(`condo`)
       .then(resp => {
         setCondos(resp.data)
+        console.log(resp.data)
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoL1)', Constants.TOAST_CONFIG)
@@ -127,6 +128,9 @@ const CondoList = (props) => {
                     {!!el.city && <p className='p-0 m-0'><span className='enfase'> Endereço: </span> {el.address}, {el.city} - {el.state}</p>}
                     <p className='p-0 m-0'><span className='enfase'> Vagas de estacionamento: </span>{el.slots}</p>
                     {!!el.createdAt && <p className='p-0 m-0'><span className='enfase'> Ativo desde </span> {Utils.printDate(new Date(el.createdAt))}</p>}
+                    {
+                      !!el.Partner && <p className='p-0 m-0'><span className='enfase'> Parceria: </span> {el.Partner.name}</p>
+                    }
                   </CardBody>
                   <CardFooter>
                     <p className='p-0 m-0 text-center'><span className='enfase'>Colaboradores</span></p>

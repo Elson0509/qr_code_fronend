@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Body from '../../layout/Body'
 import * as Utils from '../../services/util'
 import api from '../../services/api'
 import { Spinner } from 'reactstrap'
 import Pagination from '../../components/Pagination'
-import { toast } from 'react-toastify'
 import AccessTable from '../../components/Tables/AccessTable'
 import Icon from '../../components/Icon'
 import classes from './index.module.css'
 import InputDate from '../../components/Form/InputDate'
 import ActionButtons from '../../components/Buttons/ActionButtons'
-import AccessReport from '../../components/Reports/AccessReport'
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import ReactToPrint from 'react-to-print';
 
 const Access = () => {
   const currentDate = new Date()
+
+  const componentRef = useRef();
 
   const [accesses, setAccesses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -25,8 +25,6 @@ const Access = () => {
   const [dateEnd, setDateEnd] = useState({ day: currentDate.getDate(), month: currentDate.getMonth() + 1, year: currentDate.getFullYear() })
   const [errorSetDateMessage, setErrorSetDateMessage] = useState('')
   const [title, setTitle] = useState('Últimos acessos')
-  const [inicialDate, setInicialDate] = useState('')
-  const [finalDate, setFinalDate] = useState('')
 
   const breadcrumb = [
     {
@@ -71,8 +69,6 @@ const Access = () => {
     }
     const dateInicial = new Date(dateInit.year, dateInit.month - 1, dateInit.day, 0, 0, 0)
     const dateFinal = new Date(dateEnd.year, dateEnd.month - 1, dateEnd.day, 23, 59, 59)
-    setInicialDate(dateInicial)
-    setFinalDate(dateFinal)
     if (dateFinal < dateInicial) {
       return setErrorSetDateMessage('Data final precisa ser posterior à data inicial')
     }
@@ -145,18 +141,15 @@ const Access = () => {
           )
         }
         {
-          accesses.length !== 1 &&
-          <PDFDownloadLink document={<AccessReport accesses={accesses} inicialDate={inicialDate} finalDate={finalDate}/>} fileName="relatório.pdf">
-            {({ blob, url, loading, error }) =>
-              loading ?
-                <button type="button" className={`btn btn-danger ${classes.ButtonIcon}`} disabled>
-                  Gerando...
-                </button> :
-                <button type="button" className={`btn btn-success ${classes.ButtonIcon}`}>
-                  Download <Icon icon='table-list' size='2x' color='white' />
-                </button>
-            }
-          </PDFDownloadLink>
+          accesses.length !== 0 &&
+          <div>
+            <ReactToPrint
+              trigger={() => <button type="button" className={`btn btn-success ${classes.ButtonIcon}`}>
+                Imprimir <Icon icon='print' size='2x' color='white' />
+              </button>}
+              content={() => componentRef.current}
+            />
+          </div>
         }
         {
           lastPage > 1 &&
@@ -164,11 +157,13 @@ const Access = () => {
         }
         {
           accesses.length === 0 &&
-          <h2 className='text-center'>Não há acessos registrados.</h2>
+          <h4 className='h4'>Não há acessos registrados.</h4>
         }
         {
           accesses.length > 0 &&
-          <AccessTable page={page} accesses={accesses} />
+          <div ref={componentRef}>
+            <AccessTable page={page} accesses={accesses} title={title} />
+          </div>
         }
         {
           lastPage > 1 &&

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
+import { PREFIX_IMG_GOOGLE_CLOUD } from '../../services/constants'
 import GeneralCard from '../GeneralCard';
 import classes from './greeting.module.css'
 import { saudacaoHorario, iconHour, canShowMessage } from '../../services/util'
@@ -11,6 +12,8 @@ const Greeting = (props) => {
   const [newMessagesQtt, setNewMessagesQtt] = useState(0)
   const history = useHistory();
   const { user } = useAuth()
+
+  console.log(user)
 
   useEffect(() => {
     if (canShowMessage(user)) {
@@ -27,14 +30,22 @@ const Greeting = (props) => {
   return (
     <GeneralCard title='Painel Principal'>
       <div className={classes.Row}>
-        <p className={classes.Greeting}>
-          <span className={classes.GreetingIcon}>
-            <Icon icon={iconHour()} />
-          </span>
-          <span>
-            {`${saudacaoHorario(props.user.name)}!`}
-          </span>
-        </p>
+        <div className={classes.LeftSide}>
+          {
+            !!user.condo?.Partner &&
+            <div className='bg-dark'>
+              <img src={PREFIX_IMG_GOOGLE_CLOUD + user.condo.Partner.photo_id} alt='partner' height={80}/>
+            </div>
+          }
+          <p className={classes.Greeting}>
+            <span className={classes.GreetingIcon}>
+              <Icon icon={iconHour()} />
+            </span>
+            <span>
+              {`${saudacaoHorario(props.user.name)}!`}
+            </span>
+          </p>
+        </div>
         {
           canShowMessage(user) &&
           <button type="button" className="btn btn-secondary" onClick={() => history.push('message/list')}>

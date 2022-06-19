@@ -9,3 +9,22 @@
     align-items: center;
     gap: 10px;
 }
+
+.Img{
+    height: 200px;
+    width: auto !important;
+    cursor: pointer;
+}
+
+.Img:hover{
+    opacity: 0.8;
+}
+
+.Images{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+}

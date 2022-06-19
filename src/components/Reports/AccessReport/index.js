@@ -3,6 +3,7 @@ import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/render
 import { USER_KIND_NAME } from '../../../services/constants'
 import logo from '../../../Images/logo-h-min.jpg'
 import { printDate } from '../../../services/util'
+import ReportHeader from '../components/ReportHeader'
 
 // Create styles
 const styles = StyleSheet.create({
@@ -94,10 +95,7 @@ const index = (props) => {
   return (
     <Document>
       <Page size="A4" style={styles.page} author='QR Condo' subject='Relatório'>
-        <View style={{display: 'flex', alignItems: 'center'}}>
-          <Image source={logo} style={{ width: 200, marginTop: 20 }} />
-        </View>
-        <Text style={styles.titleHeader}>Relatório de Acessos</Text>
+        <ReportHeader title='Relatório de Acessos' />
         {!!props.inicialDate && !!props.finalDate && <Text style={styles.titleSubHeader}>Acessos entre {printDate(props.inicialDate)} e {printDate(props.finalDate)}</Text>}
         <View style={styles.table}>
           <View style={[styles.row, styles.bold, styles.header]}>
