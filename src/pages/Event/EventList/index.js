@@ -103,7 +103,7 @@ const EventList = () => {
       .then(resp => {
         setEvents(resp.data)
         setLastPage(0)
-        setTitle('Acessos entre ' + Utils.printDate(dateInicial) + ' e ' + Utils.printDate(dateFinal))
+        setTitle('Ocorrências entre ' + Utils.printDate(dateInicial) + ' e ' + Utils.printDate(dateFinal))
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (EL2)')
