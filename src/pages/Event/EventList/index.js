@@ -16,10 +16,10 @@ import Icon from '../../../components/Icon'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import {
   Card, CardBody, CardHeader,
-} from 'reactstrap';
+} from 'reactstrap'
 import ReplyModal from '../../../components/Modals/ReplyModal'
 import InputDate from '../../../components/Form/InputDate'
-import ReactToPrint from 'react-to-print';
+import ReactToPrint from 'react-to-print'
 
 const EventList = () => {
   const currentDate = new Date()
@@ -62,7 +62,7 @@ const EventList = () => {
     fetchEvents()
   }, [page])
 
-  const fetchEvents = async _ => {
+  const fetchEvents = async () => {
     const isConnected = await Utils.checkInternetConnection(setLoading)
     if (!isConnected) {
       return
@@ -81,7 +81,7 @@ const EventList = () => {
       })
   }
 
-  const selectDatesHandler = _ => {
+  const selectDatesHandler = () => {
     if (!Utils.isValidDate(dateInit.day, dateInit.month, dateInit.year)) {
       return setErrorSetDateMessage('Data inicial não é válida.')
     }
@@ -119,12 +119,12 @@ const EventList = () => {
     if (!isConnected) {
       return
     }
-    setMessage(`Confirma exclusão desta ocorrência?`)
+    setMessage('Confirma exclusão desta ocorrência?')
     setSelectedEvent(on)
     setModal(true)
   }
 
-  const deleteEventConfirmed = _ => {
+  const deleteEventConfirmed = () => {
     setModal(false)
     setLoading(true)
     api.delete(`occurrence/${selectedEvent.id}`)
@@ -151,12 +151,12 @@ const EventList = () => {
     setReplyMessage('')
   }
 
-  const sendHandler = async _ => {
+  const sendHandler = async () => {
     const isConnected = await Utils.checkInternetConnection(setLoading)
     if (!isConnected) {
       return
     }
-    api.post(`message`, {
+    api.post('message', {
       messageBody: replyMessage,
       subject,
       receiver: selectedEvent.userRegistering.id
@@ -172,13 +172,6 @@ const EventList = () => {
         setLoading(false)
       })
   }
-
-  // const onClickPhotoHandler = item => {
-  //   if (!item.photo_id)
-  //     return
-  //   setSelectedEvent(item)
-  //   setIsModalPhotoActive(true)
-  // }
 
   const imgClickHandler = async imgPhotoId => {
     const isConnected = await Utils.checkInternetConnection(setLoading)
@@ -352,7 +345,7 @@ const EventList = () => {
         />
       }
     </Body>
-  );
-};
+  )
+}
 
-export default EventList;
+export default EventList

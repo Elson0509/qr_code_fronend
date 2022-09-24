@@ -1,11 +1,11 @@
 import React, { Fragment, useState } from 'react'
-import HeaderLanding from '../../layout/Landing/HeaderLanding';
-import Footer from '../../layout/Footer';
-import Nav from '../../layout/Landing/Nav';
-import Landscape from '../../layout/Landing/Landscape';
-import { CardGroup, Card, CardBody, CardTitle, Jumbotron, CardHeader, CardSubtitle, CardText } from 'reactstrap'
-import ModalEmail from '../../components/Modals/ModalEmail';
-import CheckList from './CheckList';
+import HeaderLanding from '../../layout/Landing/HeaderLanding'
+import Footer from '../../layout/Footer'
+import Nav from '../../layout/Landing/Nav'
+import Landscape from '../../layout/Landing/Landscape'
+import { CardGroup, Card, CardBody, CardTitle, Jumbotron, CardHeader, CardSubtitle } from 'reactstrap'
+import ModalEmail from '../../components/Modals/ModalEmail'
+import CheckList from './CheckList'
 
 const Price = () => {
   const [modalEmail, setModalEmail] = useState(false)
@@ -69,14 +69,11 @@ const Price = () => {
           <Card
             body
             inverse
-            style={{
-              backgroundColor: '#333',
-              borderColor: '#333'
-            }}>
+            className='bg-dark justify-content-center'>
             <CardTitle tag="h2">
               Entre em contato e surpreenda-se com o preço acessível para você e seu condomínio!
             </CardTitle>
-            <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary col-5 my-2 p-2">Contato</button>
+            <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary my-2 p-2">Contato</button>
           </Card>
         </div>
         <div className='row text-center my-4'>
@@ -92,7 +89,7 @@ const Price = () => {
       <Landscape />
       <Footer />
     </Fragment>
-  );
-};
+  )
+}
 
-export default Price;
+export default Price
