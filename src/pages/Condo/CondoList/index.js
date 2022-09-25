@@ -41,7 +41,6 @@ const CondoList = (props) => {
     api.get(`condo`)
       .then(resp => {
         setCondos(resp.data)
-        console.log(resp.data)
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CoL1)', Constants.TOAST_CONFIG)
@@ -94,6 +93,10 @@ const CondoList = (props) => {
           resident_can_ocorrences: condo.resident_can_ocorrences,
           resident_can_thirds: condo.resident_can_thirds,
           resident_can_visitors: condo.resident_can_visitors,
+          guard_see_phone: condo.guard_see_phone,
+          guard_see_dob: condo.guard_see_dob,
+          resident_has_dob: condo.resident_has_dob,
+          resident_has_phone: condo.resident_has_phone,
           slots: condo.slots,
           state: condo.state,
         },
@@ -137,12 +140,16 @@ const CondoList = (props) => {
                     <p className='p-0 m-0'><span className='enfase'>Podem ver mensagens?</span> {el.guard_can_messages ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem cadastrar terceirizados?</span> {el.guard_can_thirds ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem cadastrar visitantes?</span> {el.guard_can_visitors ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem ver telefone de moradores?</span> {el.guard_see_phone ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem ver nascimento de moradores?</span> {el.guard_see_dob ? ' Sim' : ' Não'}</p>
                     <hr />
                     <p className='p-0 m-0 text-center'><span className='enfase'>Residentes</span></p>
                     <p className='p-0 m-0'><span className='enfase'>Podem ver mensagens?</span> {el.resident_can_messages ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem cadastrar terceirizados?</span> {el.resident_can_thirds ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem cadastrar visitantes?</span> {el.resident_can_visitors ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem registrar ocorrências?</span> {el.resident_can_ocorrences ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Possuem telefone?</span> {el.resident_has_phone ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Possuem data de nascimento?</span> {el.resident_has_dob ? ' Sim' : ' Não'}</p>
                   </CardFooter>
                 </Card>
               </div>

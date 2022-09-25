@@ -5,7 +5,6 @@ import * as Constants from '../../services/constants'
 import * as Utils from '../../services/util'
 import api from '../../services/api'
 import { Spinner } from 'reactstrap'
-import { toast } from 'react-toastify'
 import classes from './EditUser.module.css'
 import FormInput from '../../components/Form/FormInput'
 import ActionButtons from '../../components/Buttons/ActionButtons'
@@ -13,6 +12,7 @@ import ImportPhotoButtons from '../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../components/Modals/PicModal'
 import CropImageModal from '../../components/Modals/CropImageModal'
 import ImageCloud from '../../components/ImageCloud'
+import InputDate from '../../components/Form/InputDate';
 
 const EditUser = (props) => {
   //if there is not state in router, go to dashboard
@@ -20,7 +20,11 @@ const EditUser = (props) => {
     props.history.push('/dashboard')
   }
 
+  const dobUser = props.location.state.resident.dob ? new Date(props.location.state.resident.dob) : null
+
+  const { user } = useAuth()
   const [userEdit, setUserEdit] = useState({ ...props.location.state.resident })
+  const [dobUserEdit, setDobUserEdit] = useState(dobUser ? { day: dobUser.getDate(), month: dobUser.getMonth() + 1, year: dobUser.getFullYear() } : { day: '', month: '1', year: '' })
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [modalPic, setModalPic] = useState(false)
@@ -84,11 +88,23 @@ const EditUser = (props) => {
     if (userEdit.email && !Utils.validateEmail(userEdit.email)) {
       return setErrorMessage('Email não é válido.')
     }
+    if (!!userEdit.phone && !Utils.phone_validation(userEdit.phone)) {
+      return setErrorMessage('Telefone não válido.')
+    }
+    if ((!!dobUserEdit.day || !!dobUserEdit.year) && !Utils.isValidDate(dobUserEdit.day, dobUserEdit.month, dobUserEdit.year)) {
+      return setErrorMessage('Data não é válida.')
+    }
+    const dob = user.condo.resident_has_dob && !!dobUserEdit.day && !!dobUserEdit.year ? new Date(dobUserEdit.year, dobUserEdit.month - 1, dobUserEdit.day, 0, 0, 0) : null
+    if((!!dobUserEdit.day || !!dobUserEdit.year) && dob > new Date()){
+      return setErrorMessage('Data não é válida.')
+    }
     setLoading(true)
     api.put(`user/${userEdit.id}`, {
       name: userEdit.name,
       email: userEdit.email,
       identification: userEdit.identification,
+      phone: userEdit.phone,
+      dob
     })
       .then(() => {
         if (pic) {
@@ -157,8 +173,27 @@ const EditUser = (props) => {
           disabled={disabled}
         />
         {
+          user.condo.resident_has_phone &&
+          <FormInput
+            label='Telefone*:'
+            value={userEdit.phone}
+            type='text'
+            placeholder='(XX) 90000-0000'
+            changeValue={(val) => setUserEdit({ ...userEdit, phone: val })}
+          />
+        }
+        {
+          user.condo.resident_has_dob &&
+          <InputDate
+            title='Nascimento'
+            date={dobUserEdit}
+            setDate={setDobUserEdit}
+            maxYear={new Date().getFullYear()}
+            minYear={new Date().getFullYear() - 110}
+          />
+        }
+        {
           !pic &&
-
           <div className={`${classes.PreviewImage} col-12 `}>
             <div className='col-6'>
               <ImageCloud id={userEdit.photo_id} />
@@ -166,19 +201,22 @@ const EditUser = (props) => {
           </div>
         }
 
-        {!!pic &&
+        {
+          !!pic &&
           <div className={classes.ImgUserTookPic}>
             <img src={URL.createObjectURL(pic)} alt='pic user' height={200} />
           </div>
         }
-        {!pic &&
+        {
+          !pic &&
           <ImportPhotoButtons
             setImgPath={(img) => setPic(pic)}
             paperClipImageHandler={(path) => paperClipImageHandler(path)}
             setErrorMessage={setErrorMessage}
             cameraClick={() => takePicHandler()} />
         }
-        {!!errorMessage &&
+        {
+          !!errorMessage &&
           <div className="alert alert-danger text-center mt-2" role="alert">
             {errorMessage}
           </div>

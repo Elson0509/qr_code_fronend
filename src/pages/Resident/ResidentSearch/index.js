@@ -242,8 +242,21 @@ const ResidentSearch = (props) => {
                               />
                             }
                           </div>
-                          <p className='text-center p-0 m-0'>{resident.name}</p>
-                          {/* <p className='text-center p-0 m-0'>{resident.email}</p> */}
+                          <p className='text-center p-0 m-0 enfase'>{resident.name}</p>
+                          {
+                            (user.user_kind === Constants.USER_KIND['SUPERINTENDENT']
+                            ||
+                            (user.user_kind === Constants.USER_KIND['GUARD'] && user.condo.guard_see_phone)) &&
+                            !!resident.phone && 
+                            <p className='text-center p-0 m-0'>Telefone: {resident.phone}</p>
+                          }
+                          {
+                            (user.user_kind === Constants.USER_KIND['SUPERINTENDENT']
+                            ||
+                            (user.user_kind === Constants.USER_KIND['GUARD'] && user.condo.guard_see_dob)) &&
+                            !!resident.dob && 
+                            <p className='text-center p-0 m-0'>Nascimento: {Utils.printDate(new Date(resident.dob))}</p>
+                          }
                         </div>
                       ))
                     }

@@ -28,7 +28,7 @@ const Pagination = (props) => {
             <ul className="pagination justify-content-center">
                 {props.page!==1 && <li className="page-item"><button className="page-link" onClick={() => props.change(props.page-1)}>Anterior</button></li>}
                 {pageNumbers.map( num => {
-                    return num == '...' ?
+                    return num === '...' ?
                         <li className="page-item disabled" key={`delta${countDelta++}`}>
                             <button className="page-link">
                                 ...

@@ -76,6 +76,10 @@ const CondoEdit = (props) => {
       resident_can_ocorrences: condoBeingAdded.resident_can_ocorrences === '0',
       resident_can_thirds: condoBeingAdded.resident_can_thirds === '0',
       resident_can_visitors: condoBeingAdded.resident_can_visitors === '0',
+      resident_has_dob: condoBeingAdded.resident_has_dob === '0',
+      resident_has_phone: condoBeingAdded.resident_has_phone === '0',
+      guard_see_dob: condoBeingAdded.guard_see_dob === '0',
+      guard_see_phone: condoBeingAdded.guard_see_phone === '0',
     })
     .then((res)=>{
       setErrorMessage('')
@@ -149,6 +153,18 @@ const CondoEdit = (props) => {
               changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, guard_can_visitors: val})}
               options={options}
             />
+                        <SelectInput
+              label='Podem ver telefone de moradores?'
+              value={condoBeingAdded.guard_see_phone}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, guard_see_phone: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Podem ver nascimento de moradores?'
+              value={condoBeingAdded.guard_see_dob}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, guard_see_dob: val})}
+              options={options}
+            />
           </div>
         </div>
         <div className='row mt-4'>
@@ -176,6 +192,18 @@ const CondoEdit = (props) => {
               label='Pode cadastrar ocorrências?'
               value={condoBeingAdded.resident_can_ocorrences}
               changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_can_ocorrences: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Possuem telefone?'
+              value={condoBeingAdded.resident_has_phone}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_has_phone: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Possuem data de nascimento?'
+              value={condoBeingAdded.resident_has_dob}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_has_dob: val})}
               options={options}
             />
           </div>

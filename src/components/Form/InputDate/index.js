@@ -59,8 +59,8 @@ const InputDate = (props) => {
                 <input 
                     type="number" 
                     className="form-control" 
-                    max={new Date().getFullYear()+3} 
-                    min={new Date().getFullYear()} 
+                    max={props.maxYear || new Date().getFullYear()+3} 
+                    min={props.minYear || new Date().getFullYear()} 
                     placeholder='Ano'
                     value={props.date.year}
                     onChange={yearChangeHandler}

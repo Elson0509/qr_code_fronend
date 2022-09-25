@@ -13,8 +13,6 @@ const Greeting = (props) => {
   const history = useHistory();
   const { user } = useAuth()
 
-  console.log(user)
-
   useEffect(() => {
     if (canShowMessage(user)) {
       api.get(`message/count/${props.user.id}`)

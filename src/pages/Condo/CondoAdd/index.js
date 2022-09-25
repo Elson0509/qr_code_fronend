@@ -21,6 +21,12 @@ const CondoAdd = (props) => {
   const [resident_can_ocorrences, setResident_can_ocorrences] = useState('0')
   const [resident_can_thirds, setResident_can_thirds] = useState('0')
   const [resident_can_visitors, setResident_can_visitors] = useState('0')
+  const [resident_has_dob, setResident_has_dob] = useState('0')
+  const [resident_has_phone, setResident_has_phone] = useState('0')
+  const [guard_see_dob, setGuard_see_dob] = useState('0')
+  const [guard_see_phone, setGuard_see_phone] = useState('0')
+
+
 
   useEffect(() => {
     api.get('partner')
@@ -84,6 +90,10 @@ const CondoAdd = (props) => {
       resident_can_ocorrences: resident_can_ocorrences === '0',
       resident_can_thirds: resident_can_thirds === '0',
       resident_can_visitors: resident_can_visitors === '0',
+      resident_has_dob: resident_has_dob === '0',
+      resident_has_phone: resident_has_phone === '0',
+      guard_see_dob: guard_see_dob === '0',
+      guard_see_phone: guard_see_phone === '0',
     })
       .then((res) => {
         setErrorMessage('')
@@ -158,6 +168,18 @@ const CondoAdd = (props) => {
               changeValue={(val) => setGuard_can_visitors(val)}
               options={options}
             />
+            <SelectInput
+              label='Podem ver telefone de moradores?'
+              value={guard_see_phone}
+              changeValue={(val) => setGuard_see_phone(val)}
+              options={options}
+            />
+            <SelectInput
+              label='Podem ver nascimento de moradores?'
+              value={guard_see_dob}
+              changeValue={(val) => setGuard_see_dob(val)}
+              options={options}
+            />
           </div>
         </div>
         <div className='row mt-4'>
@@ -185,6 +207,18 @@ const CondoAdd = (props) => {
               label='Pode cadastrar ocorrências?'
               value={resident_can_ocorrences}
               changeValue={(val) => setResident_can_ocorrences(val)}
+              options={options}
+            />
+            <SelectInput
+              label='Possuem telefone?'
+              value={resident_has_phone}
+              changeValue={(val) => setResident_has_phone(val)}
+              options={options}
+            />
+            <SelectInput
+              label='Possuem data de nascimento?'
+              value={resident_has_dob}
+              changeValue={(val) => setResident_has_dob(val)}
               options={options}
             />
           </div>

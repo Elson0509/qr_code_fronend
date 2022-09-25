@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
 })
 
 const EventReport = (props) => {
-  console.log(props)
 
   return (
     <Document>

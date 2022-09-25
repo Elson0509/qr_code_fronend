@@ -69,7 +69,7 @@ const index = (props) => {
         {
           line.UserAccesses.map((ac, ind) => {
             return (
-              <View >
+              <View key={ind}>
                 <Text>{ind + 1}. {ac.name}{'\n'}</Text>
                 {!!ac.identification && <Text>ID: {ac.identification}{'\n'}</Text>}
                 {!!ac.company && <Text className='p-0 m-0 mb-2'>Empresa: {ac.company}{'\n'}</Text>}
@@ -81,7 +81,7 @@ const index = (props) => {
         {
           !!line.VehicleAccesses?.length && line.VehicleAccesses.map((va, ind) => {
             return (
-              <View>
+              <View key={ind}>
                 <Text>{ind + 1}.{va.maker} {va.model} {va.color}{'\n'}</Text>
                 <Text>Placa: {va.plate}{'\n'}</Text>
               </View>
