@@ -94,7 +94,7 @@ const Dashboard = () => {
     <Fragment>
       <Header />
       <main className={`${classes.Dashboard}`}>
-        <Greeting user={user} />
+        <Greeting/>
         <div className={`container ${classes.Dashboard}`}>
           <div className={`row row-cols-2 row-cols-md-4 row-cols-lg-4 g-3 g-md-3 g-lg-5 mt-2 text-center ${profiles[user.user_kind].length <= 3 && 'justify-content-center'}`}>
             {profiles[user.user_kind].map(el => {

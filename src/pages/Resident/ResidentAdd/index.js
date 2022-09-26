@@ -42,8 +42,6 @@ const ResidentAdd = (props) => {
   const [takePic, setTakePic] = useState(false)
   const [pathImgToCrop, setPathImgToCrop] = useState('')
 
-  //console.log(user)
-
   const paperClipImageHandler = async imgPath => {
     const isConnected = await Utils.checkInternetConnection(setLoading)
     if (!isConnected) {
