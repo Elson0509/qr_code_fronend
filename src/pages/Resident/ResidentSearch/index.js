@@ -15,6 +15,8 @@ import { toast } from 'react-toastify';
 import {
   Card, CardText, CardBody, CardTitle, CardSubtitle, CardHeader,
 } from 'reactstrap';
+import ButtonIcon from '../../../components/Buttons/ButtonIcon';
+import * as XLSX from 'xlsx'
 
 const ResidentSearch = (props) => {
   const { user } = useAuth()
@@ -176,6 +178,55 @@ const ResidentSearch = (props) => {
     )
   }
 
+  const dataResidentsToExcel = () => {
+    const data = []
+    generateInfoUnits().forEach(unit => {
+      unit.residents.forEach(res => {
+        data.push(
+          {
+            Bloco: unit.bloco_name,
+            Unidade: unit.number,
+            Nome: res.name,
+            Telefone: res.phone,
+            Email: res.email,
+            Identidade: res.identification,
+            ...(!!res.dob && { Nascimento: Utils.printDate(new Date(res.dob)) }),
+            ...(user.condo.resident_has_owner_field && { Tipo: res.is_owner ? 'Proprietário' : 'Alugado' }),
+          }
+        )
+      })
+    })
+    return data
+  }
+
+  const dataVehiclesToExcel = () => {
+    const data = []
+    generateInfoUnits().forEach(unit => {
+      unit.vehicles.forEach(vei => {
+        data.push(
+          {
+            Bloco: unit.bloco_name,
+            Unidade: unit.number,
+            Fabricante: vei.maker,
+            Modelo: vei.model,
+            Cor: vei.color,
+            Placa: vei.plate,
+          }
+        )
+      })
+    })
+    return data
+  }
+
+  const exportToExcelHandler = () => {
+    const wb = XLSX.utils.book_new()
+    const ws = XLSX.utils.json_to_sheet(dataResidentsToExcel())
+    const ws2 = XLSX.utils.json_to_sheet(dataVehiclesToExcel())
+    XLSX.utils.book_append_sheet(wb, ws, "Moradores")
+    XLSX.utils.book_append_sheet(wb, ws2, "Veículos")
+    XLSX.writeFile(wb, 'Condomínio.xlsx')
+  }
+
   if (loading) {
     return (
       <Body breadcrumb={breadcrumb}>
@@ -183,6 +234,7 @@ const ResidentSearch = (props) => {
       </Body>
     )
   }
+
 
   return (
     <Body breadcrumb={breadcrumb}>
@@ -194,6 +246,10 @@ const ResidentSearch = (props) => {
               <input type="email" className="form-control" placeholder="Nome, placa ou unidade" value={searchInput} onChange={(ev) => setSearchinput(ev.target.value)} />
             </div>
           </form>
+          {
+            units.length > 0 &&
+            <ButtonIcon text='Exportar' icon='file-excel' clicked={exportToExcelHandler} />
+          }
           {
             generateInfoUnits().length === 0 && (
               <div className="alert alert-danger my-4" role="alert">
@@ -231,7 +287,7 @@ const ResidentSearch = (props) => {
                           <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px', cursor: 'pointer' }} onClick={() => clickImageHandler(resident)}>
                             <ImageCloud id={resident.photo_id} height={180} />
                           </div>
-                          <div style={{background: '#eaeaea'}}>
+                          <div style={{ background: '#eaeaea' }}>
                             {
                               user.user_kind === Constants.USER_KIND['SUPERINTENDENT'] &&
                               <IconButtons
@@ -245,16 +301,16 @@ const ResidentSearch = (props) => {
                           <p className='text-center p-0 m-0 enfase'>{resident.name}</p>
                           {
                             (user.user_kind === Constants.USER_KIND['SUPERINTENDENT']
-                            ||
-                            (user.user_kind === Constants.USER_KIND['GUARD'] && user.condo.guard_see_phone)) &&
-                            !!resident.phone && 
+                              ||
+                              (user.user_kind === Constants.USER_KIND['GUARD'] && user.condo.guard_see_phone)) &&
+                            !!resident.phone &&
                             <p className='text-center p-0 m-0'>Telefone: {resident.phone}</p>
                           }
                           {
                             (user.user_kind === Constants.USER_KIND['SUPERINTENDENT']
-                            ||
-                            (user.user_kind === Constants.USER_KIND['GUARD'] && user.condo.guard_see_dob)) &&
-                            !!resident.dob && 
+                              ||
+                              (user.user_kind === Constants.USER_KIND['GUARD'] && user.condo.guard_see_dob)) &&
+                            !!resident.dob &&
                             <p className='text-center p-0 m-0'>Nascimento: {Utils.printDate(new Date(resident.dob))}</p>
                           }
                         </div>

@@ -137,7 +137,7 @@ const ResidentAdd = (props) => {
 
   const cancelAddResidentHandler = _ => {
     setIsAddingResident(false)
-    setUserBeingAdded({ id: '0', name: '', identification: '', email: '', pic: '', phone: '' })
+    setUserBeingAdded({ id: '0', name: '', identification: '', email: '', pic: '', phone: '', dob: null })
   }
 
   const addVehicleHandler = async _ => {

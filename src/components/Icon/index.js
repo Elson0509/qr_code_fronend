@@ -53,6 +53,7 @@ import {
     faFilter, //filter
     faTableList, //table-list
     faPrint, //print
+    faFileExcel, // 'file-excel'
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -106,6 +107,7 @@ library.add(
     faFilter,
     faTableList,
     faPrint,
+    faFileExcel,
 );
 
 const Icon = (props) => {
