@@ -21,6 +21,7 @@ const Dashboard = () => {
   const [modalEvent, setModalEvent] = useState(false)
   const [modalCondo, setModalCondo] = useState(false)
   const [modalSindico, setModalSindico] = useState(false)
+  const [modalServices, setModalServices] = useState(false)
 
   const submenuOptions = [
     { menuName: "Adicionar", icon: 'plus-square', key: 'plus', url: 'add' },
@@ -38,6 +39,14 @@ const Dashboard = () => {
     subMenuOptionsResidents.push({ menuName: "Adicionar", icon: 'plus-square', key: 'plus', url: 'Add' })
   }
   subMenuOptionsResidents.push({ menuName: "Listar", icon: 'list-alt', key: 'list', url: 'List' })
+
+  const subMenuServices = []
+  if(Utils.condoHasMail(user)){
+    subMenuServices.push({ menuName: "Correios", icon: 'mail-bulk', key: 'Mail', url: 'Maillist' })
+  }
+  if(Utils.condoHasNews(user)){
+    subMenuServices.push({ menuName: "Avisos", icon: 'comment-dots', key: 'comment', url: 'News' })
+  }
 
   const menu = {
     menuOptionsQRCode: { menuName: "Meu QR Code", icon: 'qrcode', key: 'QRCode', url: 'MyQRCode', code: 'MyQRCode' },
@@ -61,13 +70,46 @@ const Dashboard = () => {
     menuOptionsSindico: { menuName: "Administradores", icon: 'users-cog', key: 'sindico', url: 'Sindico', code: 'Visitors', submenuOptions, toggle: setModalSindico, modal: modalSindico },
     menuOptionsSlot: { menuName: "Estacionamento", icon: 'car-side', key: 'slot', url: 'Slot', code: 'Slot' },
     menuOptionsAccess: { menuName: "Acessos", icon: 'people-arrows-left-right', key: 'access', url: 'access', code: 'Access' },
+    menuOptionsServices : { menuName: "Serviços", icon: 'landmark', key: 'services', url: 'Services', code: 'Residents', submenuOptions: subMenuServices, toggle: setModalServices, modal: modalServices},
+    menuOptionsMailListResident : { menuName: "Correios", icon: 'mail-bulk', key: 'mailList', url: 'services/MailList', code: 'Residents'},
+    menuOptionsNewsResident : { menuName: "Avisos", icon: 'comment-dots', key: 'comment', url: 'services/News', code: 'Slot' }
   }
 
   const profiles = []
-  profiles[Constants.USER_KIND['RESIDENT']] = [menu.menuOptionsQRCode, Utils.canAddOcorrences(user) ? menu.menuOptionsEventResident : null,  Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : null, Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : null]
-  profiles[Constants.USER_KIND['GUARD']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsResidentsToGuard, Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : menu.menuOptionsVisitorNoAdd, Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : menu.menuOptionsServiceNoAdd, menu.menuOptionsCarGuard, menu.menuOptionsEventGuard, menu.menuOptionsSlot]
-  profiles[Constants.USER_KIND['SUPERINTENDENT']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsUnits, menu.menuOptionsResidents, menu.menuOptionsVisitorWithAdd, menu.menuOptionsServiceWithAdd, menu.menuOptionsGuard, menu.menuOptionsCarSuperIntendent, menu.menuOptionsEventSuperintendent, menu.menuOptionsSlot, menu.menuOptionsAccess]
-  profiles[Constants.USER_KIND['ADM']] = [menu.menuOptionsCondo, menu.menuOptionsSindico]
+  profiles[Constants.USER_KIND['RESIDENT']] = [
+    menu.menuOptionsQRCode, Utils.canAddOcorrences(user) ? menu.menuOptionsEventResident : null, 
+    Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : null, 
+    Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : null,
+    Utils.condoHasMail(user) ? menu.menuOptionsMailListResident : null,
+    Utils.condoHasNews(user) ? menu.menuOptionsNewsResident : null,
+  ]
+  profiles[Constants.USER_KIND['GUARD']] = [
+    menu.menuOptionsQRCode, menu.menuOptionsScan, 
+    menu.menuOptionsResidentsToGuard, 
+    Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : menu.menuOptionsVisitorNoAdd, 
+    Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : menu.menuOptionsServiceNoAdd, 
+    menu.menuOptionsCarGuard, 
+    menu.menuOptionsEventGuard, 
+    menu.menuOptionsSlot
+  ]
+  profiles[Constants.USER_KIND['SUPERINTENDENT']] = [
+    menu.menuOptionsQRCode, 
+    menu.menuOptionsScan, 
+    menu.menuOptionsUnits, 
+    menu.menuOptionsResidents, 
+    menu.menuOptionsVisitorWithAdd, 
+    menu.menuOptionsServiceWithAdd, 
+    menu.menuOptionsGuard, 
+    menu.menuOptionsCarSuperIntendent, 
+    menu.menuOptionsEventSuperintendent, 
+    menu.menuOptionsSlot, 
+    menu.menuOptionsAccess,
+    Utils.condoHasAnyService(user) ? menu.menuOptionsServices : null,
+  ]
+  profiles[Constants.USER_KIND['ADM']] = [
+    menu.menuOptionsCondo, 
+    menu.menuOptionsSindico
+  ]
 
   const getArrayOptionsWithSubmenu = _ => {
     return Object.values(menu).filter(el => el.submenuOptions)
@@ -94,11 +136,11 @@ const Dashboard = () => {
     <Fragment>
       <Header />
       <main className={`${classes.Dashboard}`}>
-        <Greeting/>
+        <Greeting />
         <div className={`container ${classes.Dashboard}`}>
           <div className={`row row-cols-2 row-cols-md-4 row-cols-lg-4 g-3 g-md-3 g-lg-5 mt-2 text-center ${profiles[user.user_kind].length <= 3 && 'justify-content-center'}`}>
             {profiles[user.user_kind].map(el => {
-              if(!el) return null
+              if (!el) return null
               if (el.submenuOptions) {
                 return (
                   <div key={el.key} onClick={() => el.toggle(prev => !prev)}>

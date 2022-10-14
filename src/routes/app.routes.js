@@ -18,6 +18,7 @@ import UnitRoutes from './UnitRoutes';
 import VisitorRoutes from './VisitorRoutes'
 import UserRoutes from './UserRoutes'
 import AccessRoutes from './AccessRoutes';
+import ServiceRoutes from './ServiceRoutes'
 
 //lazy components
 const ScanLazy = lazy(()=> import ('../pages/Scan'))
@@ -46,6 +47,7 @@ const AppRoutes = () => {
                 { VisitorRoutes(user).map(el=> <Route exact {...el}/>) }
                 { UserRoutes(user).map(el=> <Route exact {...el}/>) }
                 { AccessRoutes(user).map(el=> <Route exact {...el}/>) }
+                { ServiceRoutes(user).map(el=> <Route exact {...el}/>) }
                 <Route exact path="/login">
                     <Redirect to="/dashboard" />
                 </Route>

@@ -12,10 +12,24 @@ export const PREFIX_IMG_GOOGLE_CLOUD = 'https://drive.google.com/uc?export=view&
 
 export const MIN_PASSWORD_SIZE = 6
 export const MIN_NAME_SIZE = 7
+export const NEWS_TITLE_MIN_SIZE = 5
+export const NEWS_MESSAGE_MIN_SIZE = 15
 
 export const borderTextInputWidth = 3
 
 export const closeButtonCollor = '#EA3333'
+
+export const MAIL_STATUS = {
+    'Em espera': 1,
+    'Entregue': 2,
+    'Recusado': 3
+}
+
+export const MAIL_STATUS_CODE = {
+    1: 'Em espera',
+    2: 'Entregue',
+    3: 'Recusado',
+}
 
 //scan qr code
 export const QR_CODE_PREFIX = 'epw:'

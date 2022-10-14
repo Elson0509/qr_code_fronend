@@ -54,6 +54,13 @@ import {
     faTableList, //table-list
     faPrint, //print
     faFileExcel, // 'file-excel'
+    faLandmark, //landmark
+    faMailBulk, //mail-bulk
+    faCommentDots, //comment-dots
+    faChalkboardTeacher, //chalkboard-teacher
+    faClock, //clock
+    faCheckDouble, //check-double
+    faClose, //close
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -108,6 +115,13 @@ library.add(
     faTableList,
     faPrint,
     faFileExcel,
+    faLandmark,
+    faMailBulk,
+    faCommentDots,
+    faChalkboardTeacher,
+    faClock,
+    faCheckDouble,
+    faClose,
 );
 
 const Icon = (props) => {

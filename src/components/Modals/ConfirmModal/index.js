@@ -7,6 +7,7 @@ const ConfirmModal = (props) => {
             {!!props.title && <ModalHeader toggle={props.toggle}>{props.title}</ModalHeader>}
             <ModalBody>
                 {props.message}
+                {props.children}
             </ModalBody>
             <ModalFooter>
                 <Button color="secondary" onClick={props.action2 || props.toggle}>{props.button2 || 'Cancelar'}</Button>

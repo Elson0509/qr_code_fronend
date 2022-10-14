@@ -285,7 +285,7 @@ const ResidentSearch = (props) => {
                       !!el.residents.length && el.residents.map((resident) => (
                         <div style={{ border: '1px solid #ddd', paddingBottom: '10px' }} key={resident.id}>
                           <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px', cursor: 'pointer' }} onClick={() => clickImageHandler(resident)}>
-                            <ImageCloud id={resident.photo_id} height={180} />
+                            <ImageCloud id={resident.photo_id} />
                           </div>
                           <div style={{ background: '#eaeaea' }}>
                             {
