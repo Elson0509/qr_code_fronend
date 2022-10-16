@@ -27,7 +27,8 @@ const SlotRoutes = user => {
                 routes.push(MailRoute)
             break
         case (Constants.USER_KIND['GUARD']):
-
+            if (Utils.condoHasMail(user))
+                routes.push(MailRoute)
             break
         case (Constants.USER_KIND['SUPERINTENDENT']):
             if (Utils.condoHasNews(user))

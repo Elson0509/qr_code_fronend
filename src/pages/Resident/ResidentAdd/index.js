@@ -19,6 +19,7 @@ import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
 import CropImageModal from '../../../components/Modals/CropImageModal'
 import InputDate from '../../../components/Form/InputDate';
+import ButtonIcon from '../../../components/Buttons/ButtonIcon';
 
 const ResidentAdd = (props) => {
   const { user } = useAuth()
@@ -29,7 +30,7 @@ const ResidentAdd = (props) => {
   const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
   const [errorAddVehicleMessage, setErrorAddVehicleMessage] = useState('')
   const [vehicleBeingAdded, setVehicleBeingAdded] = useState({ id: "0", maker: '', model: '', color: '', plate: '' })
-  const [userBeingAdded, setUserBeingAdded] = useState({ id: "0", name: '', identification: '', email: '', pic: '', phone: '', dob: null })
+  const [userBeingAdded, setUserBeingAdded] = useState({ id: "0", name: '', identification: '', email: '', pic: '', phone: '', dob: null, is_owner: false })
   const [dobBeingAdded, setDobBeingAdded] = useState({ day: '', month: '1', year: '' })
   const [modalPic, setModalPic] = useState(false)
   const [modalCrop, setModalCrop] = useState(false)
@@ -125,19 +126,19 @@ const ResidentAdd = (props) => {
       return setErrorAddResidentMessage('Data não é válida.')
     }
     const dob = user.condo.resident_has_dob && !!dobBeingAdded.day && !!dobBeingAdded.year ? new Date(dobBeingAdded.year, dobBeingAdded.month - 1, dobBeingAdded.day, 0, 0, 0) : null
-    if((!!dobBeingAdded.day || !!dobBeingAdded.year) && dob > new Date()){
+    if ((!!dobBeingAdded.day || !!dobBeingAdded.year) && dob > new Date()) {
       return setErrorAddResidentMessage('Data não é válida.')
     }
-    setResidents(prev => [...prev, {...userBeingAdded, dob}])
+    setResidents(prev => [...prev, { ...userBeingAdded, dob }])
     setErrorAddResidentMessage('')
-    setUserBeingAdded({ id: "0", name: '', identification: '', email: '', pic: '', phone: '', dob: null })
+    setUserBeingAdded({ id: "0", name: '', identification: '', email: '', pic: '', phone: '', dob: null, is_owner: false })
     setDobBeingAdded({ day: '', month: '1', year: '' })
     setIsAddingResident(false)
   }
 
   const cancelAddResidentHandler = _ => {
     setIsAddingResident(false)
-    setUserBeingAdded({ id: '0', name: '', identification: '', email: '', pic: '', phone: '', dob: null })
+    setUserBeingAdded({ id: '0', name: '', identification: '', email: '', pic: '', phone: '', dob: null, is_owner: false })
   }
 
   const addVehicleHandler = async _ => {
@@ -187,7 +188,7 @@ const ResidentAdd = (props) => {
     setLoading(true)
     api.get(`user/unit/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
       .then(res => {
-        const fetchedResidents = res.data.map(el=> {return {...el, dob: el.dob ? new Date(el.dob) : null}})
+        const fetchedResidents = res.data.map(el => { return { ...el, dob: el.dob ? new Date(el.dob) : null } })
         setResidents(fetchedResidents)
         api.get(`vehicle/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
           .then(res2 => {
@@ -363,6 +364,17 @@ const ResidentAdd = (props) => {
                 />
               }
               {
+                user.condo.resident_has_owner_field &&
+                <div className='row m-1 my-3'>
+                  <label>Tipo:</label>
+                  <ButtonIcon
+                    newClass='btn-light btn-outline-secondary'
+                    text={userBeingAdded.is_owner ? 'Proprietário' : 'Alugado'}
+                    clicked={() => setUserBeingAdded(prev => ({ ...prev, is_owner: !prev.is_owner }))}
+                  />
+                </div>
+              }
+              {
                 user.condo.resident_has_dob &&
                 <InputDate
                   title='Nascimento:'
@@ -427,6 +439,10 @@ const ResidentAdd = (props) => {
                         !!el.dob &&
                         <p className={classes.Text}><span className={classes.Bold}>Nascimento:</span> {Utils.printDate(el.dob)}</p>
                       }
+                      {
+                        user.condo.resident_has_owner_field &&
+                        <p className={classes.Text}><span className={classes.Bold}>Tipo:</span> {el.is_owner ? 'Proprietário' : 'Alugado'}</p>
+                      }
                     </div>
                   </div>
                   <span className={classes.CloseIcon} onClick={() => removeResident(ind)}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span>
@@ -435,8 +451,7 @@ const ResidentAdd = (props) => {
             }
           </ul>
         </SelectButton>
-      )
-      }
+      )}
       {/*vehicles*/}
       {!!selectedBloco && !!selectedUnit && (
         <SelectButton

@@ -235,7 +235,6 @@ const ResidentSearch = (props) => {
     )
   }
 
-
   return (
     <Body breadcrumb={breadcrumb}>
       <div className='row'>
@@ -247,7 +246,7 @@ const ResidentSearch = (props) => {
             </div>
           </form>
           {
-            units.length > 0 &&
+            units.length > 0 && user.user_kind === Constants.USER_KIND['SUPERINTENDENT'] &&
             <ButtonIcon text='Exportar' icon='file-excel' clicked={exportToExcelHandler} />
           }
           {
@@ -312,6 +311,15 @@ const ResidentSearch = (props) => {
                               (user.user_kind === Constants.USER_KIND['GUARD'] && user.condo.guard_see_dob)) &&
                             !!resident.dob &&
                             <p className='text-center p-0 m-0'>Nascimento: {Utils.printDate(new Date(resident.dob))}</p>
+                          }
+                          {
+                            user.user_kind === Constants.USER_KIND['SUPERINTENDENT']
+                              && !!resident.email &&
+                            <p className='text-center p-0 m-0'>Email: {resident.email}</p>
+                          }
+                          {
+                            user.condo.resident_has_owner_field &&
+                            <p className='text-center p-0 m-0'>Tipo: {resident.is_owner ? 'Proprietário' : 'Aluguel'}</p>
                           }
                         </div>
                       ))

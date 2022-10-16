@@ -312,7 +312,7 @@ export const condoHasMail = user => {
 export const condoHasNews = user => {
     if(!user || !user.condo)
         return false
-    if(user.condo.condo_has_news)
+    if(user.condo.condo_has_news && user.user_kind !== USER_KIND['GUARD'])
         return true
     return false
 }

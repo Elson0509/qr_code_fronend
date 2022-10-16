@@ -137,19 +137,27 @@ const CondoList = (props) => {
                   </CardBody>
                   <CardFooter>
                     <p className='p-0 m-0 text-center'><span className='enfase'>Colaboradores</span></p>
-                    <p className='p-0 m-0'><span className='enfase'>Podem ver mensagens?</span> {el.guard_can_messages ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem receber mensagens?</span> {el.guard_can_messages ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem cadastrar terceirizados?</span> {el.guard_can_thirds ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem cadastrar visitantes?</span> {el.guard_can_visitors ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem ver telefone de moradores?</span> {el.guard_see_phone ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem ver nascimento de moradores?</span> {el.guard_see_dob ? ' Sim' : ' Não'}</p>
                     <hr />
                     <p className='p-0 m-0 text-center'><span className='enfase'>Residentes</span></p>
-                    <p className='p-0 m-0'><span className='enfase'>Podem ver mensagens?</span> {el.resident_can_messages ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Podem receber mensagens?</span> {el.resident_can_messages ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem cadastrar terceirizados?</span> {el.resident_can_thirds ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem cadastrar visitantes?</span> {el.resident_can_visitors ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Podem registrar ocorrências?</span> {el.resident_can_ocorrences ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Possuem campo de alugado/dono?</span> {el.resident_has_owner_field ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Possuem telefone?</span> {el.resident_has_phone ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Possuem data de nascimento?</span> {el.resident_has_dob ? ' Sim' : ' Não'}</p>
+                    <hr />
+                    <p className='p-0 m-0 text-center'><span className='enfase'>Condomínio</span></p>
+                    <p className='p-0 m-0'><span className='enfase'>Possui controle de correspondência?</span> {el.condo_has_mail ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Possui classificados?</span> {el.condo_has_classifieds ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Possui ronda de vigilantes?</span> {el.condo_has_guard_routes ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Possui avisos? </span> {el.condo_has_news ? ' Sim' : ' Não'}</p>
+                    <p className='p-0 m-0'><span className='enfase'>Possui reservas?</span> {el.condo_has_reservations ? ' Sim' : ' Não'}</p>
                   </CardFooter>
                 </Card>
               </div>

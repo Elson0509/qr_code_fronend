@@ -13,6 +13,7 @@ import PicModal from '../../components/Modals/PicModal'
 import CropImageModal from '../../components/Modals/CropImageModal'
 import ImageCloud from '../../components/ImageCloud'
 import InputDate from '../../components/Form/InputDate';
+import ButtonIcon from '../../components/Buttons/ButtonIcon'
 
 const EditUser = (props) => {
   //if there is not state in router, go to dashboard
@@ -33,6 +34,7 @@ const EditUser = (props) => {
   const [pathImgToCrop, setPathImgToCrop] = useState('')
   const [disabled] = useState(!!props.location.state.resident.email)
   const [pic, setPic] = useState(false)
+  const [is_owner, setIs_owner] = useState(props.location.state.resident.is_owner)
 
   const breadcrumb = [
     {
@@ -95,7 +97,7 @@ const EditUser = (props) => {
       return setErrorMessage('Data não é válida.')
     }
     const dob = user.condo.resident_has_dob && !!dobUserEdit.day && !!dobUserEdit.year ? new Date(dobUserEdit.year, dobUserEdit.month - 1, dobUserEdit.day, 0, 0, 0) : null
-    if((!!dobUserEdit.day || !!dobUserEdit.year) && dob > new Date()){
+    if ((!!dobUserEdit.day || !!dobUserEdit.year) && dob > new Date()) {
       return setErrorMessage('Data não é válida.')
     }
     setLoading(true)
@@ -104,6 +106,7 @@ const EditUser = (props) => {
       email: userEdit.email,
       identification: userEdit.identification,
       phone: userEdit.phone,
+      is_owner,
       dob
     })
       .then(() => {
@@ -181,6 +184,17 @@ const EditUser = (props) => {
             placeholder='(XX) 90000-0000'
             changeValue={(val) => setUserEdit({ ...userEdit, phone: val })}
           />
+        }
+        {
+          user.condo.resident_has_owner_field &&
+          <div className='row m-1 my-3'>
+            <label>Tipo:</label>
+            <ButtonIcon
+              newClass='btn-light btn-outline-secondary'
+              text={is_owner ? 'Proprietário' : 'Alugado'}
+              clicked={()=> setIs_owner(prev => !prev)}
+            />
+          </div>
         }
         {
           user.condo.resident_has_dob &&

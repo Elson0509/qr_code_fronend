@@ -18,6 +18,7 @@ const AccordionMenu = () => {
   const [modalEvent, setModalEvent] = useState(false)
   const [modalCondo, setModalCondo] = useState(false)
   const [modalSindico, setModalSindico] = useState(false)
+  const [modalServices, setModalServices] = useState(false)
 
   const submenuOptions = [
     { menuName: "Adicionar", icon: 'plus-square', key: 'plus', url: 'add' },
@@ -36,6 +37,14 @@ const AccordionMenu = () => {
   }
   subMenuOptionsResidents.push({ menuName: "Listar", icon: 'list-alt', key: 'list', url: 'List' })
 
+  const subMenuServices = []
+  if(Utils.condoHasMail(user)){
+    subMenuServices.push({ menuName: "Correios", icon: 'mail-bulk', key: 'Mail', url: 'Maillist' })
+  }
+  if(Utils.condoHasNews(user)){
+    subMenuServices.push({ menuName: "Avisos", icon: 'comment-dots', key: 'comment', url: 'News' })
+  }
+
   const menu = {
     menuOptionsQRCode: { menuName: "Meu QR Code", icon: 'qrcode', key: 'QRCode', url: 'MyQRCode', code: 'MyQRCode' },
     menuOptionsScan: { menuName: "Escanear", icon: 'camera', key: 'Scan', url: 'Scan', code: 'Scan' },
@@ -53,18 +62,53 @@ const AccordionMenu = () => {
     menuOptionsEventGuard: { menuName: "Ocorrências", icon: 'exclamation', key: 'event', url: 'Events/Add', code: 'Events' },
     menuOptionsEventSuperintendent: { menuName: "Ocorrências", icon: 'exclamation', key: 'event', url: 'Events', code: 'Events', submenuOptions, toggle: setModalEvent, modal: modalEvent },
     menuOptionsSurvey: { menuName: "Avaliação", icon: 'smile', key: 'pesquisa', url: 'Survey', code: 'Survey' },
-    menuOptionsInfo: { menuName: "Informações", icon: 'info-circle', key: 'info', url: 'Info', code: 'Info' },
+    //menuOptionsInfo: { menuName: "Informações", icon: 'info-circle', key: 'info', url: 'Info', code: 'Info' },
     menuOptionsCondo: { menuName: "Condomínios", icon: 'city', key: 'condo', url: 'Condo', code: 'Residents', submenuOptions, toggle: setModalCondo, modal: modalCondo },
     menuOptionsSindico: { menuName: "Administradores", icon: 'users-cog', key: 'sindico', url: 'Sindico', code: 'Visitors', submenuOptions, toggle: setModalSindico, modal: modalSindico },
     menuOptionsSlot: { menuName: "Estacionamento", icon: 'car-side', key: 'slot', url: 'Slot', code: 'Slot' },
     menuOptionsAccess: { menuName: "Acessos", icon: 'people-arrows-left-right', key: 'access', url: 'access', code: 'Access' },
+    menuOptionsServices : { menuName: "Serviços", icon: 'landmark', key: 'services', url: 'Services', code: 'Residents', submenuOptions: subMenuServices, toggle: setModalServices, modal: modalServices},
+    menuOptionsMailListResident : { menuName: "Correios", icon: 'mail-bulk', key: 'mailList', url: 'services/MailList', code: 'Residents'},
+    menuOptionsNewsResident : { menuName: "Avisos", icon: 'comment-dots', key: 'comment', url: 'services/News', code: 'Slot' }
   }
 
   const profiles = []
-  profiles[Constants.USER_KIND['RESIDENT']] = [menu.menuOptionsQRCode, Utils.canAddOcorrences(user) ? menu.menuOptionsEventResident : null,  Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : null, Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : null]
-  profiles[Constants.USER_KIND['GUARD']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsResidentsToGuard, Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : menu.menuOptionsVisitorNoAdd, Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : menu.menuOptionsServiceNoAdd, menu.menuOptionsCarGuard, menu.menuOptionsEventGuard, menu.menuOptionsSlot]
-  profiles[Constants.USER_KIND['SUPERINTENDENT']] = [menu.menuOptionsQRCode, menu.menuOptionsScan, menu.menuOptionsUnits, menu.menuOptionsResidents, menu.menuOptionsVisitorWithAdd, menu.menuOptionsServiceWithAdd, menu.menuOptionsGuard, menu.menuOptionsCarSuperIntendent, menu.menuOptionsEventSuperintendent, menu.menuOptionsSlot, menu.menuOptionsAccess]
-  profiles[Constants.USER_KIND['ADM']] = [menu.menuOptionsCondo, menu.menuOptionsSindico]
+  profiles[Constants.USER_KIND['RESIDENT']] = [
+    menu.menuOptionsQRCode, Utils.canAddOcorrences(user) ? menu.menuOptionsEventResident : null, 
+    Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : null, 
+    Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : null,
+    Utils.condoHasMail(user) ? menu.menuOptionsMailListResident : null,
+    Utils.condoHasNews(user) ? menu.menuOptionsNewsResident : null,
+  ]
+  profiles[Constants.USER_KIND['GUARD']] = [
+    menu.menuOptionsQRCode, menu.menuOptionsScan, 
+    menu.menuOptionsResidentsToGuard, 
+    Utils.canAddVisitors(user) ? menu.menuOptionsVisitorWithAdd : menu.menuOptionsVisitorNoAdd, 
+    Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : menu.menuOptionsServiceNoAdd, 
+    menu.menuOptionsCarGuard, 
+    menu.menuOptionsEventGuard, 
+    Utils.condoHasMail(user) ? menu.menuOptionsMailListResident : null,
+    menu.menuOptionsSlot,
+  ]
+
+  profiles[Constants.USER_KIND['SUPERINTENDENT']] = [
+    menu.menuOptionsQRCode, 
+    menu.menuOptionsScan, 
+    menu.menuOptionsUnits, 
+    menu.menuOptionsResidents, 
+    menu.menuOptionsVisitorWithAdd, 
+    menu.menuOptionsServiceWithAdd, 
+    menu.menuOptionsGuard, 
+    menu.menuOptionsCarSuperIntendent, 
+    menu.menuOptionsEventSuperintendent, 
+    menu.menuOptionsSlot, 
+    menu.menuOptionsAccess,
+    Utils.condoHasAnyService(user) ? menu.menuOptionsServices : null,
+  ]
+  profiles[Constants.USER_KIND['ADM']] = [
+    menu.menuOptionsCondo, 
+    menu.menuOptionsSindico
+  ]
 
   return (
     <nav>
@@ -102,7 +146,6 @@ const AccordionMenu = () => {
                                 </Link>
                               )
                             })
-
                           }
                         </ul>
                       </Collapse>

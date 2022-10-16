@@ -52,7 +52,7 @@ const Greeting = () => {
                 </span>
               </p>
             </div>
-            {
+            { !!user.condo?.name &&
             <p className={classes.CondoName}>
               Condomínio {user.condo.name}
             </p>

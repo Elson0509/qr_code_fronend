@@ -102,7 +102,7 @@ const GuardList = () => {
                     <div style={{ border: '1px solid #ddd', paddingBottom: '10px' }}>
                       {!!el.name && <p className='text-center pt-2 m-0 enfase'>{el.name}</p>}
                       <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px' }}>
-                        <ImageCloud id={el.photo_id} height={150} />
+                        <ImageCloud id={el.photo_id} width={180} />
                       </div>
                       {!!el.email && <p className='text-center p-0 m-0'>{el.email}</p>}
                       {!!el.identification && <p className='text-center p-0 m-0'>Id: {el.identification}</p>}

@@ -77,9 +77,15 @@ const CondoEdit = (props) => {
       resident_can_thirds: condoBeingAdded.resident_can_thirds === '0',
       resident_can_visitors: condoBeingAdded.resident_can_visitors === '0',
       resident_has_dob: condoBeingAdded.resident_has_dob === '0',
+      resident_has_owner_field: condoBeingAdded.resident_has_owner_field === '0',
       resident_has_phone: condoBeingAdded.resident_has_phone === '0',
       guard_see_dob: condoBeingAdded.guard_see_dob === '0',
       guard_see_phone: condoBeingAdded.guard_see_phone === '0',
+      condo_has_classifieds: condoBeingAdded.condo_has_classifieds === '0',
+      condo_has_guard_routes: condoBeingAdded.condo_has_guard_routes === '0',
+      condo_has_mail: condoBeingAdded.condo_has_mail === '0',
+      condo_has_news: condoBeingAdded.condo_has_news === '0',
+      condo_has_reservations: condoBeingAdded.condo_has_reservations === '0',
     })
     .then((res)=>{
       setErrorMessage('')
@@ -195,6 +201,12 @@ const CondoEdit = (props) => {
               options={options}
             />
             <SelectInput
+              label='Possuem campo de alugado/dono?'
+              value={condoBeingAdded.resident_has_owner_field}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_has_owner_field: val})}
+              options={options}
+            />
+            <SelectInput
               label='Possuem telefone?'
               value={condoBeingAdded.resident_has_phone}
               changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_has_phone: val})}
@@ -204,6 +216,41 @@ const CondoEdit = (props) => {
               label='Possuem data de nascimento?'
               value={condoBeingAdded.resident_has_dob}
               changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_has_dob: val})}
+              options={options}
+            />
+          </div>
+        </div>
+        <div className='row mt-4'>
+          <div className='col'>
+            <h5>Condomínio</h5>
+            <SelectInput
+              label='Possui controle de correspondência?'
+              value={condoBeingAdded.condo_has_mail}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, condo_has_mail: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Possui classificados?'
+              value={condoBeingAdded.condo_has_classifieds}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, condo_has_classifieds: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Possui ronda de vigilantes?'
+              value={condoBeingAdded.condo_has_guard_routes}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, condo_has_guard_routes: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Possui avisos?'
+              value={condoBeingAdded.condo_has_news}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, condo_has_news: val})}
+              options={options}
+            />
+            <SelectInput
+              label='Possui reservas?'
+              value={condoBeingAdded.condo_has_reservations}
+              changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, condo_has_reservations: val})}
               options={options}
             />
           </div>

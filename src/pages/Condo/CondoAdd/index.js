@@ -22,11 +22,15 @@ const CondoAdd = (props) => {
   const [resident_can_thirds, setResident_can_thirds] = useState('0')
   const [resident_can_visitors, setResident_can_visitors] = useState('0')
   const [resident_has_dob, setResident_has_dob] = useState('0')
+  const [resident_has_owner_field, setResident_has_owner_field] = useState('0')
   const [resident_has_phone, setResident_has_phone] = useState('0')
   const [guard_see_dob, setGuard_see_dob] = useState('0')
   const [guard_see_phone, setGuard_see_phone] = useState('0')
-
-
+  const [condo_has_classifieds, setCondo_has_classifieds] = useState('0')
+  const [condo_has_guard_routes, setCondo_has_guard_routes] = useState('0')
+  const [condo_has_mail, setCondo_has_mail] = useState('0')
+  const [condo_has_news, setCondo_has_news] = useState('0')
+  const [condo_has_reservations, setCondo_has_reservations] = useState('0')
 
   useEffect(() => {
     api.get('partner')
@@ -91,9 +95,15 @@ const CondoAdd = (props) => {
       resident_can_thirds: resident_can_thirds === '0',
       resident_can_visitors: resident_can_visitors === '0',
       resident_has_dob: resident_has_dob === '0',
+      resident_has_owner_field: resident_has_owner_field === '0',
       resident_has_phone: resident_has_phone === '0',
       guard_see_dob: guard_see_dob === '0',
       guard_see_phone: guard_see_phone === '0',
+      condo_has_classifieds: condo_has_classifieds === '0',
+      condo_has_guard_routes: condo_has_guard_routes === '0',
+      condo_has_mail: condo_has_mail === '0',
+      condo_has_news: condo_has_news === '0',
+      condo_has_reservations: condo_has_reservations === '0',
     })
       .then((res) => {
         setErrorMessage('')
@@ -151,7 +161,7 @@ const CondoAdd = (props) => {
           <div className='col'>
             <h5>Colaboradores</h5>
             <SelectInput
-              label='Pode enviar mensagens?'
+              label='Pode receber mensagens?'
               value={guard_can_messages}
               changeValue={(val) => setGuard_can_messages(val)}
               options={options}
@@ -186,7 +196,7 @@ const CondoAdd = (props) => {
           <div className='col'>
             <h5>Moradores</h5>
             <SelectInput
-              label='Pode enviar mensagens?'
+              label='Pode receber mensagens?'
               value={resident_can_messages}
               changeValue={(val) => setResident_can_messages(val)}
               options={options}
@@ -210,6 +220,12 @@ const CondoAdd = (props) => {
               options={options}
             />
             <SelectInput
+              label='Possuem campo de alugado/dono?'
+              value={resident_has_owner_field}
+              changeValue={(val) => setResident_has_owner_field(val)}
+              options={options}
+            />
+            <SelectInput
               label='Possuem telefone?'
               value={resident_has_phone}
               changeValue={(val) => setResident_has_phone(val)}
@@ -219,6 +235,41 @@ const CondoAdd = (props) => {
               label='Possuem data de nascimento?'
               value={resident_has_dob}
               changeValue={(val) => setResident_has_dob(val)}
+              options={options}
+            />
+          </div>
+        </div>
+        <div className='row mt-4'>
+          <div className='col'>
+            <h5>Condomínio</h5>
+            <SelectInput
+              label='Possui controle de correspondência?'
+              value={condo_has_mail}
+              changeValue={(val) => setCondo_has_mail(val)}
+              options={options}
+            />
+            <SelectInput
+              label='Possui classificados?'
+              value={condo_has_classifieds}
+              changeValue={(val) => setCondo_has_classifieds(val)}
+              options={options}
+            />
+            <SelectInput
+              label='Possui ronda de vigilantes?'
+              value={condo_has_guard_routes}
+              changeValue={(val) => setCondo_has_guard_routes(val)}
+              options={options}
+            />
+            <SelectInput
+              label='Possui avisos?'
+              value={condo_has_news}
+              changeValue={(val) => setCondo_has_news(val)}
+              options={options}
+            />
+            <SelectInput
+              label='Possui reservas?'
+              value={condo_has_reservations}
+              changeValue={(val) => setCondo_has_reservations(val)}
               options={options}
             />
           </div>

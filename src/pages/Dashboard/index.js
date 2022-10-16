@@ -65,7 +65,7 @@ const Dashboard = () => {
     menuOptionsEventGuard: { menuName: "Ocorrências", icon: 'exclamation', key: 'event', url: 'Events/Add', code: 'Events' },
     menuOptionsEventSuperintendent: { menuName: "Ocorrências", icon: 'exclamation', key: 'event', url: 'Events', code: 'Events', submenuOptions, toggle: setModalEvent, modal: modalEvent },
     menuOptionsSurvey: { menuName: "Avaliação", icon: 'smile', key: 'pesquisa', url: 'Survey', code: 'Survey' },
-    menuOptionsInfo: { menuName: "Informações", icon: 'info-circle', key: 'info', url: 'Info', code: 'Info' },
+    //menuOptionsInfo: { menuName: "Informações", icon: 'info-circle', key: 'info', url: 'Info', code: 'Info' },
     menuOptionsCondo: { menuName: "Condomínios", icon: 'city', key: 'condo', url: 'Condo', code: 'Residents', submenuOptions, toggle: setModalCondo, modal: modalCondo },
     menuOptionsSindico: { menuName: "Administradores", icon: 'users-cog', key: 'sindico', url: 'Sindico', code: 'Visitors', submenuOptions, toggle: setModalSindico, modal: modalSindico },
     menuOptionsSlot: { menuName: "Estacionamento", icon: 'car-side', key: 'slot', url: 'Slot', code: 'Slot' },
@@ -90,8 +90,10 @@ const Dashboard = () => {
     Utils.canAddThirds(user) ? menu.menuOptionsServiceWithAdd : menu.menuOptionsServiceNoAdd, 
     menu.menuOptionsCarGuard, 
     menu.menuOptionsEventGuard, 
-    menu.menuOptionsSlot
+    Utils.condoHasMail(user) ? menu.menuOptionsMailListResident : null,
+    menu.menuOptionsSlot,
   ]
+
   profiles[Constants.USER_KIND['SUPERINTENDENT']] = [
     menu.menuOptionsQRCode, 
     menu.menuOptionsScan, 

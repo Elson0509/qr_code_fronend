@@ -10,8 +10,10 @@ import classes from './scan.module.css'
 import { Spinner } from 'reactstrap';
 import ConfirmModal from '../../components/Modals/ConfirmModal';
 import GenericModal from '../../components/Modals/GenericModal';
+import { useAuth } from '../../contexts/auth'
 
 const MyQrCode = () => {
+  const { user } = useAuth()
   const [errorMessage, setErrorMessage] = useState('')
   const [dataFetched, setDataFetched] = useState(null)
   const [userType, setUserType] = useState('')
@@ -214,6 +216,7 @@ const MyQrCode = () => {
                 <div className='col-8'>
                   <p style={{ marginTop: 8, fontSize: 18, fontWeight: 'bold' }}>{dataFetched.name}</p>
                   {!!dataFetched.Unit?.Bloco?.name && <p style={{ marginTop: 4, fontSize: 18 }}>{`Bloco ${dataFetched.Unit.Bloco.name}`} - {`Unidade ${dataFetched.Unit.number}`}</p>}
+                  {dataFetched.user_kind_id === Constants.USER_KIND['RESIDENT'] && user.condo.resident_has_owner_field && <p style={{ marginTop: 4, fontSize: 18 }}>Tipo: {dataFetched.is_owner ? 'Proprietário' : 'Alugado'}</p>}
                   {!dataFetched.Unit?.Vehicles.length && <p style={{ textDecorationLine: 'underline', fontSize: 15, textAlign: 'center' }}>Não há veículos cadastrados.</p>}
                   <div className={classes.VehiclesDiv}>
                     {!!dataFetched.Unit?.Vehicles.length && <p style={{ fontSize: 15 }}>Veículos cadastrados:</p>}
