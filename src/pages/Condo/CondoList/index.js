@@ -96,9 +96,15 @@ const CondoList = (props) => {
           guard_see_phone: condo.guard_see_phone,
           guard_see_dob: condo.guard_see_dob,
           resident_has_dob: condo.resident_has_dob,
+          resident_has_owner_field: condo.resident_has_owner_field,
           resident_has_phone: condo.resident_has_phone,
           slots: condo.slots,
           state: condo.state,
+          condo_has_mail: condo.condo_has_mail,
+          condo_has_classifieds: condo.condo_has_classifieds,
+          condo_has_guard_routes: condo.condo_has_guard_routes,
+          condo_has_news: condo.condo_has_news,
+          condo_has_reservations: condo.condo_has_reservations,
         },
       }
     )
@@ -152,6 +158,9 @@ const CondoList = (props) => {
                     <p className='p-0 m-0'><span className='enfase'>Possuem telefone?</span> {el.resident_has_phone ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Possuem data de nascimento?</span> {el.resident_has_dob ? ' Sim' : ' Não'}</p>
                     <hr />
+                    {
+                      console.log(el)
+                    }
                     <p className='p-0 m-0 text-center'><span className='enfase'>Condomínio</span></p>
                     <p className='p-0 m-0'><span className='enfase'>Possui controle de correspondência?</span> {el.condo_has_mail ? ' Sim' : ' Não'}</p>
                     <p className='p-0 m-0'><span className='enfase'>Possui classificados?</span> {el.condo_has_classifieds ? ' Sim' : ' Não'}</p>

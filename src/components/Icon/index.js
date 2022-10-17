@@ -61,6 +61,7 @@ import {
     faClock, //clock
     faCheckDouble, //check-double
     faClose, //close
+    faFolderPlus, //folder-plus
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -122,6 +123,7 @@ library.add(
     faClock,
     faCheckDouble,
     faClose,
+    faFolderPlus,
 );
 
 const Icon = (props) => {

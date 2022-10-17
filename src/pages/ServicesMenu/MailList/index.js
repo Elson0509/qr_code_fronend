@@ -15,7 +15,7 @@ import ActionButtons from '../../../components/Buttons/ActionButtons'
 import SelectInput from '../../../components/Form/SelectInput'
 import FormComment from '../../../components/Form/FormComment'
 
-const Mail = () => {
+const Mail = (props) => {
 
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
@@ -112,24 +112,24 @@ const Mail = () => {
     api.post(`mail/${selectedMail.id}`,
       {
         status: newStatus === 'Entregue' ? Constants.MAIL_STATUS['Entregue'] : Constants.MAIL_STATUS['Recusado'],
-        delivered_to_user_id: selectedResident === 0 ? null : selectedMail.Unit.Users[selectedResident-1].id,
+        delivered_to_user_id: selectedResident === 0 ? null : selectedMail.Unit.Users[selectedResident - 1].id,
         notes_after_delivered
       }
     )
-    .then(()=> {
-      toast.info('Baixa confirmada!')
-      setModalClarify(false)
-      fetchMails()
-      setSelectedResident(0)
-      setNewStatus('Entregue')
-      setNotes_after_delivered('')
-    })
-    .catch(err => {
-      Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (MDel1)', Constants.TOAST_CONFIG)
-    })
-    .finally(()=>{
-      setLoading(false)
-    })
+      .then(() => {
+        toast.info('Baixa confirmada!')
+        setModalClarify(false)
+        fetchMails()
+        setSelectedResident(0)
+        setNewStatus('Entregue')
+        setNotes_after_delivered('')
+      })
+      .catch(err => {
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (MDel1)', Constants.TOAST_CONFIG)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   if (loading) {
@@ -143,6 +143,16 @@ const Mail = () => {
   return (
     <Body breadcrumb={breadcrumb}>
       <div className='row'>
+        <div>
+          <ButtonIcon
+            newClass='btn-primary'
+            iconSize='lg'
+            text='Receber correspondência'
+            clicked={() => props.history.push('/services/mailadd')}
+            icon='folder-plus'
+            
+          />
+        </div>
         <div>
           <ul className="nav justify-content-center">
             <ButtonIcon
@@ -233,14 +243,14 @@ const Mail = () => {
           <SelectInput
             label='Selecionar morador:'
             value={selectedResident}
-            options={[{name:''}].concat(selectedMail.Unit.Users)}
-            changeValue={value=> setSelectedResident(value)}
+            options={[{ name: '' }].concat(selectedMail.Unit.Users)}
+            changeValue={value => setSelectedResident(value)}
           />
           <label className='mt-2'>Novo Status:</label>
           <ButtonIcon
             text={newStatus}
             newClass='col-12 btn-light btn-outline-dark'
-            clicked={()=>{setNewStatus(prev => prev === 'Entregue' ? 'Recusado' : 'Entregue')}}
+            clicked={() => { setNewStatus(prev => prev === 'Entregue' ? 'Recusado' : 'Entregue') }}
           />
           <FormComment
             label='Observação'

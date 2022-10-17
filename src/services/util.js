@@ -1,7 +1,6 @@
 import Resizer from 'react-image-file-resizer'
 import { toast } from 'react-toastify';
 import { USER_KIND, TOAST_CONFIG } from './constants'
-import axios from 'axios';
 
 export const resizeFile = (file) =>
   new Promise((resolve) => {

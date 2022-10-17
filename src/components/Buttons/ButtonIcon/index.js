@@ -5,7 +5,7 @@ const ButtonIcon = (props) => {
     return (
         <button 
             type="button" 
-            className={`btn btn-success my-2 ${props.newClass}`} 
+            className={`btn my-2 ${!!props.newClass ? props.newClass : 'btn-success'}`} 
             onClick={props.clicked}>
             <Icon icon={props.icon} size={props.iconSize || '2x'} color={props.iconColor || 'white'} /> {props.text} 
         </button>

@@ -14,7 +14,6 @@ const CondoEdit = (props) => {
   if(!props.location?.state?.condoBeingAdded){
     props.history.push('/dashboard')
   }
-
   const newCondo  = {}
   Object.keys(props.location.state.condoBeingAdded).forEach(key => {
     if(typeof props.location.state.condoBeingAdded[key] === 'boolean'){
@@ -142,7 +141,7 @@ const CondoEdit = (props) => {
           <div className='col'>
             <h5>Colaboradores</h5>
             <SelectInput
-              label='Pode enviar mensagens?'
+              label='Pode receber mensagens?'
               value={condoBeingAdded.guard_can_messages}
               changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, guard_can_messages: val})}
               options={options}
@@ -177,7 +176,7 @@ const CondoEdit = (props) => {
           <div className='col'>
             <h5>Moradores</h5>
             <SelectInput
-              label='Pode enviar mensagens?'
+              label='Pode receber mensagens?'
               value={condoBeingAdded.resident_can_messages}
               changeValue={(val) => setCondoBeingAdded({...condoBeingAdded, resident_can_messages: val})}
               options={options}
