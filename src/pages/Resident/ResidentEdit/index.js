@@ -17,7 +17,9 @@ import classes from './ResidentEdit.module.css'
 import ActionButtons from '../../../components/Buttons/ActionButtons'
 import ImportPhotoButtons from '../../../components/Buttons/ImportPhotoButtons'
 import PicModal from '../../../components/Modals/PicModal'
-import CropImageModal from '../../../components/Modals/CropImageModal';
+import CropImageModal from '../../../components/Modals/CropImageModal'
+import ButtonIcon from '../../../components/Buttons/ButtonIcon'
+import InputDate from '../../../components/Form/InputDate'
 
 const ResidentEdit = (props) => {
   //if there is not state in router, go to dashboard
@@ -33,7 +35,8 @@ const ResidentEdit = (props) => {
   const [errorAddResidentMessage, setErrorAddResidentMessage] = useState('')
   const [errorAddVehicleMessage, setErrorAddVehicleMessage] = useState('')
   const [vehicleBeingAdded, setVehicleBeingAdded] = useState({ id: "0", maker: '', model: '', color: '', plate: '' })
-  const [userBeingAdded, setUserBeingAdded] = useState({ id: "0", name: '', identification: '', email: '', pic: '' })
+  const [userBeingAdded, setUserBeingAdded] = useState({ id: "0", name: '', identification: '', email: '', pic: '', phone: '', dob: null, is_owner: false })
+  const [dobBeingAdded, setDobBeingAdded] = useState({ day: '', month: '1', year: '' })
   const [modalPic, setModalPic] = useState(false)
   const [modalCrop, setModalCrop] = useState(false)
   const [modalSelectBloco, setModalSelectBloco] = useState(false)
@@ -46,7 +49,7 @@ const ResidentEdit = (props) => {
   const [pathImgToCrop, setPathImgToCrop] = useState('')
   const [finished, setFinished] = useState(false)
 
-  
+
   const breadcrumb = [
     {
       name: 'Painel Principal',
@@ -57,7 +60,7 @@ const ResidentEdit = (props) => {
       link: '/residents/edit'
     }
   ]
-  
+
   const paperClipImageHandler = async imgPath => {
     const isConnected = await Utils.checkInternetConnection(setLoading)
     if (!isConnected) {
@@ -69,9 +72,9 @@ const ResidentEdit = (props) => {
 
   useEffect(() => {
     api.get(`condo/all/${user.condo_id}`)
-    .then(res => {
-      setUnits(res.data)
-      setModalSelectBloco(false)
+      .then(res => {
+        setUnits(res.data)
+        setModalSelectBloco(false)
       })
       .catch(err => {
         Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA1)', Constants.TOAST_CONFIG)
@@ -115,15 +118,26 @@ const ResidentEdit = (props) => {
     if (userBeingAdded.email && !Utils.validateEmail(userBeingAdded.email)) {
       return setErrorAddResidentMessage('Email não é válido.')
     }
-    setResidents(prev => [...prev, userBeingAdded])
+    if (!!userBeingAdded.phone && !Utils.phone_validation(userBeingAdded.phone)) {
+      return setErrorAddResidentMessage('Telefone não válido.')
+    }
+    if ((!!dobBeingAdded.day || !!dobBeingAdded.year) && !Utils.isValidDate(dobBeingAdded.day, dobBeingAdded.month, dobBeingAdded.year)) {
+      return setErrorAddResidentMessage('Data não é válida.')
+    }
+    const dob = user.condo.resident_has_dob && !!dobBeingAdded.day && !!dobBeingAdded.year ? new Date(dobBeingAdded.year, dobBeingAdded.month - 1, dobBeingAdded.day, 0, 0, 0) : null
+    if ((!!dobBeingAdded.day || !!dobBeingAdded.year) && dob > new Date()) {
+      return setErrorAddResidentMessage('Data não é válida.')
+    }
+    setResidents(prev => [...prev, { ...userBeingAdded, dob }])
     setErrorAddResidentMessage('')
-    setUserBeingAdded({ id: "0", name: '', identification: '', email: '', pic: '' })
+    setUserBeingAdded({ id: "0", name: '', identification: '', email: '', pic: '', phone: '', dob: null, is_owner: false })
+    setDobBeingAdded({ day: '', month: '1', year: '' })
     setIsAddingResident(false)
   }
 
   const cancelAddResidentHandler = _ => {
     setIsAddingResident(false)
-    setUserBeingAdded({ id: '0', name: '', identification: '', email: '', pic: '' })
+    setUserBeingAdded({ id: '0', name: '', identification: '', email: '', pic: '', phone: '', dob: null, is_owner: false })
   }
 
   const addVehicleHandler = async _ => {
@@ -163,13 +177,18 @@ const ResidentEdit = (props) => {
     setModalSelectUnit(true)
   }
 
-  const selectUnitHandler = unit => {
+  const selectUnitHandler = async unit => {
+    const isConnected = await Utils.checkInternetConnection(setLoading)
+    if (!isConnected) {
+      return
+    }
     setSelectedUnit(unit)
     setModalSelectUnit(false)
     setLoading(true)
     api.get(`user/unit/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
       .then(res => {
-        setResidents(res.data)
+        const fetchedResidents = res.data.map(el => { return { ...el, dob: el.dob ? new Date(el.dob) : null } })
+        setResidents(fetchedResidents)
         api.get(`vehicle/${unit.id}/${Constants.USER_KIND.RESIDENT}`)
           .then(res2 => {
             setVehicles(res2.data)
@@ -231,25 +250,23 @@ const ResidentEdit = (props) => {
       return
     }
     setLoading(true)
-    api.post('vehicle/unit', {
+    api.post('user/resident/unit', {
       unit_id: selectedUnit.id,
-      vehicles,
+      residents,
+      condo_id: user.condo_id,
       user_id_last_modify: user.id
     })
-      .then((res) => {
-        api.post('user/resident/unit', {
+      .then(res => {
+        uploadImgs(res.data.addedResidents)
+        toast.info(res.data.message || 'Registro realizado com sucesso.', Constants.TOAST_CONFIG)
+        setSelectedUnit(null)
+        setModalSelectBloco(null)
+      })
+      .then(_ => {
+        api.post('vehicle/unit', {
           unit_id: selectedUnit.id,
-          residents,
-          condo_id: user.condo_id,
-          user_id_last_modify: user.id
+          vehicles,
         })
-          .then(res2 => {
-            uploadImgs(res2.data.addedResidents)
-            toast.info(res2.data.message || 'Registro realizado com sucesso.', Constants.TOAST_CONFIG)
-            setSelectedUnit(null)
-            setModalSelectBloco(null)
-            setFinished(true)
-          })
           .catch(err2 => {
             Utils.toastError(err2, err2.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (RA4)', Constants.TOAST_CONFIG)
           })
@@ -318,7 +335,7 @@ const ResidentEdit = (props) => {
                 <FormInput
                   label='Nome*:'
                   value={userBeingAdded.name}
-                  changeValue={(val) => Utils.testWordWithNoSpecialChars(val) &&  setUserBeingAdded({ ...userBeingAdded, name: val })}
+                  changeValue={(val) => Utils.testWordWithNoSpecialChars(val) && setUserBeingAdded({ ...userBeingAdded, name: val })}
                 />
                 <FormInput
                   label='Identidade:'
@@ -331,19 +348,53 @@ const ResidentEdit = (props) => {
                   type='email'
                   changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, email: val })}
                 />
-                {!!userBeingAdded.pic &&
+                {
+                  user.condo.resident_has_phone &&
+                  <FormInput
+                    label='Telefone:'
+                    value={userBeingAdded.phone}
+                    type='text'
+                    placeholder='(XX) 90000-0000'
+                    changeValue={(val) => setUserBeingAdded({ ...userBeingAdded, phone: val })}
+                  />
+                }
+                {
+                  user.condo.resident_has_owner_field &&
+                  <div className='row m-1 my-3'>
+                    <label>Tipo:</label>
+                    <ButtonIcon
+                      newClass='btn-light btn-outline-secondary'
+                      text={userBeingAdded.is_owner ? 'Proprietário' : 'Alugado'}
+                      clicked={() => setUserBeingAdded(prev => ({ ...prev, is_owner: !prev.is_owner }))}
+                    />
+                  </div>
+                }
+                {
+                  user.condo.resident_has_dob &&
+                  <InputDate
+                    title='Nascimento:'
+                    date={dobBeingAdded}
+                    setDate={setDobBeingAdded}
+                    maxYear={new Date().getFullYear()}
+                    minYear={new Date().getFullYear() - 110}
+                  />
+                }
+                {
+                  !!userBeingAdded.pic &&
                   <div className={classes.ImgUserTookPic}>
                     <img src={URL.createObjectURL(userBeingAdded.pic)} height={120} alt='user' />
                   </div>
                 }
-                {!userBeingAdded.pic &&
+                {
+                  !userBeingAdded.pic &&
                   <ImportPhotoButtons
                     setImgPath={(img) => setUserBeingAdded({ ...userBeingAdded, pic: img })}
                     paperClipImageHandler={(path) => paperClipImageHandler(path)}
                     setErrorMessage={setErrorAddResidentMessage}
                     cameraClick={() => takePicHandler()} />
                 }
-                {!!errorAddResidentMessage &&
+                {
+                  !!errorAddResidentMessage &&
                   <div className="alert alert-danger text-center mt-2" role="alert">
                     {errorAddResidentMessage}
                   </div>
@@ -371,7 +422,10 @@ const ResidentEdit = (props) => {
                       </div>
                       <div>
                         <p className={classes.Text}><span className={classes.Bold}>Nome:</span> {el.name}</p>
-                        <p className={classes.Text}><span className={classes.Bold}>Email:</span> {el.email}</p>
+                        {
+                          !!el.email &&
+                          <p className={classes.Text}><span className={classes.Bold}>Email:</span> {el.email}</p>
+                        }
                       </div>
                     </div>
                     <span className={classes.CloseIcon} onClick={() => removeResident(ind)}><Icon icon='window-close' color={Constants.closeButtonCollor} /></span>

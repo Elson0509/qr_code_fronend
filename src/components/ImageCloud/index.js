@@ -21,8 +21,8 @@ const ImageCloud = (props) => {
         src={genericEvent}
         alt='user'
         loading='lazy'
-        height='auto'
-        width='100%'
+        height={props.height || 'auto'}
+        width={props.width || '100%'}
       />
     }
     else if (props.isParcel) {
@@ -39,8 +39,8 @@ const ImageCloud = (props) => {
         src={genericProfile}
         alt='user'
         loading='lazy'
-        height='auto'
-        width='100%'
+        height={props.height || 'auto'}
+        width={props.width || '100%'}
       />
     }
   }

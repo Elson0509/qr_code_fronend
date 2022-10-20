@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import FormInput from '../../Form/FormInput';
+import FormComment from '../../Form/FormComment';
 import ActionButtons from '../../Buttons/ActionButtons';
 
 const ReplyModal = (props) => {
@@ -18,7 +19,7 @@ const ReplyModal = (props) => {
                     value={props.subject}
                     changeValue={props.setSubject}
                 />
-                <FormInput
+                <FormComment
                     label='Resposta'
                     value={props.reply}
                     changeValue={props.setReply}

@@ -5,6 +5,7 @@ import * as Utils from '../../../services/util'
 import { useAuth } from '../../../contexts/auth'
 import api from '../../../services/api'
 import ConfirmModal from '../../../components/Modals/ConfirmModal'
+import FormComment from '../../../components/Form/FormComment'
 import { Alert, Spinner } from 'reactstrap'
 import { toast } from 'react-toastify'
 import ButtonIcon from '../../../components/Buttons/ButtonIcon'
@@ -170,7 +171,7 @@ const News = () => {
             value={title}
             changeValue={(val) => setTitle(val)}
           />
-          <FormInput
+          <FormComment
             label='Aviso:'
             value={message}
             changeValue={(val) => setMessage(val)}

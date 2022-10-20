@@ -387,9 +387,9 @@ const ThirdEdit = (props) => {
                       <div className={classes.ResidentImage}>
                         {
                           el.id === '0' ?
-                            <ImageBlob path={el.pic} height={100} />
+                            <ImageBlob path={el.pic} width={100} />
                             :
-                            <ImageCloud id={el.photo_id} height={100} />
+                            <ImageCloud id={el.photo_id} width={100} />
                         }
                       </div>
                       <div>

@@ -77,7 +77,6 @@ const Mail = (props) => {
   const classifyMailHandler = mail => {
     setSelectedMail(mail)
     setModalClarify(true)
-    console.log(mail)
   }
 
   const deleteMailHandler = mail => {
@@ -100,8 +99,6 @@ const Mail = (props) => {
         setLoading(false)
       })
   }
-
-  console.log(filterData())
 
   const confirmClarifyHandler = async () => {
     const isConnected = await Utils.checkInternetConnection(setLoading)
@@ -150,7 +147,7 @@ const Mail = (props) => {
             text='Receber correspondência'
             clicked={() => props.history.push('/services/mailadd')}
             icon='folder-plus'
-            
+
           />
         </div>
         <div>
@@ -240,12 +237,15 @@ const Mail = (props) => {
           title={`Baixa em ${selectedMail.tracking_code}`}
           action1={confirmClarifyHandler}
         >
-          <SelectInput
-            label='Selecionar morador:'
-            value={selectedResident}
-            options={[{ name: '' }].concat(selectedMail.Unit.Users)}
-            changeValue={value => setSelectedResident(value)}
-          />
+          {
+            !!selectedMail.Unit.Users.length &&
+            <SelectInput
+              label='Selecionar morador:'
+              value={selectedResident}
+              options={[{ name: '' }].concat(selectedMail.Unit.Users)}
+              changeValue={value => setSelectedResident(value)}
+            />
+          }
           <label className='mt-2'>Novo Status:</label>
           <ButtonIcon
             text={newStatus}

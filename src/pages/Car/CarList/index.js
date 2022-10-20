@@ -13,6 +13,7 @@ import {
   Card, CardBody, CardHeader,
 } from 'reactstrap';
 import ReplyModal from '../../../components/Modals/ReplyModal';
+import ButtonIcon from '../../../components/Buttons/ButtonIcon';
 
 const CarList = () => {
   const [overnights, setOvernights] = useState([])
@@ -122,6 +123,21 @@ const CarList = () => {
       })
   }
 
+  const updateSituationHandler = item => {
+    setLoading(true)
+    api.post(`overnight/${item.id}/${item.is_solved ? '0' : '1'}`)
+      .then(res => {
+        toast.info(res.data.message, Constants.TOAST_CONFIG)
+        fetchOvernights()
+      })
+      .catch((err) => {
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (CLU2)', Constants.TOAST_CONFIG)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
+
   if (loading) {
     return (
       <Body breadcrumb={breadcrumb}>
@@ -163,6 +179,15 @@ const CarList = () => {
                         {!!el.userRegistering.name && <p className='pt-2 m-0'><span className='enfase'>Quem registrou:</span> {el.userRegistering.name} ({Constants.USER_KIND_NAME[el.userRegistering.user_kind_id]})</p>}
                         {!!el.description && <p className='pt-2 m-0'><span className='enfase'>Descrição:</span> {el.description}</p>}
                         {!el.description && <p className='pt-2 m-0'><span className='enfase'>Sem descrição.</span></p>}
+                      </div>
+                      <div className='p-2 text-center'>
+                        <ButtonIcon
+                          icon={el.is_solved ? 'check' : 'close'}
+                          text={el.is_solved ? 'Resolvido' : 'Pendente'}
+                          newClass={el.is_solved ? 'btn-success' : 'btn-warning'}
+                          iconColor={el.is_solved ? '' : '#555'}
+                          clicked={() => updateSituationHandler(el)}
+                        />
                       </div>
                     </div>
                   </CardBody>

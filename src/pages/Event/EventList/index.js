@@ -20,6 +20,7 @@ import {
 import ReplyModal from '../../../components/Modals/ReplyModal'
 import InputDate from '../../../components/Form/InputDate'
 import ReactToPrint from 'react-to-print'
+import ButtonIcon from '../../../components/Buttons/ButtonIcon';
 
 const EventList = () => {
   const currentDate = new Date()
@@ -147,8 +148,23 @@ const EventList = () => {
     }
     setSelectedEvent(item)
     setModalReply(true)
-    setSubject('Re: ' + item.title)
+    setSubject('Re: ' + item.OccurrenceType.type)
     setReplyMessage('')
+  }
+
+  const updateSituationHandler = item => {
+    setLoading(true)
+    api.post(`occurrence/${item.id}/${item.is_solved ? '0' : '1'}`)
+      .then(res => {
+        toast.info(res.data.message, Constants.TOAST_CONFIG)
+        fetchEvents()
+      })
+      .catch((err) => {
+        Utils.toastError(err, err.response?.data?.message || 'Um erro ocorreu. Tente mais tarde. (ELU2)', Constants.TOAST_CONFIG)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const sendHandler = async () => {
@@ -302,6 +318,15 @@ const EventList = () => {
                             {!!el.place && <p className='pt-2 m-0'><span className='enfase'>Local:</span> {el.place}</p>}
                             {!!el.userRegistering.name && <p className='pt-2 m-0'><span className='enfase'>Quem registrou:</span> {el.userRegistering.name} ({Constants.USER_KIND_NAME[el.userRegistering.user_kind_id]})</p>}
                             {!!el.description && <p className='pt-2 m-0'><span className='enfase'>Descrição:</span> {el.description}</p>}
+                          </div>
+                          <div className='p-2 text-center'>
+                            <ButtonIcon
+                              icon={el.is_solved ? 'check' : 'close'}
+                              text={el.is_solved ? 'Resolvido' : 'Pendente'}
+                              newClass={el.is_solved ? 'btn-success' : 'btn-warning'}
+                              iconColor={el.is_solved ? '' : '#555'}
+                              clicked={() => updateSituationHandler(el)}
+                            />
                           </div>
                         </div>
                       </CardBody>

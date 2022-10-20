@@ -228,6 +228,7 @@ const CarSearch = () => {
                     <CardSubtitle tag="h5" className="mb-2 text-muted text-center">Unidade {el.Unit.number}</CardSubtitle>
                   </CardHeader>
                   <CardBody className='text-center'>
+                    Tipo: {Constants.USER_KIND_NAME[el.Unit.unit_kind_id]}
                     <Plate plate={el.plate} />
                   </CardBody>
                 </Card>

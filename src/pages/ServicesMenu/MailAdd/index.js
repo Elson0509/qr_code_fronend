@@ -52,7 +52,6 @@ const MailAdd = (props) => {
     api.get(`condo/all/${user.condo_id}`)
       .then(res => {
         setBlocos(res.data)
-        console.log(res.data)
         setLoading(false)
       })
       .catch(err => {
@@ -143,7 +142,7 @@ const MailAdd = (props) => {
       .then((res) => {
         uploadImg(res.data.mailRegistered.id)
         setErrorMessage('')
-        toast.info('Correspondência realizada', Constants.TOAST_CONFIG)
+        toast.info('Correspondência cadastrada', Constants.TOAST_CONFIG)
         props.history.push('/dashboard') 
       })
       .catch((err) => {
@@ -184,7 +183,7 @@ const MailAdd = (props) => {
           {
             !!pic &&
             <div style={{ textAlign: 'center' }}>
-              <img src={URL.createObjectURL(pic)} alt='pic user' height={120} />
+              <img src={URL.createObjectURL(pic)} alt='user' height={120} />
             </div>
           }
           {

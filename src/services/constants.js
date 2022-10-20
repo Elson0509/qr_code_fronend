@@ -45,7 +45,7 @@ export const menuOptions = [
 
 export const USER_KIND_NAME = {
     1: 'Morador',
-    2: 'Guarda',
+    2: 'Colaborador',
     3: 'Administrador',
     4: 'Visitante',
     5: 'Terceirizado',
