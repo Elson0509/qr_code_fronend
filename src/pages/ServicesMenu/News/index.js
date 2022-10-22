@@ -13,10 +13,8 @@ import GeneralCard from '../../../components/GeneralCard'
 import FormInput from '../../../components/Form/FormInput'
 
 const News = () => {
-
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
-
   const [news, setNews] = useState([])
   const [title, setTitle] = useState('')
   const [message, setMessage] = useState('')
@@ -84,6 +82,8 @@ const News = () => {
       .then(() => {
         setModalAddNews(false)
         toast.info('Aviso enviado com sucesso.', Constants.TOAST_CONFIG)
+        setTitle('')
+        setMessage('')
         fetchNews()
       })
       .catch(err => {
