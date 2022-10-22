@@ -1,4 +1,4 @@
-.CloseIcon{
+.CloseIcon {
     cursor: pointer;
     color: red;
     position: absolute;
@@ -6,27 +6,41 @@
     right: 4px;
 }
 
-.ResidentBox{
+.ResidentBox {
     display: flex;
     flex-direction: row;
     gap: 10px;
 }
 
-.ResidentImage{
+@media screen and (max-width: 600px) {
+    .ResidentBox {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+.ResidentImage {
     border: 2px solid white;
     width: 140px;
     text-align: center;
 }
 
-.Text{
+
+@media screen and (max-width: 600px) {
+    .ResidentImage {
+        margin: 0 auto;
+    }
+}
+
+.Text {
     margin: 0;
 }
 
-.Bold{
+.Bold {
     font-weight: bold;
 }
 
-.ImgUserTookPic{
+.ImgUserTookPic {
     text-align: center;
     padding: 20px;
 }

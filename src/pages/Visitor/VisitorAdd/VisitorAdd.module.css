@@ -12,10 +12,23 @@
     gap: 10px;
 }
 
-.ResidentImage{
+@media screen and (max-width: 600px) {
+    .ResidentBox {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+.ResidentImage {
     border: 2px solid white;
-    width: 140px !important;
+    width: 140px;
     text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+    .ResidentImage {
+        margin: 0 auto;
+    }
 }
 
 .Text{
