@@ -16,43 +16,15 @@ const Price = () => {
       <Nav />
       <section className='p-4 bg-light'>
         <div className="px-3 pt-md-3 pb-md-4 mx-auto text-center">
-          <h1 className="display-4">Investimento</h1>
+          {/* <h1 className="display-4">Investimento</h1> */}
           <p className="lead">Contratação de solução moderna para controle de acesso de condomínios com login individual de administradores, colaboradores e residentes.</p>
         </div>
         <div className='row text-center'>
           <CardGroup>
             <Card>
-              <CardHeader>
-                <h4 className="my-0 font-weight-normal">Plano Bronze</h4>
-              </CardHeader>
-              <CardBody>
-                <CardTitle tag="h1">
-                  {/* R$ 159,90<small className="text-muted">/ mês</small> */}
-                </CardTitle>
-                <CardSubtitle>
-                  <CheckList text='Até 500 unidades incluído' />
-                  {/* <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button> */}
-                </CardSubtitle>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardHeader>
-                <h4 className="my-0 font-weight-normal">Plano Prata</h4>
-              </CardHeader>
-              <CardBody>
-                <CardTitle tag="h1">
-                  {/* R$ 179,90<small className="text-muted">/ mês</small> */}
-                </CardTitle>
-                <CardSubtitle>
-                  <CheckList text='Até 1000 unidades incluído' />
-                  {/* <button type="button" onClick={() => setModalEmail(true)} className="btn btn-lg btn-block btn-primary">Contato</button> */}
-                </CardSubtitle>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardHeader>
+              {/* <CardHeader>
                 <h4 className="my-0 font-weight-normal">Plano Ouro</h4>
-              </CardHeader>
+              </CardHeader> */}
               <CardBody>
                 <CardTitle tag="h1">
                   {/* R$ 199,90<small className="text-muted">/ mês</small> */}
